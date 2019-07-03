@@ -85,13 +85,24 @@
 
 (define (run-segmented-primes)
   (for-each test-segmented-primes-vs-sieve
-	    '(1 3 100 1000 10000 100000 12000)
-	    '(100 2 0 2000 20000 100100 12100))
+	    '(1 5 3 100 8000 10000 100000 12000)
+	    '(100 10 2 0 9000 20000 100100 12100))
   (for-each test-segmented-primes-vs-miller-rabin
 	    '(1000000
 	      1000000000)
 	    '(1001000
 	      1000100000)))
+(define (run-totient-sieve)
+  (define N 1000)
+  (define TS (totient-sieve N))
+  (format #t "testing: totients below ~a agree with filtering by gcd~%" N)
+  (let loop ((i 1000))
+    (unless (= i 1)
+      (assert (= (fxvector-ref TS i)
+		 (length (filter (lambda (x)
+				   (= 1 (gcd x i)))
+				 (cdr (iota i))))))
+      (loop (1- i)))))
 
 (format #t "library: ~a~%~%" (library-exports '(chez euler)))
 (time (run-extended-euclid))
@@ -99,5 +110,6 @@
 (time (run-miller-rabin))
 (time (run-inverse-mod))
 (time (run-segmented-primes))
+(time (run-totient-sieve))
 (format #t "all good~%")
 

@@ -72,25 +72,25 @@
 (define first-odd-multiple-above
   (lambda (x n)
     (let ((y (fx* x (fx/ (fx+ x n -1) x))))
-      (if (even? y)
-	  (- (+ y x) n)
-	  (- y n)))))
+      (if (fxeven? y)
+	  (fx- (fx+ y x) n)
+	  (fx- y n)))))
 
 (define segmented-sieve
   (lambda (A B)
     (define cutoff (+ 2 (u8:column (- B A -1))))
     (define bits (make-bytevector cutoff 255))
     (define (clear j dj)
-      (when (< j (- B A))
+      (when (fx< j (fx- B A))
 	(u8:clear bits j)
-	(clear (fx+ j dj) dj)))
+	(clear (+ j dj) dj)))
     (define (walk j dj)
       (cond ((> j B) '())
 	    ((u8:prime? bits (- j A)) (cons j (walk (+ j dj) (- 6 dj))))
 	    (else (walk (+ j dj) (- 6 dj)))))
     (for-each (lambda (p)
 		(clear (first-odd-multiple-above p A)
-		       (* p 2)))
+		       (fx* p 2)))
 	      (cdr (primes (isqrt B))))
     (case (mod A 6)
       ((0) (walk (+ A 1) 4))
@@ -106,4 +106,32 @@
 	  ((< A 3) (primes B))
 	  (else (segmented-sieve A B)))))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Totient sieve
+(define totient-sieve
+  (lambda (n)
+    (define V (make-fxvector (fx1+ n)))
+    
+    (define (initialize j)
+      (when (fx<= j n)
+	(if (fxeven? j)
+	    (fxvector-set! V j (ash j -1))
+	    (fxvector-set! V j j))
+	(initialize (fx1+ j))))
+    
+    (define (loop p j)
+      (when (fx<= j n)
+	(let ((phi-j (fxvector-ref V j)))
+	  (fxvector-set! V j (fx/ (fx* phi-j (fx1- p)) p))
+	  (loop p (fx+ p j)))))
+    
+    (define (walk j)
+      (cond ((fx> j n) V)
+	    ((fx= j (fxvector-ref V j))
+	     (loop j j)
+	     (walk (fx1+ j)))
+	    (else
+	     (walk (fx1+ j)))))
+    
+    (initialize 1)
+    (walk 3)))
