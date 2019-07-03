@@ -68,10 +68,36 @@
 (define (run-miller-rabin)
   (for-each test-miller-rabin '(1 10 100 1000 10000 100000)))
 
+(define test-segmented-primes-vs-sieve
+  (lambda (A B)
+    (format #t "testing: segment against sieve ~a ~a~%" A B)
+    (assert (equal? (filter (lambda (x) (>= x A))
+			    (primes B))
+		    (primes-in-range A B)))))
+
+(define test-segmented-primes-vs-miller-rabin
+  (lambda (A B)
+    (format #t "testing: segment against miller-rabin ~a ~a~%" A B)
+    (assert (equal? (filter prime?
+			    (map (lambda (x) (+ x A))
+				 (iota (- B A))))
+		    (primes-in-range A B)))))
+
+(define (run-segmented-primes)
+  (for-each test-segmented-primes-vs-sieve
+	    '(1 3 100 1000 10000 100000 12000)
+	    '(100 2 0 2000 20000 100100 12100))
+  (for-each test-segmented-primes-vs-miller-rabin
+	    '(1000000
+	      1000000000)
+	    '(1001000
+	      1000100000)))
+
 (format #t "library: ~a~%~%" (library-exports '(chez euler)))
 (time (run-extended-euclid))
 (time (run-prime-counts))
 (time (run-miller-rabin))
 (time (run-inverse-mod))
+(time (run-segmented-primes))
 (format #t "all good~%")
 

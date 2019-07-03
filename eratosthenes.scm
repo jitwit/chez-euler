@@ -31,7 +31,8 @@
       (let ((x (bytevector-u8-ref B c)))
 	(bytevector-u8-set! B c (logbit1 r x))))))
 
-;; run eratosthenes sieve
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Eratosthenes sieve
 (define eratosthenes-sieve
   (lambda (N)
     (define cutoff (fx1+ (u8:column N)))
@@ -48,11 +49,11 @@
     (sieve 3)
     bits))
 
-;; gather primes in a list. alternate incrementing p by 2 or 4
-(define eratosthenes->primes
+;; gather primes in a list
+(define run-eratosthenes
   (lambda (N)
     (define bits (eratosthenes-sieve N))
-    (define (walk k dk)
+    (define (walk k dk) ;; alternate dk = 2 or 4
       (cond ((fx> k N) '())
 	    ((u8:prime? bits k) (cons k (walk (fx+ k dk) (fx- 6 dk))))
 	    (else (walk (fx+ k dk) (fx- 6 dk)))))
@@ -60,7 +61,49 @@
 
 (define primes
   (lambda (N)
-    (cond ((> N 4) (eratosthenes->primes N))
+    (cond ((> N 4) (run-eratosthenes N))
 	  (else (filter (lambda (p)
 			  (> N p))
 			'(2 3))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Segmented sieve
+
+(define first-odd-multiple-above
+  (lambda (x n)
+    (let ((y (fx* x (fx/ (fx+ x n -1) x))))
+      (if (even? y)
+	  (- (+ y x) n)
+	  (- y n)))))
+
+(define segmented-sieve
+  (lambda (A B)
+    (define cutoff (+ 2 (u8:column (- B A -1))))
+    (define bits (make-bytevector cutoff 255))
+    (define (clear j dj)
+      (when (< j (- B A))
+	(u8:clear bits j)
+	(clear (fx+ j dj) dj)))
+    (define (walk j dj)
+      (cond ((> j B) '())
+	    ((u8:prime? bits (- j A)) (cons j (walk (+ j dj) (- 6 dj))))
+	    (else (walk (+ j dj) (- 6 dj)))))
+    (for-each (lambda (p)
+		(clear (first-odd-multiple-above p A)
+		       (* p 2)))
+	      (cdr (primes (isqrt B))))
+    (case (mod A 6)
+      ((0) (walk (+ A 1) 4))
+      ((1) (walk A 4))
+      ((2) (walk (+ A 3) 2))
+      ((3) (walk (+ A 2) 2))
+      ((4) (walk (+ A 1) 2))
+      ((5) (walk A 2)))))
+
+(define primes-in-range
+  (lambda (A B)
+    (cond ((< B A) '())
+	  ((< A 3) (primes B))
+	  (else (segmented-sieve A B)))))
+
+
