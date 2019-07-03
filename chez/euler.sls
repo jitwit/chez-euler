@@ -1,7 +1,8 @@
 (library (chez euler)
   (export primes
 	  prime?
-	  ax+by=gcd)
+	  ax+by=gcd
+	  inverse-modulo)
   (import (chezscheme))
   (include "eratosthenes.scm")
   (include "euclid.scm")

@@ -10,6 +10,13 @@
 
 (define ax+by=gcd
   (lambda (x y)
-    (cond ((zero? x) y)
-	  ((zero? y) x)
+    (cond ((zero? x) (list 0 1 y))
+	  ((zero? y) (list 1 0 x))
 	  (else (algorithm-E x y)))))
+
+(define inverse-modulo
+  (lambda (x m)
+    (let ((x-1*x+bm=one (ax+by=gcd x m)))
+      (if (= 1 (list-ref x-1*x+bm=one 2))
+	  (mod (car x-1*x+bm=one) m)
+	  #f))))
