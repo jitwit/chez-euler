@@ -1,25 +1,11 @@
-;;    (fold-right (lambda (x W)
-;;		  (logbit1 x W))
-;;		0
-;;		(filter (lambda (x)
-;;			  (let ((y (+ 1 x x)))
-;;			    (not (or (zero? (mod y 3))
-;;				     (zero? (mod y 5))))))
-;;			(iota 60)))
-
-;; bits of wheel:
-;; 100101101101001100101101101001100101101101001100101101101001
-(define *wheel-235* 679255032393419625)
-
-;; chezscheme fixnums have 60 bits.
-;; rth bit in cth column corresponds to n = 120*c + 2*r+1
+;; u8 bytevector indexing, with evens ignored...
 (define p:column
   (lambda (n)
-    (fx/ (fx1- n) 120)))
+    (ash n -3)))
 
 (define p:row
   (lambda (n)
-    (fxmod (ash n -1) 60)))
+    (logand n 7)))
 
 (define p:index
   (lambda (n)
@@ -29,27 +15,27 @@
 (define p:query
   (lambda (B j)
     (let-values (((c r) (p:index j)))
-      (logbit? r (fxvector-ref B c)))))
+      (logbit? r (bytevector-u8-ref B c)))))
 
 ;; clear bit for j
 (define p:clear
   (lambda (B j)
     (let-values (((c r) (p:index j)))
-      (let ((x (fxvector-ref B c)))
-	(fxvector-set! B c (logbit0 r x))))))
+      (let ((x (bytevector-u8-ref B c)))
+	(bytevector-u8-set! B c (logbit0 r x))))))
 
 ;; set bit for j
 (define p:mark
   (lambda (B j)
     (let-values (((c r) (p:index j)))
-      (let ((x (fxvector-ref B c)))
-	(fxvector-set! B c (logbit1 r x))))))
+      (let ((x (bytevector-u8-ref B c)))
+	(bytevector-u8-set! B c (logbit1 r x))))))
 
 ;; run eratosthenes sieve
-(define eratosthenes
+(define eratosthenes-sieve
   (lambda (N)
     (define cutoff (fx1+ (p:column N)))
-    (define bits (make-fxvector cutoff *wheel-235*))
+    (define bits (make-bytevector cutoff 255))
     (define (clear 2*p j)
       (unless (fx> j N)
 	(p:clear bits j)
@@ -60,15 +46,13 @@
 	  (clear (fx* 2 p) (fx* p p)))
 	(sieve (fx+ p 2))))
     (p:clear bits 1) ;; 1 is not prime
-    (p:mark bits 3) ;; 3 and 5 are, but were cleared by wheel
-    (p:mark bits 5)
-    (sieve 7) ;; sieve!
+    (sieve 3) ;; sieve!
     bits))
 
 ;; extract primes in a list from the sieve
 (define eratosthenes->primes
   (lambda (N)
-    (define bits (eratosthenes N))
+    (define bits (eratosthenes-sieve N))
     (define (walk-2 k)
       (cond ((fx> k N) '())
 	    ((p:query bits k) (cons k (walk-4 (fx+ k 2))))
@@ -77,11 +61,11 @@
       (cond ((fx> k N) '())
 	    ((p:query bits k) (cons k (walk-2 (fx+ k 4))))
 	    (else (walk-2 (fx+ k 4)))))
-    (cons* 2 3 5 (walk-4 7))))
+    (cons* 2 3 (walk-2 5))))
 
 (define primes
   (lambda (N)
-    (cond ((>= N 5) (eratosthenes->primes N))
-	  ((>= N 3) '(2 3))
-	  ((>= N 2) '(2))
-	  (else '()))))
+    (cond ((> N 4) (eratosthenes->primes N))
+	  (else (filter (lambda (p)
+			  (> N p))
+			'(2 3))))))
