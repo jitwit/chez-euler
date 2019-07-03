@@ -1,0 +1,25 @@
+(define miller-rabin
+  (lambda (p)
+    (define n (fx1- p))
+    (define r (bitwise-first-bit-set n))
+    (define d (ash n (fx- r)))
+    (define trials 40) ;; sensible?
+    (define (loop t k x)
+      (define x^2 (expt-mod x 2 p))
+      (cond ((fx<= k 0) 'composite)
+	    ((fx= x^2 n) (witness (fx1+ t)))
+	    (else (loop t (sub1 k) x^2))))
+    (define (witness k)
+      (let ((x (expt-mod (fx+ 2 (random (fx- p 3))) d p)))
+	(cond ((fx= k trials) 'probable-prime)
+	      ((or (fx= x n) (fx= x 1)) (witness (fx1+ k)))
+	      (else (loop k (fx1- r) x)))))
+    ;;      (random-seed 1)
+    (cond ((> p 3) (witness 0))
+	  ((= p 3) 'prime)
+	  ((= p 2) 'prime)
+	  (else 'composite))))
+
+(define prime?
+  (lambda (p)
+    (not (eq? 'composite (miller-rabin p)))))

@@ -12,7 +12,7 @@
     (values (u8:column n) (u8:row n))))
 
 ;; check bit for j
-(define u8:query
+(define u8:prime?
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
       (logbit? r (bytevector-u8-ref B c)))))
@@ -42,26 +42,21 @@
 	(clear 2*p (fx+ 2*p j))))
     (define (sieve p)
       (unless (fx> (fx* p p) N)
-	(when (u8:query bits p)
+	(when (u8:prime? bits p)
 	  (clear (* 2 p) (fx* p p)))
 	(sieve (fx+ p 2))))
-    (u8:clear bits 1) ;; 1 is not prime
-    (sieve 3) ;; sieve!
+    (sieve 3)
     bits))
 
-;; extract primes in a list from the sieve
+;; gather primes in a list. alternate incrementing p by 2 or 4
 (define eratosthenes->primes
   (lambda (N)
     (define bits (eratosthenes-sieve N))
-    (define (walk-2 k)
+    (define (walk k dk)
       (cond ((fx> k N) '())
-	    ((u8:query bits k) (cons k (walk-4 (fx+ k 2))))
-	    (else (walk-4 (fx+ k 2)))))
-    (define (walk-4 k)
-      (cond ((fx> k N) '())
-	    ((u8:query bits k) (cons k (walk-2 (fx+ k 4))))
-	    (else (walk-2 (fx+ k 4)))))
-    (cons* 2 3 (walk-2 5))))
+	    ((u8:prime? bits k) (cons k (walk (fx+ k dk) (fx- 6 dk))))
+	    (else (walk (fx+ k dk) (fx- 6 dk)))))
+    (cons* 2 3 (walk 5 2))))
 
 (define primes
   (lambda (N)
