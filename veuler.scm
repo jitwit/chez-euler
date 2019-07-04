@@ -92,6 +92,7 @@
 	      1000000000)
 	    '(1001000
 	      1000100000)))
+
 (define (run-totient-sieve)
   (define N 1000)
   (define TS (totient-sieve N))

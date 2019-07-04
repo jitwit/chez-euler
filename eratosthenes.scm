@@ -68,7 +68,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Segmented sieve
-
 (define first-odd-multiple-above
   (lambda (x n)
     (let ((y (fx* x (fx/ (fx+ x n -1) x))))
@@ -88,6 +87,7 @@
       (cond ((> j B) '())
 	    ((u8:prime? bits (- j A)) (cons j (walk (+ j dj) (- 6 dj))))
 	    (else (walk (+ j dj) (- 6 dj)))))
+    
     (for-each (lambda (p)
 		(clear (first-odd-multiple-above p A)
 		       (fx* p 2)))
@@ -111,20 +111,18 @@
 (define totient-sieve
   (lambda (n)
     (define V (make-fxvector (fx1+ n)))
-    
     (define (initialize j)
       (when (fx<= j n)
+	
 	(if (fxeven? j)
 	    (fxvector-set! V j (ash j -1))
 	    (fxvector-set! V j j))
 	(initialize (fx1+ j))))
-    
     (define (loop p j)
       (when (fx<= j n)
 	(let ((phi-j (fxvector-ref V j)))
 	  (fxvector-set! V j (fx/ (fx* phi-j (fx1- p)) p))
 	  (loop p (fx+ p j)))))
-    
     (define (walk j)
       (cond ((fx> j n) V)
 	    ((fx= j (fxvector-ref V j))

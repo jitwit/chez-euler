@@ -1,0 +1,20 @@
+#+title: Chez Euler
+#+PROPERTY: :cache yes
+#+PROPERTY: :session *scheme*
+
+# being a hello world of org-mode/babel
+
+#+begin_src scheme :exports none :session euler
+  (import (chez euler))
+#+end_src
+
+Not the most exciting program, but problem 10 succinctly succumbs:
+
+#+begin_src scheme :exports code :session euler
+  (define (e:10 N)
+    (apply + (primes N)))
+#+end_src
+
+src_scheme[:exports both :session euler]{(e:10 2000000)} {{{results(==)}}}
+
+
