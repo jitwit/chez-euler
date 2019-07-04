@@ -1,4 +1,5 @@
-;; u8 bytevector indexing
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Bitvector goods                                                            ;;
 (define u8:column
   (lambda (n)
     (ash n -3)))
@@ -11,20 +12,17 @@
   (lambda (n)
     (values (u8:column n) (u8:row n))))
 
-;; check bit for j
 (define u8:prime?
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
       (logbit? r (bytevector-u8-ref B c)))))
 
-;; clear bit for j
 (define u8:clear
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
       (let ((x (bytevector-u8-ref B c)))
 	(bytevector-u8-set! B c (logbit0 r x))))))
 
-;; set bit for j
 (define u8:mark
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
@@ -32,7 +30,7 @@
 	(bytevector-u8-set! B c (logbit1 r x))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Eratosthenes sieve
+;; Eratosthenes sieve                                                         ;;
 (define eratosthenes-sieve
   (lambda (N)
     (define cutoff (fx1+ (u8:column N)))
@@ -67,9 +65,9 @@
 			'(2 3))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Segmented sieve
+;; Segmented sieves                                                           ;;
 (define first-odd-multiple-above
-  (lambda (x n)
+  (lambda (n x)
     (let ((y (fx* x (fx/ (fx+ x n -1) x))))
       (if (fxeven? y)
 	  (fx- (fx+ y x) n)
@@ -87,9 +85,8 @@
       (cond ((> j B) '())
 	    ((u8:prime? bits (- j A)) (cons j (walk (+ j dj) (- 6 dj))))
 	    (else (walk (+ j dj) (- 6 dj)))))
-    
     (for-each (lambda (p)
-		(clear (first-odd-multiple-above p A)
+		(clear (first-odd-multiple-above A p)
 		       (fx* p 2)))
 	      (cdr (primes (isqrt B))))
     (case (mod A 6)
@@ -107,13 +104,12 @@
 	  (else (segmented-sieve A B)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Totient sieve
+;; Totient sieve                                                              ;;
 (define totient-sieve
   (lambda (n)
     (define V (make-fxvector (fx1+ n)))
     (define (initialize j)
       (when (fx<= j n)
-	
 	(if (fxeven? j)
 	    (fxvector-set! V j (ash j -1))
 	    (fxvector-set! V j j))
@@ -125,11 +121,10 @@
 	  (loop p (fx+ p j)))))
     (define (walk j)
       (cond ((fx> j n) V)
-	    ((fx= j (fxvector-ref V j))
+	    ((fx= j (fxvector-ref V j)) ;; j is prime, so loop
 	     (loop j j)
 	     (walk (fx1+ j)))
 	    (else
 	     (walk (fx1+ j)))))
-    
     (initialize 1)
     (walk 3)))

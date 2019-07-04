@@ -1,20 +1,177 @@
-#+title: Chez Euler
-#+PROPERTY: :cache yes
-#+PROPERTY: :session *scheme*
+#+title: chez-euler
+#+property: :session *scheme*
+#+options: num:nil
 
-# being a hello world of org-mode/babel
+This is a the test suite as well as some kind of documentation as well
+as me learning about org mode.
 
-#+begin_src scheme :exports none :session euler
-  (import (chez euler))
-#+end_src
+* Tests
 
-Not the most exciting program, but problem 10 succinctly succumbs:
+** load.scm
 
 #+begin_src scheme :exports code :session euler
-  (define (e:10 N)
-    (apply + (primes N)))
+(parameterize ((optimize-level 3))
+  (load "./load.scm"))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+** eratosthenes.scm
+
+Currently, there is an implementation of Eratosthenes sieve, a
+segmented primes sieve, and a totient sieve.
+
+*** Prime Count
+
+#+begin_src scheme :exports code :results value :session euler
+(define (pi n)
+  (length (primes n)))
+#+end_src 
+
+src_scheme[:exports code]{pi} should agree with the [[https://en.wikipedia.org/wiki/Prime-counting_function][chart]] at
+wikipedia.
+
+#+begin_src scheme :exports code :results value :session euler
+(for-each (lambda (n pi-n)
+	    (assert (= pi-n (pi (expt 10 n)))))
+	  (iota 8)
+	  '(0 4 25 168 1229 9592 78498 664579))
+#+end_src 
+
+#+RESULTS:
+: #t
+
+*** Segmented vs Eratosthenes
+
+#+begin_src scheme :exports code :results value :session euler
+(define (filtered-eratosthenes A B)
+  (filter (lambda (prime) 
+	    (>= prime A))
+	  (primes B)))
+
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+If the primes outside of a range /A,B/ are filtered out,
+src_scheme[:exports code]{(filtered-eratosthenes A B)} and
+src_scheme[:exports code]{(primes-in-range A B)} should agree.
+
+#+begin_src scheme :exports code :results value :session euler
+(for-each (lambda (A B)
+	    (assert (equal? (filtered-eratosthenes A B)
+			    (primes-in-range A B))))
+	  '(1 5 3 100 8000 10000 100000 12000 100)
+	  '(100 10 2 0 9000 20000 100100 12100 11000))
+#+end_src 
+
+Testing currently fails for range 100 to 11000.
+
+*** Totients
+
+Defining
+
+#+begin_src scheme :exports code :results value :session euler
+(define (slowtient N)
+  (length (filter (lambda (n) 
+		    (= 1 (gcd n N)))
+		  (iota N))))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+we check the results of the totient sieve:
+
+#+begin_src scheme :exports code :results value :session euler
+(let* ((limit 1000)
+       (V (totient-sieve limit)))
+  (for-each (lambda (k)
+	      (assert (= (slowtient k) (fxvector-ref V k))))
+	    (iota limit)))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+** miller-rabin.scm
+
+*** Prime?
+
+Being a simple implementation of the [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]],
+using 40 trial rounds. We can check that 
+
+#+begin_src scheme :exports code :results value :session euler
+(define (slow-primes N)
+  (filter prime? (iota N)))
+
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+agrees with eratosthenes:
+
+#+begin_src scheme :exports code :results value :session euler
+(for-each (lambda (N)
+	    (assert (equal? (primes N) (slow-primes N))))
+	  '(0 1 3 10 100 1000 10000 100000))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+** euclid.scm
+
+Testing ~ax+by=gcd~ can be done by comparing the output gcd with the
+library gcd, and verifying /s*x+t*y = gcd(x,y)/. ~inverse-modolu~ by
+seeing if /s*x = 1 (mod y)/:
+
+#+begin_src scheme :exports code :results value :session euler
+(define test-extended-euclid
+  (lambda (x y)
+    (let-values (((s t d) (apply values (ax+by=gcd x y))))
+      (let ((t1 `(= (gcd ,x ,y) ))
+	    (t2 `(= ,d (+ (* ,s ,x) (* ,t ,y)))))
+	(format #t "testing: ~a & ~a~%" t1 t2)
+	(assert (eval `(and ,t1 ,t2)))))))
+
+(define test-inverse-mod
+  (lambda (x m)
+    (let ((x-1 (inverse-modulo x m)))
+      (cond (x-1
+	     (format #t "testing: ~a*~a = 1 in Z/~aZ~%" x x-1 m)
+	     (assert (= 1 (mod (* x x-1) m))))
+	    (else
+	     (format #t "testing: ~a and ~a not coprime~%" x m)
+	     (assert (not (= 1 (gcd x m)))))))))
+#+end_src 
+
+* Project Euler examples
+
+A solution to problem 10 from Project Euler:
+
+#+begin_src scheme :exports code :session euler
+(define (e:10 N)
+  (apply + (primes N)))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+#+begin_src scheme :exports results :session euler
+(e:10 2000000)
+
 #+end_src
 
-src_scheme[:exports both :session euler]{(e:10 2000000)} {{{results(==)}}}
+#+RESULTS:
+: 142913828922
+
+
+
+
+
 
 

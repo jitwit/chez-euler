@@ -85,8 +85,8 @@
 
 (define (run-segmented-primes)
   (for-each test-segmented-primes-vs-sieve
-	    '(1 5 3 100 8000 10000 100000 12000)
-	    '(100 10 2 0 9000 20000 100100 12100))
+	    '(1 5 3 100 8000 10000 100000 12000 100)
+	    '(100 10 2 0 9000 20000 100100 12100 11000))
   (for-each test-segmented-primes-vs-miller-rabin
 	    '(1000000
 	      1000000000)
