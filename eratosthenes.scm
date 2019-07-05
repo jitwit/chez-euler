@@ -75,7 +75,7 @@
 
 (define segmented-sieve
   (lambda (A B)
-    (define cutoff (+ 2 (u8:column (- B A -1))))
+    (define cutoff (fx1+ (u8:column (- B A -1))))
     (define bits (make-bytevector cutoff 255))
     (define (clear j dj)
       (when (fx< j (fx- B A))

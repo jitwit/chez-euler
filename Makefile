@@ -6,3 +6,5 @@ clean:
 
 doc:
 	pandoc -f org -o gfm -o README.md chez-euler.org
+
+
