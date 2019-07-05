@@ -2,8 +2,12 @@
   (export
    ;; sieves
    primes
-   primes-in-range
+   ;; removing for now because it's incorrect! boo!
+   ;;   primes-in-range 
    totient-sieve
+
+   ;; factorization
+   factorize
 
    ;; prime testing
    prime?
@@ -17,5 +21,6 @@
   (include "eratosthenes.scm")
   (include "euclid.scm")
   (include "miller-rabin.scm")
+  (include "pollard.scm")
   
   )

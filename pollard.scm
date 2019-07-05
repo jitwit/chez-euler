@@ -8,7 +8,7 @@
     (let loop ((ps (primes (isqrt N)))
 	       (N N))
       (if (or (null? ps) (> (car ps) N))
-	  (if (= N 1) '() (list n))
+	  (if (= N 1) '() (list N))
 	  (let* ((p (car ps))
 		 (q (fx/ N p)))
 	    (if (= N (* q p))

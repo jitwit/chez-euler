@@ -208,6 +208,9 @@ What is the largest prime factor of the number 600851475143 ?
   (apply + (primes N)))
 #+end_src 
 
+#+RESULTS:
+: #<void>
+
 ** Problem 69
 
 Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
