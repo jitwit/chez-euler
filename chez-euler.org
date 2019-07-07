@@ -6,18 +6,132 @@
 This is a the test suite as well as some kind of documentation as well
 as me learning about org mode.
 
-* Tests
+#+begin_src scheme :exports none :session euler
+(import (chez euler))
 
-** load.scm
+(define (random-interval start width)
+  (let ((A (random start))
+	(W (random width)))
+    (list A (+ A W))))
 
-Self-explanatory.
-
-#+begin_src scheme :exports code :session euler
-(load "./load.scm")
+(define (list->test-sizes X)
+  (map (lambda (x)
+	 (random x))
+       X))
 #+end_src 
 
 #+RESULTS:
 : #<void>
+
+
+* Project Euler examples
+
+Find the sum of all the primes below two million.
+
+** Problem 3
+
+What is the largest prime factor of the number 600851475143 ?
+
+#+begin_src scheme :exports both :session euler
+(define (e:3 N)
+  (apply max (factorize N)))
+
+(e:3 600851475143)
+#+end_src 
+
+#+RESULTS:
+: 6857
+
+** Problem 10
+
+#+begin_src scheme :exports code :session euler
+(define (e:10 N)
+  (apply + (primes N)))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+#+begin_src scheme :exports results :session euler
+(e:10 2000000)
+
+#+end_src
+
+#+RESULTS:
+: 142913828922
+
+#+begin_src scheme :exports code :session euler
+(define (e:10 N)
+  (apply + (primes N)))
+#+end_src 
+
+#+RESULTS:
+: #<void>
+
+** Problem 69
+
+Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
+
+#+begin_src scheme :exports both :session euler
+(define (e:69 N)
+  (let ((T (totient-sieve N)))
+    (let loop ((x 3) (n/phi-n 2) (n 2))
+      (if (> x N)
+	  n
+	  (let ((x/phi-x (/ (+ 0. x) (fxvector-ref T x))))
+	    (if (> x/phi-x n/phi-n)
+		(loop (1+ x) x/phi-x x)
+		(loop (1+ x) n/phi-n n)))))))
+
+(e:69 1000000)
+
+#+end_src 
+
+#+RESULTS:
+: 510510
+
+Of course, a better way to solve this is by noticing that /n/φ(n)/ is
+the product over /p|n/ of /p/p-1/. This will be biggest when the /p/
+are small and distinct.
+
+#+begin_src scheme :exports both :session euler
+(define (better-e:69 N)
+  (let loop ((ps (primes N)) (best 1))
+    (let ((next (* (car ps) best)))
+      (if (> next N)
+	  best
+	  (loop (cdr ps) next)))))
+
+(better-e:69 1000000)
+#+end_src
+
+#+RESULTS:
+: 510510
+
+** Problem 193
+
+How many squarefree numbers are there below 2^50?
+
+With values of moebius sieve in hand, we simply loop through, tallying
+by inclusion-exclusion.
+
+#+begin_src scheme :exports both :session euler
+(define (e:193 n)
+  (define lim (isqrt (1+ n)))
+  (define M (moebius-sieve lim))
+  (let loop ((count 0) (j 1))
+    (if (> j lim)
+        count
+        (loop (+ count (* (vector-ref M j) (fx/ n (* j j))))
+	      (1+ j)))))
+
+(e:193 (expt 2 50))
+#+end_src
+
+#+RESULTS:
+: 684465067343069
+
+* Tests
 
 ** eratosthenes.scm
 
@@ -37,8 +151,9 @@ wikipedia.
 #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n pi-n)
 	    (assert (= pi-n (pi (expt 10 n)))))
-	  (iota 9)
-	  '(0 4 25 168 1229 9592 78498 664579 5761455))
+	  (iota 8)
+	  '(0 4 25 168 1229 9592 78498 664579 ;; 5761455
+	      ))
 'ok
 #+end_src 
 
@@ -98,6 +213,27 @@ we check the results of the totient sieve:
 	      (assert (= (slowtient k) (fxvector-ref V k))))
 	    (iota limit))
   'ok)
+#+end_src 
+
+#+RESULTS:
+: ok
+
+*** Moebius
+
+For now, will simply compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
+
+#+begin_src scheme :exports both :results value :session euler
+
+(define moebius-function-sequence
+  '(1 -1 -1 0 -1 1 -1 0 0 1 -1 0 -1 1 1 0 -1 0 -1 0 
+    1 1 -1 0 0 1 0 0 -1 -1 -1 0 1 1 1 0 -1 1 1 0 -1 
+    -1 -1 0 0 1 -1 0 0 0 1 0 -1 0 1 0 1 1 -1 0 -1 1 0 
+    0 1 -1 -1 0 1 -1 -1 0 -1 1 0 0 1 -1))
+
+(assert (equal?
+	 moebius-function-sequence
+	 (cdr (vector->list (moebius-sieve (length moebius-function-sequence))))))
+'ok
 #+end_src 
 
 #+RESULTS:
@@ -173,89 +309,3 @@ back the input.
 
 #+RESULTS:
 : ok
-
-* Project Euler examples
-
-Find the sum of all the primes below two million.
-
-** Problem 3
-
-What is the largest prime factor of the number 600851475143 ?
-
-#+begin_src scheme :exports both :session euler
-(define (e:3 N)
-  (apply max (factorize N)))
-
-(e:3 600851475143)
-#+end_src 
-
-#+RESULTS:
-: 6857
-
-** Problem 10
-
-#+begin_src scheme :exports code :session euler
-(define (e:10 N)
-  (apply + (primes N)))
-#+end_src 
-
-#+RESULTS:
-: #<void>
-
-#+begin_src scheme :exports results :session euler
-(e:10 2000000)
-
-#+end_src
-
-#+RESULTS:
-: 142913828922
-
-#+begin_src scheme :exports code :session euler
-(define (e:10 N)
-  (apply + (primes N)))
-#+end_src 
-
-#+RESULTS:
-: #<void>
-
-** Problem 69
-
-Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
-
-#+begin_src scheme :exports both :session euler
-(define (e:69 N)
-  (let ((T (totient-sieve N)))
-    (car
-     (sort (lambda (x y)
-	     (> (/ (+ x 0.) (fxvector-ref T x))
-		(/ (+ y 0.) (fxvector-ref T y))))
-	   (cdr (iota (1+ N)))))))
-
-(e:69 1000000)
-#+end_src 
-
-#+RESULTS:
-: 510510
-
-Of course, a better way to solve this is by noticing that /n/φ(n)/ is
-the product over /p|n/ of /p/p-1/. This will be biggest when the /p/
-are small and distinct.
-
-#+begin_src scheme :exports both :session euler
-(define (better-e:69 N)
-  (let loop ((ps (primes N)) (best 1))
-    (let ((next (* (car ps) best)))
-      (if (> next N)
-	  best
-	  (loop (cdr ps) next)))))
-
-(better-e:69 1000000)
-
-#+end_src
-
-#+RESULTS:
-: 510510
-
-
-
-

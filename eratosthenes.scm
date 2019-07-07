@@ -6,7 +6,7 @@
 
 (define u8:row
   (lambda (n)
-    (logand n 7)))
+    (fxlogand n 7)))
 
 (define u8:index
   (lambda (n)
@@ -15,19 +15,19 @@
 (define u8:prime?
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
-      (logbit? r (bytevector-u8-ref B c)))))
+      (fxlogbit? r (bytevector-u8-ref B c)))))
 
 (define u8:clear
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
       (let ((x (bytevector-u8-ref B c)))
-	(bytevector-u8-set! B c (logbit0 r x))))))
+	(bytevector-u8-set! B c (fxlogbit0 r x))))))
 
 (define u8:mark
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
       (let ((x (bytevector-u8-ref B c)))
-	(bytevector-u8-set! B c (logbit1 r x))))))
+	(bytevector-u8-set! B c (fxlogbit1 r x))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Eratosthenes sieve                                                         ;;
@@ -128,3 +128,46 @@
 	     (walk (fx1+ j)))))
     (initialize 1)
     (walk 3)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Moebius sieve                                                              ;;
+;; moebius(n) = { 0, n divisible by a square
+;;              { (-1)^k, n has k distinct prime divisors
+
+(define sgn
+  (lambda (n)
+    (cond ((> n 0) 1)
+	  ((< n 0) -1)
+	  (else 0))))
+
+;; Lioen and Van de Lune sieve:
+;; for n = 1 to N: mu = 1
+;; for p <= root N: for multiples of p, mu = -p * mu
+;; for p <= root N: for multiples of p^2 mu = 0
+;; for n = 1 to N: if |mu(n)| /= n then mu(n) = -mu(n)
+;; for n = 1 to N: mu(n) = sign(mu(n)).
+(define moebius-sieve
+  (lambda (n)
+    (define bits (make-vector (+ n 1) 1))
+    (define (M1 j p)
+      (unless (> j n)
+	(vector-set! bits j (* (- p) (vector-ref bits j)))
+	(M1 (+ j p) p)))
+    (define (M2 j p^2)
+      (unless (> j n)
+	(vector-set! bits j 0)
+	(M2 (+ j p^2) p^2)))
+    (define (M3 j)
+      (unless (> j n)
+	(let* ((m-j (vector-ref bits j)) (s-j (sgn m-j)))
+	  (if (= (abs m-j) j)
+	      (vector-set! bits j s-j)
+	      (vector-set! bits j (- s-j))))
+	(M3 (+ j 1))))
+    (for-each (lambda (p)
+		(M1 p p)
+		(M2 (* p p) (* p p)))
+	      (primes (isqrt n)))
+    (vector-set! bits 0 0)
+    (M3 1)
+    bits))
