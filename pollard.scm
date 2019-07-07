@@ -59,7 +59,7 @@
 
 (define factorize
   (lambda (N)
-    (let loop ((ps (primes (min 1000 (isqrt N)))) (N N))
+    (let loop ((ps (primes (isqrt (min *cutoff* N)))) (N N))
       (if (null? ps)
 	  (cond ((= N 1) '())
 		((prime? N) (list N))

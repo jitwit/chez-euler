@@ -26,8 +26,6 @@ as me learning about org mode.
 
 * Project Euler examples
 
-Find the sum of all the primes below two million.
-
 ** Problem 3
 
 What is the largest prime factor of the number 600851475143 ?
@@ -43,6 +41,8 @@ What is the largest prime factor of the number 600851475143 ?
 : 6857
 
 ** Problem 10
+
+Find the sum of all the primes below two million.
 
 #+begin_src scheme :exports code :session euler
 (define (e:10 N)
@@ -60,31 +60,22 @@ What is the largest prime factor of the number 600851475143 ?
 #+RESULTS:
 : 142913828922
 
-#+begin_src scheme :exports code :session euler
-(define (e:10 N)
-  (apply + (primes N)))
-#+end_src 
-
-#+RESULTS:
-: #<void>
-
 ** Problem 69
 
 Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
 
 #+begin_src scheme :exports both :session euler
 (define (e:69 N)
-  (let ((T (totient-sieve N)))
-    (let loop ((x 3) (n/phi-n 2) (n 2))
-      (if (> x N)
-	  n
-	  (let ((x/phi-x (/ (+ 0. x) (fxvector-ref T x))))
-	    (if (> x/phi-x n/phi-n)
-		(loop (1+ x) x/phi-x x)
-		(loop (1+ x) n/phi-n n)))))))
+  (define T (totient-sieve N))
+  (let loop ((x 3) (n/phi-n 2) (n 2))
+    (if (> x N)
+	n
+	(let ((x/phi-x (/ x (fxvector-ref T x))))
+	  (if (> x/phi-x n/phi-n)
+	      (loop (1+ x) x/phi-x x)
+	      (loop (1+ x) n/phi-n n))))))
 
 (e:69 1000000)
-
 #+end_src 
 
 #+RESULTS:
@@ -136,7 +127,7 @@ by inclusion-exclusion.
 ** eratosthenes.scm
 
 Currently, there is an implementation of Eratosthenes sieve, a
-segmented primes sieve, and a totient sieve.
+segmented primes sieve, a totient sieve, and a moebius sieve.
 
 *** Prime Count
 
@@ -243,8 +234,8 @@ For now, will simply compare results against the [[https://oeis.org/A008683/list
 
 *** Prime?
 
-Being a simple implementation of the [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]],
-using 40 trial rounds. We can confirm that 
+An implementation of the [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]], using 40 trial
+rounds. We can confirm that
 
 #+begin_src scheme :exports code :results value :session euler
 (define (slow-primes N)
@@ -255,7 +246,7 @@ using 40 trial rounds. We can confirm that
 #+RESULTS:
 : #<void>
 
-agrees with eratosthenes:
+agrees with the basic eratosthenes sieve:
 
 #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (N)
@@ -296,9 +287,10 @@ seeing if /s*x = 1 (mod y)/:
 
 ** pollard.scm
 
-Factorize numbers large and small. For now I'll just randomly type out
-a bunch of numbers and check that the product of ~factorize~ spits
-back the input.
+Factorize numbers large and small. Compares some randomly typed out
+ numbers and checks that the product of ~factorize~ spits back the
+ input. ~factorize~ uses Pollard's rho method after doing trial
+ division on some small primes.
 
 #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n)
