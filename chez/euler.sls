@@ -5,6 +5,7 @@
    ;; removing for now because it's incorrect! boo!
    ;;   primes-in-range 
    totient-sieve
+   moebius-sieve
 
    ;; factorization
    factorize

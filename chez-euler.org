@@ -113,7 +113,7 @@ by inclusion-exclusion.
   (let loop ((count 0) (j 1))
     (if (> j lim)
         count
-        (loop (+ count (* (vector-ref M j) (fx/ n (* j j))))
+        (loop (+ count (* (fxvector-ref M j) (fx/ n (* j j))))
 	      (1+ j)))))
 
 (e:193 (expt 2 50))
@@ -142,9 +142,9 @@ wikipedia.
 #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n pi-n)
 	    (assert (= pi-n (pi (expt 10 n)))))
-	  (iota 8)
-	  '(0 4 25 168 1229 9592 78498 664579 ;; 5761455
-	      ))
+	  (iota 9)
+	  '(0 4 25 168 1229 9592 78498 664579 5761455))
+
 'ok
 #+end_src 
 
