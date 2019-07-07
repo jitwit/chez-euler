@@ -19,7 +19,7 @@ chezversion ::= $(shell echo '(call-with-values scheme-version-number (lambda (a
 schemedir = ${LIBDIR}/csv${chezversion}-site
 
 build:
-	echo "(compile-library \"chez/euler.sls\"))" | ${CHEZ} -q
+	echo "(parameterize ((optimize-level 3)) (compile-library \"chez/euler.sls\")))" | ${CHEZ} -q
 
 install:
 	find . -type f -regex ".*.so" -exec sh -c '${INSTALL} -t ${schemedir}/$$(dirname $$1) $$1' _ {} \;

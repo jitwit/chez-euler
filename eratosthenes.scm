@@ -2,7 +2,7 @@
 ;; Bitvector goods                                                            ;;
 (define u8:column
   (lambda (n)
-    (ash n -3)))
+    (fxsrl n 3)))
 
 (define u8:row
   (lambda (n)
@@ -111,7 +111,7 @@
     (define (initialize j)
       (when (fx<= j n)
 	(if (fxeven? j)
-	    (fxvector-set! V j (ash j -1))
+	    (fxvector-set! V j (fxsrl j 1))
 	    (fxvector-set! V j j))
 	(initialize (fx1+ j))))
     (define (loop p j)

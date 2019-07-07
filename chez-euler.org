@@ -1,4 +1,5 @@
 #+title: Chez Euler
+#+author: jitwit
 #+property: :session *scheme*
 #+options: num:nil
 

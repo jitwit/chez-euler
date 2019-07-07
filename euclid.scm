@@ -16,7 +16,7 @@
 
 (define inverse-modulo
   (lambda (x m)
-    (let ((x-1*x+bm=one (ax+by=gcd x m)))
-      (if (= 1 (list-ref x-1*x+bm=one 2))
-	  (mod (car x-1*x+bm=one) m)
+    (let ((yx+bm=1 (ax+by=gcd x m)))
+      (if (= 1 (list-ref yx+bm=1 2))
+	  (mod (car yx+bm=1) m)
 	  #f))))
