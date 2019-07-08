@@ -1,6 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Trial Division                                                             ;;
-
 (define *cutoff* 1000000)
 
 (define trial-division
@@ -17,13 +16,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rho-Pollard                                                                ;;
-
 (define rho-method
   (lambda (x y k l n)
     (define (B2)
-      (if (prime? n)
-	  n
-	  (B3)))
+      (if (prime? n) n (B3)))
     (define (B3)
       (let ((g (gcd (- y x) n)))
 	(cond ((= g 1) (B4))
@@ -56,10 +52,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hybrid                                                                     ;;
-
 (define factorize
   (lambda (N)
-    (let loop ((ps (primes (isqrt (min *cutoff* N)))) (N N))
+    (let loop ((ps (primes (min N (isqrt *cutoff*)))) (N N))
       (if (null? ps)
 	  (cond ((= N 1) '())
 		((prime? N) (list N))
@@ -71,6 +66,8 @@
 		(cons* p (loop ps q))
 		(loop (cdr ps) N)))))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Divisors                                                                   ;;
 (define merge-sorted
   (lambda (X Y)
     (cond ((null? X) Y)
@@ -82,11 +79,14 @@
 		   ((< y x) (cons y (merge-sorted X (cdr Y))))
 		   (else (cons x (merge-sorted (cdr X) (cdr Y))))))))))
 
+(define combine-factors
+  (lambda (x Y)
+    (merge-sorted Y
+		  (map (lambda (y)
+			 (* x y))
+		       Y))))
 (define divisors
   (lambda (N)
-    (let* ((n (isqrt N))
-	   (ds (factorize N)))
-      (fold-right (lambda (x y)
-		    (merge-sorted y (map (lambda (z) (* z x)) y)))
-		  (list 1)
-		  ds))))
+    (if (zero? N)
+	'()
+	(fold-right combine-factors (list 1) (factorize N)))))

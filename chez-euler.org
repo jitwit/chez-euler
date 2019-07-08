@@ -1,95 +1,74 @@
-#+title: Chez Euler
-#+author: jitwit
-#+property: :session *scheme*
-#+options: num:nil
-
-This is a the test suite as well as some kind of documentation as well
-as me learning about org mode.
+* ChezEuler
 
 #+begin_src scheme :exports none :session euler
 (import (chez euler))
-
-(define (random-interval start width)
-  (let ((A (random start))
-	(W (random width)))
-    (list A (+ A W))))
-
-(define (list->test-sizes X)
-  (map (lambda (x)
-	 (random x))
-       X))
 #+end_src 
 
 #+RESULTS:
 : #<void>
 
-* Project Euler examples
+** Project Euler examples
 
-** Problem 3
+*** Problem 3
 
-What is the largest prime factor of the number 600851475143 ?
+    What is the largest prime factor of the number 600851475143 ?
 
-#+begin_src scheme :exports both :session euler
+ #+begin_src scheme :exports both :session euler
 (define (e:3 N)
   (apply max (factorize N)))
 
 (e:3 600851475143)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: 6857
+ #+RESULTS:
+ : 6857
 
-** Problem 10
+*** Problem 10
 
-Find the sum of all the primes below two million.
+    Find the sum of all the primes below two million.
 
-#+begin_src scheme :exports code :session euler
+ #+begin_src scheme :exports code :session euler
 (define (e:10 N)
   (apply + (primes N)))
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: #<void>
+ #+RESULTS:
+ : #<void>
 
-#+begin_src scheme :exports results :session euler
+ #+begin_src scheme :exports results :session euler
 (e:10 2000000)
 
-#+end_src
+ #+end_src
 
-#+RESULTS:
-: 142913828922
+ #+RESULTS:
+ : 142913828922
 
-** Problem 12
+*** Problem 12
 
-A brutish solution to 12. Still runs reasonably fast considering.
+    A brutish solution to 12. Still runs reasonably fast considering.
 
-#+begin_src scheme :exports both :session euler
+ #+begin_src scheme :exports both :session euler
 (define (triangular n)
   (/ (* (1+ n) n) 2))
 
 (define (e:12 N)
-  (let loop ((n 1))
-    (if (< N
-	   (length
-	    (divisors
-	     (triangular n))))
-	(triangular n)
-	(loop (1+ n)))))
+  (do ((n 1 (1+ n)))
+      ((< N (length (divisors (triangular n))))
+       (triangular n))))
 
 (e:12 500)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: 76576500
-
+ #+RESULTS:
 
 
 
-** Problem 69
 
-Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
+*** Problem 69
 
-#+begin_src scheme :exports both :session euler
+    Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
+
+ #+begin_src scheme :exports both :session euler
 (define (e:69 N)
   (define T (totient-sieve N))
   (let loop ((x 3) (n/phi-n 2) (n 2))
@@ -101,16 +80,16 @@ Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
 	      (loop (1+ x) n/phi-n n))))))
 
 (e:69 1000000)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: 510510
+ #+RESULTS:
+ : 510510
 
-Of course, a better way to solve this is by noticing that /n/φ(n)/ is
-the product over /p|n/ of /p/p-1/. This will be biggest when the /p/
-are small and distinct.
+ Of course, a better way to solve this is by noticing that /n/φ(n)/ is
+ the product over /p|n/ of /p/p-1/. This will be biggest when the /p/
+ are small and distinct.
 
-#+begin_src scheme :exports both :session euler
+ #+begin_src scheme :exports both :session euler
 (define (better-e:69 N)
   (let loop ((ps (primes N)) (best 1))
     (let ((next (* (car ps) best)))
@@ -119,19 +98,19 @@ are small and distinct.
 	  (loop (cdr ps) next)))))
 
 (better-e:69 1000000)
-#+end_src
+ #+end_src
 
-#+RESULTS:
-: 510510
+ #+RESULTS:
+ : 510510
 
-** Problem 193
+*** Problem 193
 
-How many squarefree numbers are there below 2^50?
+    How many squarefree numbers are there below 2^50?
 
-With values of moebius sieve in hand, we simply loop through, tallying
-by inclusion-exclusion.
+    With values of moebius sieve in hand, we simply loop through, tallying
+    by inclusion-exclusion.
 
-#+begin_src scheme :exports both :session euler
+ #+begin_src scheme :exports both :session euler
 (define (e:193 n)
   (define lim (isqrt (1+ n)))
   (define M (moebius-sieve lim))
@@ -142,103 +121,103 @@ by inclusion-exclusion.
 	      (1+ j)))))
 
 (e:193 (expt 2 50))
-#+end_src
+ #+end_src
 
-#+RESULTS:
-: 684465067343069
+ #+RESULTS:
+ : 684465067343069
 
-* Tests
 
-** eratosthenes.scm
+** Tests
 
-Currently, there is an implementation of Eratosthenes sieve, a
-segmented primes sieve, a totient sieve, and a moebius sieve.
+*** eratosthenes.scm
 
-*** Prime Count
+ Various sieves.
 
-#+begin_src scheme :exports code :results value :session euler
+**** Prime Count
+
+ #+begin_src scheme :exports code :results value :session euler
 (define (pi n)
   (length (primes n)))
-#+end_src 
+ #+end_src 
 
-src_scheme[:exports code]{pi} should agree with the [[https://en.wikipedia.org/wiki/Prime-counting_function][chart]] at
-wikipedia.
+ src_scheme[:exports code]{pi} should agree with the [[https://en.wikipedia.org/wiki/Prime-counting_function][chart]] at
+ wikipedia.
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n pi-n)
 	    (assert (= pi-n (pi (expt 10 n)))))
 	  (iota 7)
 	  '(0 4 25 168 1229 9592 78498))
 
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
 
-*** Segmented vs Eratosthenes
+**** Segmented vs Eratosthenes
 
-#+begin_src scheme :exports code :results value :session euler
+ #+begin_src scheme :exports code :results value :session euler
 (define (filtered-eratosthenes A B)
   (filter (lambda (prime) 
 	    (>= prime A))
 	  (primes B)))
 
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: #<void>
+ #+RESULTS:
+ : #<void>
 
-If the primes outside of a range /A,B/ are filtered out,
-src_scheme[:exports code]{(filtered-eratosthenes A B)} and
-src_scheme[:exports code]{(primes-in-range A B)} should agree.
+ If the primes outside of a range /A,B/ are filtered out,
+ src_scheme[:exports code]{(filtered-eratosthenes A B)} and
+ src_scheme[:exports code]{(primes-in-range A B)} should agree.
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (A B)
 	    (assert (equal? (filtered-eratosthenes A B)
 			    (primes-in-range A B))))
 	  '(1 5 3 100 8000 10000 100000 12000 100)
 	  '(100 10 2 0 9000 20000 100100 12100 11000))
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
+ #+RESULTS:
 
-Fails for case 100 to 11000...
+ Fails for case 100 to 11000...
 
-*** Totients
+**** Totients
 
-After defining:
+ After defining:
 
-#+begin_src scheme :exports code :results value :session euler
+ #+begin_src scheme :exports code :results value :session euler
 (define (slowtient N)
   (length (filter (lambda (n) 
 		    (= 1 (gcd n N)))
 		  (iota N))))
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: #<void>
+ #+RESULTS:
+ : #<void>
 
-we check the results of the totient sieve:
+ we check the results of the totient sieve:
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (let* ((limit 2000)
        (V (totient-sieve limit)))
   (for-each (lambda (k)
 	      (assert (= (slowtient k) (fxvector-ref V k))))
 	    (iota limit))
   'ok)
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
 
-*** Moebius
+**** Moebius
 
-For now, will simply compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
+ For now, will simply compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 
 (define moebius-function-sequence
   '(1 -1 -1 0 -1 1 -1 0 0 1 -1 0 -1 1 1 0 -1 0 -1 0 
@@ -250,46 +229,43 @@ For now, will simply compare results against the [[https://oeis.org/A008683/list
 	 moebius-function-sequence
 	 (cdr (vector->list (moebius-sieve (length moebius-function-sequence))))))
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
 
-** miller-rabin.scm
+*** miller-rabin.scm
 
-*** Prime?
+**** Prime?
 
-An implementation of the [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]], using 40 trial
-rounds. We can confirm that
+ A [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]], using 40 trial rounds. 
 
-#+begin_src scheme :exports code :results value :session euler
+ #+begin_src scheme :exports code :results value :session euler
 (define (slow-primes N)
   (filter prime? (iota N)))
 
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: #<void>
+ #+RESULTS:
+ : #<void>
 
-agrees with the basic eratosthenes sieve:
+ Checking this agrees with the sieve:
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (N)
 	    (assert (equal? (primes N) (slow-primes N))))
 	  '(0 1 3 10 100 1000 10000 100000))
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
 
-** euclid.scm
+*** euclid.scm
 
-Testing ~ax+by=gcd~ can be done by comparing the output gcd with the
-library gcd, and verifying /s*x+t*y = gcd(x,y)/. ~inverse-modulo~ by
-seeing if /s*x = 1 (mod y)/:
+ Make sure ~ax+by=gcd~ is working reasonably.
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (x y)
 	    (let-values (((s t d) (apply values (ax+by=gcd x y))))
 	      (assert (and (= d (gcd x y))
@@ -305,24 +281,24 @@ seeing if /s*x = 1 (mod y)/:
 	  '(1 5 7 11 4)
 	  '(12 12 12 12 12))
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
 
-** pollard.scm
+*** pollard.scm
 
-Factorize numbers large and small. Compares some randomly typed out
- numbers and checks that the product of ~factorize~ spits back the
- input. ~factorize~ uses Pollard's rho method after doing trial
- division on some small primes.
+ Factorize numbers large and small. Compares some randomly typed out
+  numbers and checks that the product of ~factorize~ spits back the
+  input. ~factorize~ uses Pollard's rho method after doing trial
+  division on some small primes.
 
-#+begin_src scheme :exports both :results value :session euler
+ #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n)
 	    (assert (= n (apply * (factorize n)))))
 	  '(2 123 123123123123 25852 234987 128 123884756 128367453485765213 98374 123627436526418192370348545876))
 'ok
-#+end_src 
+ #+end_src 
 
-#+RESULTS:
-: ok
+ #+RESULTS:
+ : ok
