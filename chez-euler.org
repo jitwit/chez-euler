@@ -23,7 +23,6 @@ as me learning about org mode.
 #+RESULTS:
 : #<void>
 
-
 * Project Euler examples
 
 ** Problem 3
@@ -59,6 +58,32 @@ Find the sum of all the primes below two million.
 
 #+RESULTS:
 : 142913828922
+
+** Problem 12
+
+A brutish solution to 12. Still runs reasonably fast considering.
+
+#+begin_src scheme :exports both :session euler
+(define (triangular n)
+  (/ (* (1+ n) n) 2))
+
+(define (e:12 N)
+  (let loop ((n 1))
+    (if (< N
+	   (length
+	    (divisors
+	     (triangular n))))
+	(triangular n)
+	(loop (1+ n)))))
+
+(e:12 500)
+#+end_src 
+
+#+RESULTS:
+: 76576500
+
+
+
 
 ** Problem 69
 
@@ -142,8 +167,8 @@ wikipedia.
 #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n pi-n)
 	    (assert (= pi-n (pi (expt 10 n)))))
-	  (iota 9)
-	  '(0 4 25 168 1229 9592 78498 664579 5761455))
+	  (iota 7)
+	  '(0 4 25 168 1229 9592 78498))
 
 'ok
 #+end_src 
