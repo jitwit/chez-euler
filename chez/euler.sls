@@ -9,6 +9,7 @@
 
    ;; factorization
    factorize
+   divisors
 
    ;; prime testing
    prime?

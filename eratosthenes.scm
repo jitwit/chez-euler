@@ -131,8 +131,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Moebius sieve                                                              ;;
-;; moebius(n) = { 0, n divisible by a square
-;;              { (-1)^k, n has k distinct prime divisors
+;; moebius(n) = { 0, n divisible by a square                                  ;;
+;;              { (-1)^k, n has k distinct prime divisors                     ;;
 
 (define sgn
   (lambda (n)

@@ -71,3 +71,22 @@
 		(cons* p (loop ps q))
 		(loop (cdr ps) N)))))))
 
+(define merge-sorted
+  (lambda (X Y)
+    (cond ((null? X) Y)
+	  ((null? Y) X)
+	  (else
+	   (let ((x (car X))
+		 (y (car Y)))
+	     (cond ((< x y) (cons x (merge-sorted (cdr X) Y)))
+		   ((< y x) (cons y (merge-sorted X (cdr Y))))
+		   (else (cons x (merge-sorted (cdr X) (cdr Y))))))))))
+
+(define divisors
+  (lambda (N)
+    (let* ((n (isqrt N))
+	   (ds (factorize N)))
+      (fold-right (lambda (x y)
+		    (merge-sorted y (map (lambda (z) (* z x)) y)))
+		  (list 1)
+		  ds))))

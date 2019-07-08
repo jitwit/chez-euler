@@ -1,4 +1,4 @@
-PACKAGE = chez-biblio
+PACKAGE = chez-euler
 VERSION = 0.1
 
 CHEZ = scheme
