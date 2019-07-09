@@ -1,11 +1,11 @@
 * ChezEuler
 
-#+begin_src scheme :exports none :session euler
+#+begin_src scheme :exports both :session euler
 (import (chez euler))
+(library-exports '(chez euler))
 #+end_src 
 
 #+RESULTS:
-: #<void>
 
 ** Project Euler examples
 

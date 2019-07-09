@@ -9,6 +9,7 @@
 
    ;; factorization
    factorize
+   factorize-with-multiplicity
    divisors
 
    ;; prime testing
@@ -16,9 +17,12 @@
    
    ;; misc.
    ax+by=gcd
-   inverse-modulo)
+   inverse-modulo
+   Omega
+   omega)
   
-  (import (chezscheme))
+  (import (chezscheme)
+	  (chez patricia))
 
   (include "eratosthenes.scm")
   (include "euclid.scm")

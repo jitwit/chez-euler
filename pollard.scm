@@ -66,6 +66,22 @@
 		(cons* p (loop ps q))
 		(loop (cdr ps) N)))))))
 
+(define factorize-with-multiplicity ;; depends on patricia trees
+  (lambda (N)
+    (tree->alist
+     (fold-right (lambda (x T)
+		   (insert-with + x 1 T))
+		 empty-tree
+		 (factorize N)))))
+
+(define Omega
+  (lambda (N)
+    (apply + (map cdr (factorize-with-multiplicity N)))))
+
+(define omega
+  (lambda (N)
+    (length (factorize-with-multiplicity N))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divisors                                                                   ;;
 (define merge-sorted
