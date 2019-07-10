@@ -1,8 +1,8 @@
 #+title: Chez Euler
 
   Stuff I use to solve Project Euler problems, mostly. Also some
-  examples where pretty much all the work problems is done by writing
-  the library procedures.
+  examples where pretty much all is done by writing the library
+  procedures.
 
 #+begin_src scheme :exports both :session euler
 (import (chez euler))
