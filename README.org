@@ -1,4 +1,8 @@
-* ChezEuler
+#+title: Chez Euler
+
+  Stuff I use to solve Project Euler problems, mostly. Also some
+  examples where pretty much all the work problems is done by writing
+  the library procedures.
 
 #+begin_src scheme :exports both :session euler
 (import (chez euler))
@@ -12,6 +16,8 @@
 *** Problem 3
 
     What is the largest prime factor of the number 600851475143 ?
+
+    Well...
 
  #+begin_src scheme :exports both :session euler
 (define (e:3 N)
@@ -107,8 +113,8 @@
 
     How many squarefree numbers are there below 2^50?
 
-    With values of moebius sieve in hand, we simply loop through, tallying
-    by inclusion-exclusion.
+    With values for moebius function in hand, we loop through,
+    tallying by inclusion-exclusion.
 
  #+begin_src scheme :exports both :session euler
 (define (e:193 n)
@@ -127,7 +133,7 @@
  : 684465067343069
 
 
-** Tests
+** Sanity checks
 
 *** eratosthenes.scm
 
@@ -238,7 +244,7 @@
 
 **** Prime?
 
- A [[https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test][Miller-Rabin primality test]], using 40 trial rounds. 
+ Miller-Rabin primality test, using 40 trial rounds, which I think is reasonable?
 
  #+begin_src scheme :exports code :results value :session euler
 (define (slow-primes N)

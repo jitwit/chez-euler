@@ -66,21 +66,27 @@
 		(cons* p (loop ps q))
 		(loop (cdr ps) N)))))))
 
+(define factors-tree ;; depends on patricia trees
+  (lambda (N)
+    (fold-right (lambda (x T)
+		  (insert-with + x 1 T))
+		empty-tree
+		(factorize N))))
+
 (define factorize-with-multiplicity ;; depends on patricia trees
   (lambda (N)
-    (tree->alist
-     (fold-right (lambda (x T)
-		   (insert-with + x 1 T))
-		 empty-tree
-		 (factorize N)))))
+    (tree->alist (factors-tree N))))
 
 (define Omega
   (lambda (N)
-    (apply + (map cdr (factorize-with-multiplicity N)))))
+    (tree-fold-right + 0 (factors-tree N))))
 
 (define omega
   (lambda (N)
-    (length (factorize-with-multiplicity N))))
+    (tree-fold-left (lambda (n ignore)
+		      (1+ n))
+		    0
+		    (factors-tree N))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divisors                                                                   ;;
@@ -97,12 +103,12 @@
 
 (define combine-factors
   (lambda (x Y)
-    (merge-sorted Y
-		  (map (lambda (y)
+    (merge-sorted (map (lambda (y)
 			 (* x y))
-		       Y))))
+		       Y)
+		  Y)))
 (define divisors
   (lambda (N)
     (if (zero? N)
 	'()
-	(fold-right combine-factors (list 1) (factorize N)))))
+	(fold-right combine-factors '(1) (factorize N)))))
