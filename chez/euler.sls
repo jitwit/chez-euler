@@ -11,6 +11,7 @@
    factorize
    factorize-with-multiplicity
    divisors
+   totient
 
    ;; prime testing
    prime?

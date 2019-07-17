@@ -1,4 +1,3 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Trial Division                                                             ;;
 (define *cutoff* 1000000)
 
@@ -11,7 +10,7 @@
 	  (let* ((p (car ps))
 		 (q (fx/ N p)))
 	    (if (= N (* q p))
-		(cons* p (loop ps q))
+		(cons p (loop ps q))
 		(loop (cdr ps) N)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -103,12 +102,19 @@
 
 (define combine-factors
   (lambda (x Y)
-    (merge-sorted (map (lambda (y)
-			 (* x y))
-		       Y)
+    (merge-sorted (map (lambda (y) (* x y)) Y)
 		  Y)))
 (define divisors
   (lambda (N)
     (if (zero? N)
 	'()
 	(fold-right combine-factors '(1) (factorize N)))))
+
+(define totient
+  (lambda (N)
+    (fold-right (lambda (x t)
+		  (/ (* (1- x) t)
+		     x))
+		N
+		(tree->keys (factors-tree N)))))
+
