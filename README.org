@@ -14,135 +14,12 @@
 :   factorize-with-multiplicity factorize moebius-sieve
 :   totient-sieve primes)
 
-** Project Euler examples
-
-*** Problem 3
-
-    What is the largest prime factor of the number 600851475143 ?
-
-    Well...
-
- #+begin_src scheme :exports both :session euler
-(define (e:3 N)
-  (apply max (factorize N)))
-
-(e:3 600851475143)
- #+end_src 
-
- #+RESULTS:
- : 6857
-
-*** Problem 10
-
-    Find the sum of all the primes below two million.
-
- #+begin_src scheme :exports code :session euler
-(define (e:10 N)
-  (apply + (primes N)))
- #+end_src 
-
- #+RESULTS:
- : #<void>
-
- #+begin_src scheme :exports results :session euler
-(e:10 2000000)
-
- #+end_src
-
- #+RESULTS:
- : 142913828922
-
-*** Problem 12
-
-    A brutish solution to 12. Still runs reasonably fast considering.
-
- #+begin_src scheme :exports both :session euler
-(define (triangular n)
-  (/ (* (1+ n) n) 2))
-
-(define (e:12 N)
-  (do ((n 1 (1+ n)))
-      ((< N (length (divisors (triangular n))))
-       (triangular n))))
-
-(e:12 500)
- #+end_src 
-
- #+RESULTS:
- : 76576500
-
-
-
-
-*** Problem 69
-
-    Find the value of n ≤ 1,000,000 for which n/φ(n) is a maximum.
-
- #+begin_src scheme :exports both :session euler
-(define (e:69 N)
-  (define T (totient-sieve N))
-  (let loop ((x 3) (n/phi-n 2) (n 2))
-    (if (> x N)
-	n
-	(let ((x/phi-x (/ x (fxvector-ref T x))))
-	  (if (> x/phi-x n/phi-n)
-	      (loop (1+ x) x/phi-x x)
-	      (loop (1+ x) n/phi-n n))))))
-
-(e:69 1000000)
- #+end_src 
-
- #+RESULTS:
- : 510510
-
- Of course, a better way to solve this is by noticing that /n/φ(n)/ is
- the product over /p|n/ of /p/p-1/. This will be biggest when the /p/
- are small and distinct.
-
- #+begin_src scheme :exports both :session euler
-(define (better-e:69 N)
-  (let loop ((ps (primes N)) (best 1))
-    (let ((next (* (car ps) best)))
-      (if (> next N)
-	  best
-	  (loop (cdr ps) next)))))
-
-(better-e:69 1000000)
- #+end_src
-
- #+RESULTS:
- : 510510
-
-*** Problem 193
-
-    How many squarefree numbers are there below 2^50?
-
-    With values for moebius function in hand, we loop through,
-    tallying by inclusion-exclusion.
-
- #+begin_src scheme :exports both :session euler
-(define (e:193 n)
-  (define lim (isqrt (1+ n)))
-  (define M (moebius-sieve lim))
-  (let loop ((count 0) (j 1))
-    (if (> j lim)
-        count
-        (loop (+ count (* (fxvector-ref M j) (fx/ n (* j j))))
-	      (1+ j)))))
-
-(e:193 (expt 2 50))
- #+end_src
-
- #+RESULTS:
- : 684465067343069
-
-
 ** Sanity checks
 
 *** eratosthenes.scm
 
  Various sieves.
-
+ 
 **** Prime Count
 
  #+begin_src scheme :exports code :results value :session euler
@@ -150,14 +27,17 @@
   (length (primes n)))
  #+end_src 
 
+ #+RESULTS:
+ : #<void>
+
  src_scheme[:exports code]{pi} should agree with the [[https://en.wikipedia.org/wiki/Prime-counting_function][chart]] at
  wikipedia.
 
  #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n pi-n)
 	    (assert (= pi-n (pi (expt 10 n)))))
-	  (iota 7)
-	  '(0 4 25 168 1229 9592 78498))
+	  (iota 8)
+	  '(0 4 25 168 1229 9592 78498 664579))
 
 'ok
  #+end_src 
@@ -181,7 +61,7 @@
  If the primes outside of a range /A,B/ are filtered out,
  src_scheme[:exports code]{(filtered-eratosthenes A B)} and
  src_scheme[:exports code]{(primes-in-range A B)} should agree.
-
+ 
  #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (A B)
 	    (assert (equal? (filtered-eratosthenes A B)
@@ -193,11 +73,9 @@
 
  #+RESULTS:
 
- Fails for case 100 to 11000...
+ Fails for case 100 to 11000... fix me
 
 **** Totients
-
- After defining:
 
  #+begin_src scheme :exports code :results value :session euler
 (define (slowtient N)
@@ -209,7 +87,7 @@
  #+RESULTS:
  : #<void>
 
- we check the results of the totient sieve:
+ Check the results of the totient sieve:
 
  #+begin_src scheme :exports both :results value :session euler
 (let* ((limit 2000)
@@ -225,7 +103,7 @@
 
 **** Moebius
 
- For now, will simply compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
+ Compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
 
  #+begin_src scheme :exports both :results value :session euler
 
@@ -237,7 +115,7 @@
 
 (assert (equal?
 	 moebius-function-sequence
-	 (cdr (vector->list (moebius-sieve (length moebius-function-sequence))))))
+	 (cdr (fxvector->list (moebius-sieve (length moebius-function-sequence))))))
 'ok
  #+end_src 
 
@@ -273,7 +151,7 @@
 
 *** euclid.scm
 
- Make sure ~ax+by=gcd~ is working reasonably.
+ See if ~ax+by=gcd~ is working reasonably.
 
  #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (x y)
@@ -298,15 +176,17 @@
 
 *** pollard.scm
 
- Factorize numbers large and small. Compares some randomly typed out
-  numbers and checks that the product of ~factorize~ spits back the
+ Factorize numbers large and small. Some randomly typed out numbers
+  are checked to see if the product of ~factorize~ spits back the
   input. ~factorize~ uses Pollard's rho method after doing trial
   division on some small primes.
 
  #+begin_src scheme :exports both :results value :session euler
 (for-each (lambda (n)
-	    (assert (= n (apply * (factorize n)))))
-	  '(2 123 123123123123 25852 234987 128 123884756 128367453485765213 98374 123627436526418192370348545876))
+	    (let ((ps (factorize n)))
+	      (assert (and (= n (apply * ps))
+			   (andmap prime? ps)))))
+	  '(3 12 1231 3462419283 918327  9549347 182371874 102391083864756 103810982947291028394868347624198))
 'ok
  #+end_src 
 

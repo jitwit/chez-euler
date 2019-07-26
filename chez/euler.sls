@@ -1,3 +1,6 @@
+(eval-when (compile)
+  (optimize-level 3))
+
 (library (chez euler)
   (export
    ;; sieves

@@ -42,7 +42,7 @@
     (define (sieve p)
       (unless (fx> (fx* p p) N)
 	(when (u8:prime? bits p)
-	  (clear (* 2 p) (fx* p p)))
+	  (clear (fxsll p 1) (fx* p p)))
 	(sieve (fx+ p 2))))
     (sieve 3)
     bits))
