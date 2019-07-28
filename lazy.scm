@@ -69,6 +69,17 @@
 			  (f x0 (car S))
 			  (s-cdr S)))))
 
+(define s-append
+  (lambda (S T)
+    (if (null? S)
+	T
+	(s-cons (car S)
+		(s-append (s-cdr S) T)))))
+
+(define s-constant
+  (lambda (x)
+    (s-cons x (s-constant x))))
+
 (define y (s-iter cos 0))
 
 (define even-fibs (s-filter even?

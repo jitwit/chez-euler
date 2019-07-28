@@ -9,10 +9,7 @@
 
 (define s-choose
   (let ((binomials (s-iter (lambda (x)
-			     (map +
-				  (cons 0 x)
-				  (append x '(0))))
-			   '(1))))
+			     (s-map + (s-cons 0 x) x))
+			   (s-cons 1 (s-constant 0)))))
     (lambda (n k)
-      (list-ref (s-ref binomials n)
-		k))))
+      (s-ref (s-ref binomials n) k))))

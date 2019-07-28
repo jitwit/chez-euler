@@ -36,6 +36,8 @@
    s-drop
    s-take-while
    s-drop-while
+   s-constant
+   s-append
 
    ;; stream related
    s-factorial
