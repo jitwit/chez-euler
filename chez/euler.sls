@@ -23,7 +23,20 @@
    ax+by=gcd
    inverse-modulo
    Omega
-   omega)
+   omega
+
+   ;; streams
+   s-cons
+   s-cdr
+   s-ref
+   s-iter
+   s-map
+   s-filter
+   s-take
+   s-drop
+   s-take-while
+   s-drop-while
+   )
   
   (import (chezscheme)
 	  (chez patricia))
@@ -32,5 +45,6 @@
   (include "euclid.scm")
   (include "miller-rabin.scm")
   (include "pollard.scm")
+  (include "lazy.scm")
   
   )
