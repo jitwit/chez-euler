@@ -42,7 +42,6 @@
    ;; stream related
    s-factorial
    s-choose
-   s-primes
    *primes*
    )
   
