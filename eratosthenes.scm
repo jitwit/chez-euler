@@ -47,6 +47,22 @@
     (sieve 3)
     bits))
 
+(define lazy-eratosthenes
+  (lambda (N)
+    (define cutoff (fx1+ (u8:column N)))
+    (define bits (make-bytevector cutoff 255))
+    (define (clear 2*p j)
+      (unless (fx> j N)
+	(u8:clear bits j)
+	(clear 2*p (fx+ 2*p j))))
+    (define (sieve p)
+      (cond ((fx> p N) '())
+	    ((u8:prime? bits p)
+	     (clear (fxsll p 1) (fx* p p))
+	     (s-cons p (sieve (fx+ p 2))))
+	    (else (sieve (fx+ p 2)))))
+    (s-cons 2 (sieve 3))))
+
 ;; gather primes in a list
 (define run-eratosthenes
   (lambda (N)
@@ -102,6 +118,27 @@
     (cond ((< B A) '())
 	  ((< A 3) (primes B))
 	  (else (segmented-sieve A B)))))
+
+(define *primes*
+  (lambda ()
+    (let* ((j 1)
+	   (width 1000000)
+	   (ps (primes width)))
+      (lambda ()
+	(cond ((null? ps)
+	       (set! ps (primes-in-range (* width j) (* width (1+ j))))
+	       (set! j (1+ j))
+	       (let ((p (car ps)))
+		 (set! ps (cdr ps))
+		 p))
+	      (else
+	       (let ((p (car ps)))
+		 (set! ps (cdr ps))
+		 p)))))))
+
+(define s-primes
+  (let ((gen (*primes*)))
+    (s-map (lambda x (gen)) (s-constant 0))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Totient sieve                                                              ;;

@@ -70,11 +70,17 @@
 			  (s-cdr S)))))
 
 (define s-append
-  (lambda (S T)
-    (if (null? S)
-	T
-	(s-cons (car S)
-		(s-append (s-cdr S) T)))))
+  (lambda (S . Ts)
+    (cond ((null? Ts) S)
+	  ((null? S) (apply s-append (car Ts) (s-cdr Ts)))
+	  (else (s-cons (car S)
+			(apply s-append (s-cdr S) Ts))))))
+
+(define list->lazy
+  (lambda (xs)
+    (if (null? xs)
+	xs
+	(s-cons (car xs) (list->lazy (cdr xs))))))
 
 (define s-constant
   (lambda (x)
@@ -88,3 +94,5 @@
 
 (define triangles
   (s-accumulate + 0 (s-iter 1+ 1)))
+
+
