@@ -3,6 +3,7 @@
     "euclid.scm"
     "miller-rabin.scm"
     "pollard.scm"
-    "lazy.scm"))
+    "lazy.scm"
+    "sequences.scm"))
 
 (for-each load source-files)

@@ -36,6 +36,10 @@
    s-drop
    s-take-while
    s-drop-while
+
+   ;; stream related
+   s-factorial
+   s-choose
    )
   
   (import (chezscheme)
@@ -46,5 +50,6 @@
   (include "miller-rabin.scm")
   (include "pollard.scm")
   (include "lazy.scm")
+  (include "sequences.scm")
   
   )

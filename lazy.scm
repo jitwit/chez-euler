@@ -4,7 +4,7 @@
       ((_) #'())
       ((_ x) #'x)
       ((_ x y ...)
-       #'(weak-cons x (delay (s-cons y ...)))))))
+       #'(cons x (delay (s-cons y ...)))))))
 
 (define s-cdr
   (lambda (S)
@@ -62,8 +62,18 @@
     (cond ((or (null? S) (not (predicate (car S)))) S)
 	  (else (s-drop-while predicate (s-cdr S))))))
 
+(define s-accumulate
+  (lambda (f x0 S)
+    (s-cons x0
+	    (s-accumulate f
+			  (f x0 (car S))
+			  (s-cdr S)))))
+
 (define y (s-iter cos 0))
 
 (define even-fibs (s-filter even?
 			    (letrec ((z (s-cons 0 (s-map + z (s-cons 1 z)))))
 			      z)))
+
+(define triangles
+  (s-accumulate + 0 (s-iter 1+ 1)))
