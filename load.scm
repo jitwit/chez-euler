@@ -10,6 +10,7 @@
     "sequences.scm"
     "polynomial.scm"
     "geometry.scm"
-    "pseudo.scm"))
+    "pseudo.scm"
+    "control.scm"))
 
 (for-each load source-files)

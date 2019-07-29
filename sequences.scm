@@ -1,4 +1,13 @@
 
+(define s:e^x
+  (s:cons 1 (s:integrate s:e^x)))
+
+(define s:cos
+  (s:cons 1 (s:scale -1 (s:integrate s:sin))))
+
+(define s:sin
+  (s:cons 0 (s:integrate s:cos)))
+
 (define s:factorial
   (let ((factorials (s:accumulate * 1 (s:iter 1+ 1))))
     (lambda (n)

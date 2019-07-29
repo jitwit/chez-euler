@@ -37,14 +37,20 @@
    s:take-while
    s:drop-while
    s:constant
+   s:scale
    s:append
    s:cycle
    s:chunks
    s:enumerate
+   s:integrate
+   s:derive
 
    ;; stream related
    s:factorial
    s:choose
+   s:e^x
+   s:sin
+   s:cos
    *primes*
 
    ;; polynomial related
@@ -77,6 +83,7 @@
 
    ;; sugar
    for/range
+   for
    )
   
   (import (chezscheme)

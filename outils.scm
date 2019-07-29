@@ -16,6 +16,48 @@
 	     e ...
 	     (loop (1+ x))))))))
 
+;; ((_ (x y ...) in X e ...)
+;;  #'(let loop ((xs X))
+;;      (unless (null? xs)
+;;        (let ((x (car xs)))
+;; 	 (for (y ...) in (cdr xs) e ...)
+;; 	 (loop (cdr xs))))))
+
+(define-syntax for
+  (lambda (x)
+    (syntax-case x (in)
+      ;;      ((_ (x y) in X e ...)
+      ;;       #'(let loop ((xs X))
+      ;;	   (unless (null? xs)
+      ;;	     (let ((x (car xs)))
+      ;;	       (for y in (cdr xs)
+      ;;		    e ...)
+      ;;	       (loop (cdr xs))))))
+      ((_ x in X e1 ...)
+       #`(let ((xs X)
+	       (t x))
+	   #,(let ((work #'(e1 ...)))
+	       (list #'x #'t work))
+	   )
+       ))))
+
+;; (define-syntax case
+;;   (lambda (x)
+;;     (syntax-case x ()
+;;       [(_ e c1 c2 ...)
+;;        #`(let ([t e])
+;;            #,(let f ([c1 #'c1] [cmore #'(c2 ...)])
+;;                (if (null? cmore)
+;;                    (syntax-case c1 (else)
+;;                      [(else e1 e2 ...) #'(begin e1 e2 ...)]
+;;                      [((k ...) e1 e2 ...)
+;;                       #'(if (memv t '(k ...)) (begin e1 e2 ...))])
+;;                    (syntax-case c1 ()
+;;                      [((k ...) e1 e2 ...)
+;;                       #`(if (memv t '(k ...))
+;;                             (begin e1 e2 ...)
+;;                             #,(f (car cmore) (cdr cmore)))]))))])))
+
 (define-syntax inc!
   (lambda (x)
     (syntax-case x ()
@@ -38,8 +80,6 @@
   (lambda (x)
     (syntax-case x ()
       ((_ xs)
-       #'(if (null? xs) 
-	     #f
-	     (let ((x (car xs)))
-	       (set! xs (cdr xs))
-	       x))))))
+       #'(let ((x (car xs)))
+	   (set! xs (cdr xs))
+	   x)))))

@@ -75,7 +75,7 @@
 		    (if (or (null? S)
 			    (not (predicate (car S))))
 			'()
-			(cons* (car S) (aux (s:cdr S)))))))
+			(s:cons (car S) (aux (s:cdr S)))))))
       (aux S))))
 
 (define s:drop-while
@@ -124,5 +124,23 @@
   (lambda (x)
     (s:cons x (s:constant x))))
 
+(define s:scale
+  (lambda (k S)
+    (s:map (lambda (x)
+	     (* x k))
+	   S)))
 
+(define s:integrate
+  (lambda (S)
+    (letrec ((aux (lambda (n S)
+		    (s:cons (/ (car S) n)
+			    (aux (1+ n) (s:cdr S))))))
+      (aux 1 S))))
+
+(define s:derive
+  (lambda (S)
+    (letrec ((aux (lambda (n S)
+		    (s:cons (* n (car S))
+			    (aux (1+ n) (s:cdr S))))))
+      (s:cons 0 (aux 1 (s:cdr S))))))
 
