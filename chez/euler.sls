@@ -59,6 +59,7 @@
 
    ;; polynomial related
    p:constant
+   p:coefficient
    p:degree
    horner
    p:*
@@ -66,6 +67,8 @@
    p:^
    p:scale
    p:shift
+   p:shift/scale
+   p:singleton
    list->polynomial
 
    ;; geometry

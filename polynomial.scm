@@ -9,6 +9,14 @@
   (lambda (k)
     (t:singleton 0 k)))
 
+(define p:coefficient
+  (lambda (n P)
+    (t:lookup-with-default n 0 P)))
+
+(define p:singleton
+  (lambda (k n)
+    (t:singleton n k)))
+
 (define p:add
   (lambda (P Q)
     (t:merge-with + P Q)))
@@ -20,7 +28,7 @@
 (define p:multiply
   (lambda (P Q)
     (t:tree-ifold-right (lambda (n k R)
-			  (p:add R (p:shift (p:scale Q k) n)))
+			  (p:add R (p:shift/scale Q n k)))
 			t:empty-tree
 			P)))
 
@@ -49,6 +57,13 @@
   (lambda (P d)
     (t:tree-ifold-right (lambda (n k Q)
 			  (t:insert (+ n d) k Q))
+			t:empty-tree
+			P)))
+
+(define p:shift/scale
+  (lambda (P d s)
+    (t:tree-ifold-right (lambda (n k Q)
+			  (t:insert (+ n d) (* s k) Q))
 			t:empty-tree
 			P)))
 
