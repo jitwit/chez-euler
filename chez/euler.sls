@@ -84,6 +84,12 @@
    ;; generally useful procedures
    square
    cube
+   compose
+   curry
+   push!
+   pop!
+   inc!
+   dec!
 
    ;; sugar
    for/range
