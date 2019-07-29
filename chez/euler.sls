@@ -26,22 +26,22 @@
    omega
 
    ;; streams
-   s-cons
-   s-cdr
-   s-ref
-   s-iter
-   s-map
-   s-filter
-   s-take
-   s-drop
-   s-take-while
-   s-drop-while
-   s-constant
-   s-append
+   s:cons
+   s:cdr
+   s:ref
+   s:iter
+   s:map
+   s:filter
+   s:take
+   s:drop
+   s:take-while
+   s:drop-while
+   s:constant
+   s:append
 
    ;; stream related
-   s-factorial
-   s-choose
+   s:factorial
+   s:choose
    *primes*
 
    ;; polynomial related
@@ -73,7 +73,7 @@
    cube
 
    ;; sugar
-   for/in-range
+   for/range
    )
   
   (import (chezscheme)

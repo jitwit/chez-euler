@@ -7,7 +7,7 @@
   (lambda (x)
     (* x x x)))
 
-(define-syntax for/in-range
+(define-syntax for/range
   (lambda (x)
     (syntax-case x ()
       ((_ x a b e ...)
