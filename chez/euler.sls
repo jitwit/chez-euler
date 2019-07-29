@@ -44,6 +44,10 @@
    s:enumerate
    s:integrate
    s:derive
+   s:negate
+   s:interleave
+   s:convolve
+   s:square
 
    ;; stream related
    s:factorial
@@ -83,7 +87,6 @@
 
    ;; sugar
    for/range
-   for
    )
   
   (import (chezscheme)

@@ -16,30 +16,8 @@
 	     e ...
 	     (loop (1+ x))))))))
 
-;; ((_ (x y ...) in X e ...)
-;;  #'(let loop ((xs X))
-;;      (unless (null? xs)
-;;        (let ((x (car xs)))
-;; 	 (for (y ...) in (cdr xs) e ...)
-;; 	 (loop (cdr xs))))))
 
-(define-syntax for
-  (lambda (x)
-    (syntax-case x (in)
-      ;;      ((_ (x y) in X e ...)
-      ;;       #'(let loop ((xs X))
-      ;;	   (unless (null? xs)
-      ;;	     (let ((x (car xs)))
-      ;;	       (for y in (cdr xs)
-      ;;		    e ...)
-      ;;	       (loop (cdr xs))))))
-      ((_ x in X e1 ...)
-       #`(let ((xs X)
-	       (t x))
-	   #,(let ((work #'(e1 ...)))
-	       (list #'x #'t work))
-	   )
-       ))))
+
 
 ;; (define-syntax case
 ;;   (lambda (x)

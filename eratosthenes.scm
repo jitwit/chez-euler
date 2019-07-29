@@ -104,22 +104,16 @@
 	  (else (segmented-sieve A B)))))
 
 (define (*primes* . interval-width)
-  (define width (if (null? interval-width)
+  (let* ((width (if (null? interval-width)
 		    100000
 		    (car interval-width)))
-  (define j 2)
-  (define prev width)
-  (define ps (primes width))
-  (lambda ()
-    (when (null? ps)
-      (let ((a prev)
-	    (b (* width j)))
-	(set! ps (primes-in-range a b))
-	(set! prev b)
-	(set! j (1+ j))))
-    (let ((p (car ps)))
-      (set! ps (cdr ps))
-      p)))
+	 (j 1)
+	 (ps (primes width)))
+    (lambda ()
+      (when (null? ps)
+	(set! ps (primes-in-range (* width j) (* width (1+ j))))
+	(inc! j))
+      (pop! ps))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Totient sieve                                                              ;;

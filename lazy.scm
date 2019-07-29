@@ -130,6 +130,10 @@
 	     (* x k))
 	   S)))
 
+(define s:negate
+  (lambda (S)
+    (s:map - S)))
+
 (define s:integrate
   (lambda (S)
     (letrec ((aux (lambda (n S)
@@ -143,4 +147,30 @@
 		    (s:cons (* n (car S))
 			    (aux (1+ n) (s:cdr S))))))
       (s:cons 0 (aux 1 (s:cdr S))))))
+
+(define s:interleave
+  (lambda (S T)
+    (letrec ((aux (lambda (S T)
+		    (s:cons (car S)
+			    (aux T (s:cdr S))))))
+      (aux S T))))
+
+(define s:convolve
+  (lambda (S T)
+    (letrec ((aux (lambda (S T)
+		    (let ((s0 (car S))
+			  (t0 (car T))
+			  (st (s:cdr S))
+			  (tt (s:cdr T)))
+		      (s:cons (* s0 t0)
+			      (s:map +
+				     (s:scale t0 st)
+				     (s:scale s0 tt)
+				     (s:cons 0 (aux st tt))))))))
+      (aux S T))))
+
+(define s:square
+  (lambda (S)
+    (s:convolve S S)))
+
 
