@@ -3,71 +3,97 @@
     (syntax-case x ()
       ((_) #'())
       ((_ x) #'x)
-      ((_ x y ...)
-       #'(cons x (delay (s:cons y ...)))))))
+      ((_ x y ... z)
+       #'(cons* x y ...
+		(delay z))))))
 
 (define s:cdr
   (lambda (S)
     (let ((tl (cdr S)))
       (when (procedure? tl)
-	(set-cdr! S (force tl)))
-      (cdr S))))
+	(set-cdr! S (force tl))))
+    (cdr S)))
 
 (define s:ref
   (lambda (S i)
-    (case i
-      ((0) (car S))
-      (else (s:ref (s:cdr S) (1- i))))))
+    (letrec ((aux (lambda (i S)
+		    (case i
+		      ((0) (car S))
+		      (else (aux (1- i) (s:cdr S)))))))
+      (aux i S))))
 
 (define s:iter
   (lambda (f x0)
-    (s:cons x0 (s:iter f (f x0)))))
+    (letrec ((aux (lambda (x)
+		    (s:cons x (aux (f x))))))
+      (aux x0))))
 
 (define s:map
   (lambda (f . xs)
-    (s:cons (apply f (map car xs))
-	    (apply s:map f (map s:cdr xs)))))
+    (letrec ((aux (lambda (S)
+		    (s:cons (apply f (map car S))
+			    (aux (map s:cdr S))))))
+      (aux xs))))
 
 (define s:filter
   (lambda (predicate S)
-    (let ((hd (car S))
-	  (tl (s:cdr S)))
-      (if (predicate hd)
-	  (s:cons hd (s:filter predicate tl))
-	  (s:filter predicate tl)))))
+    (letrec ((aux (lambda (S)
+		    (let ((hd (car S))
+			  (tl (s:cdr S)))
+		      (if (predicate hd)
+			  (s:cons hd (aux tl))
+			  (aux tl))))))
+      (aux S))))
 
 (define s:take
   (lambda (n S)
-    (cond ((or (zero? n) (null? S)) '())
-	  ((pair? S) (cons* (car S)
-			    (s:take (1- n)
-				    (s:cdr S))))
-	  (else (list S)))))
+    (letrec ((aux (lambda (n S)
+		    (cond ((or (zero? n) (null? S)) '())
+			  ((pair? S) (cons* (car S)
+					    (aux (1- n) (s:cdr S))))
+			  (else (list S))))))
+      (aux n S))))
+
+(define s:enumerate
+  (lambda (S)
+    (letrec ((aux (lambda (i S)
+		    (s:cons (cons i (car S))
+			    (aux (1+ i) (s:cdr S))))))
+      (aux 0 S))))
 
 (define s:drop
   (lambda (n S)
-    (cond ((or (zero? n) (null? S)) S)
-	  ((pair? S) (s:drop (1- n) (s:cdr S)))
-	  (else (list S)))))
+    (letrec ((aux (lambda (n S)
+		    (cond ((or (zero? n) (null? S)) S)
+			  ((pair? S) (aux (1- n) (s:cdr S)))
+			  (else (list S))))))
+      (aux n S))))
 
 (define s:take-while
   (lambda (predicate S)
-    (cond ((or (null? S) (not (predicate (car S)))) '())
-	  (else (cons* (car S)
-		       (s:take-while predicate
-				     (s:cdr S)))))))
+    (letrec ((aux (lambda (S)
+		    (if (or (null? S)
+			    (not (predicate (car S))))
+			'()
+			(cons* (car S) (aux (s:cdr S)))))))
+      (aux S))))
 
 (define s:drop-while
   (lambda (predicate S)
-    (cond ((or (null? S) (not (predicate (car S)))) S)
-	  (else (s:drop-while predicate (s:cdr S))))))
+    (letrec ((aux (lambda (S)
+		    (if (or (null? S)
+			    (not (predicate (car S))))
+			S
+			(aux (s:cdr S))))))
+      (aux S))))
 
 (define s:accumulate
   (lambda (f x0 S)
-    (s:cons x0
-	    (s:accumulate f
-			  (f x0 (car S))
-			  (s:cdr S)))))
+    (letrec ((aux (lambda (x S)
+		    (s:cons x
+			    (aux (f x (car S))
+				 (s:cdr S))))))
+      (aux x0 S))))
 
 (define s:append
   (lambda (S . Ts)
@@ -76,23 +102,27 @@
 	  (else (s:cons (car S)
 			(apply s:append (s:cdr S) Ts))))))
 
-(define list->lazy
-  (lambda (xs)
-    (if (null? xs)
-	xs
-	(s:cons (car xs) (list->lazy (cdr xs))))))
+(define s:chunks
+  (lambda (n S)
+    (letrec ((aux (lambda (S)
+		    (s:cons (s:take n S)
+			    (aux (list-tail S n))))))
+      (aux S))))
+
+(define s:cycle
+  (lambda (S)
+    (letrec ((aux (lambda (T)
+		    (if (null? T)
+			(aux S)
+			(s:cons (car T)
+				(aux (cdr T)))))))
+      (if (null? S)
+	  S
+	  (aux S)))))
 
 (define s:constant
   (lambda (x)
     (s:cons x (s:constant x))))
 
-(define y (s:iter cos 0))
-
-(define even-fibs (s:filter even?
-			    (letrec ((z (s:cons 0 (s:map + z (s:cons 1 z)))))
-			      z)))
-
-(define triangles
-  (s:accumulate + 0 (s:iter 1+ 1)))
 
 

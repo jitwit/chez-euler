@@ -38,6 +38,9 @@
    s:drop-while
    s:constant
    s:append
+   s:cycle
+   s:chunks
+   s:enumerate
 
    ;; stream related
    s:factorial
