@@ -102,8 +102,11 @@
 
 (define combine-factors
   (lambda (x Y)
-    (merge-sorted (map (lambda (y) (* x y)) Y)
+    (merge-sorted (map (lambda (y)
+			 (* x y))
+		       Y)
 		  Y)))
+
 (define divisors
   (lambda (N)
     (if (zero? N)

@@ -47,7 +47,7 @@
 (define s-drop
   (lambda (n S)
     (cond ((or (zero? n) (null? S)) S)
-	  ((pair? S) (s-take (1- n) (s-cdr S)))
+	  ((pair? S) (s-drop (1- n) (s-cdr S)))
 	  (else (list S)))))
 
 (define s-take-while

@@ -1,10 +1,15 @@
+(import (prefix (chez patricia-set) s:))
+
 (define source-files
-  '("eratosthenes.scm"
+  '("outils.scm"
+    "eratosthenes.scm"
     "euclid.scm"
     "miller-rabin.scm"
     "pollard.scm"
     "lazy.scm"
     "sequences.scm"
-    "polynomial.scm"))
+    "polynomial.scm"
+    "geometry.scm"
+    "pseudo.scm"))
 
 (for-each load source-files)

@@ -51,12 +51,35 @@
    p:*
    p:+
    p:^
+   p:scale
+   p:shift
    list->polynomial
+
+   ;; geometry
+   point
+   segment
+   _x
+   _y
+   _start
+   _end
+   open-segment-intersection
+   closed-segment-intersection
+
+   ;; pseudo random sequences
+   blum-blum-shub
+
+   ;; generally useful procedures
+   square
+   cube
+
+   ;; sugar
+   for/in-range
    )
   
   (import (chezscheme)
 	  (chez patricia))
 
+  (include "outils.scm")
   (include "eratosthenes.scm")
   (include "euclid.scm")
   (include "miller-rabin.scm")
@@ -64,5 +87,7 @@
   (include "lazy.scm")
   (include "sequences.scm")
   (include "polynomial.scm")
+  (include "geometry.scm")
+  (include "pseudo.scm")
   
   )
