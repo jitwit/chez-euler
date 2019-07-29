@@ -43,6 +43,15 @@
    s-factorial
    s-choose
    *primes*
+
+   ;; polynomial related
+   p:constant
+   p:degree
+   horner
+   p:*
+   p:+
+   p:^
+   list->polynomial
    )
   
   (import (chezscheme)
@@ -54,5 +63,6 @@
   (include "pollard.scm")
   (include "lazy.scm")
   (include "sequences.scm")
+  (include "polynomial.scm")
   
   )

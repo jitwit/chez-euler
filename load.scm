@@ -4,6 +4,7 @@
     "miller-rabin.scm"
     "pollard.scm"
     "lazy.scm"
-    "sequences.scm"))
+    "sequences.scm"
+    "polynomial.scm"))
 
 (for-each load source-files)
