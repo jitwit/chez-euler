@@ -35,7 +35,7 @@
 (define p:*
   (lambda Ps
     (if (null? Ps)
-	t:empty-tree
+	(p:singleton 1 1)
 	(fold-right p:multiply (car Ps) (cdr Ps)))))
 
 (define p:^
@@ -74,14 +74,9 @@
 			0
 			P)))
 
-(define list->polynomial
-  (lambda (nks)
-    (fold-right (lambda (nk P)
-		  (t:insert (car nk)
-			    (cdr nk)
-			    P))
-		t:empty-tree
-		nks)))
+(define coefficients->polynomial
+  (lambda (ks)
+    (apply p:+ (map p:singleton ks (enumerate ks)))))
 
 (define horner
   (lambda (P x)

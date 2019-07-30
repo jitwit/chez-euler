@@ -57,6 +57,10 @@
    s:cos
    *primes*
 
+   ;; continued fractions
+   convergents
+   g:convergents
+
    ;; polynomial related
    p:constant
    p:coefficient
@@ -69,8 +73,8 @@
    p:shift
    p:shift/scale
    p:singleton
-   list->polynomial
-
+   coefficients->polynomial
+   
    ;; geometry
    point
    segment
@@ -89,13 +93,17 @@
    cube
    compose
    curry
+   *machine-epsilon*
+   =~
+   average
+   iaverage
+   
+   ;; sugar
+   for/range
    push!
    pop!
    inc!
    dec!
-
-   ;; sugar
-   for/range
    )
   
   (import (chezscheme)
@@ -111,5 +119,6 @@
   (include "polynomial.scm")
   (include "geometry.scm")
   (include "pseudo.scm")
+  (include "continued-fraction.scm")
   
   )

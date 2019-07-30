@@ -1,4 +1,15 @@
 
+(define *machine-epsilon*
+  (let loop ((epsilon 1.))
+    (if (= (+ 1. epsilon) 1.)
+	(* epsilon 2)
+	(loop (/ epsilon 2)))))
+
+(define =~
+  (lambda (x y)
+    (< (abs (- x y))
+       *machine-epsilon*)))
+
 (define square
   (lambda (x)
     (* x x)))
@@ -6,6 +17,16 @@
 (define cube
   (lambda (x)
     (* x x x)))
+
+(define average
+  (lambda (a b)
+    (/ (+ a b)
+       2)))
+
+(define iaverage
+  (lambda (a b)
+    (quotient (+ a b)
+	      2)))
 
 (define-syntax compose
   (lambda (x)
