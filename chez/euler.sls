@@ -36,6 +36,7 @@
    s:drop
    s:take-while
    s:drop-while
+   s:find
    s:constant
    s:scale
    s:append

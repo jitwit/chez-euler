@@ -12,9 +12,7 @@
 			(s:map +
 			       (s:map * (s:cdr bs) (s:cdr B))
 			       (s:map * (s:cdr as) B)))))
-      (s:map /
-	     (s:drop 1 A)
-	     (s:drop 1 B)))))
+      (s:map / (s:cdr A) (s:cdr B)))))
 
 (define convergents
   (lambda (bs)

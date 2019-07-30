@@ -87,6 +87,14 @@
 			(aux (s:cdr S))))))
       (aux S))))
 
+(define s:find
+  (lambda (predicate S)
+    (letrec ((aux (lambda (S)
+		    (cond ((null? S) #f)
+			  ((predicate (car S)) (car S))
+			  (else (aux (s:cdr S)))))))
+      (aux S))))
+
 (define s:accumulate
   (lambda (f x0 S)
     (letrec ((aux (lambda (x S)
