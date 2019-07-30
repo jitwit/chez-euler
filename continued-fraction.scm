@@ -20,25 +20,19 @@
   (lambda (bs)
     (g:convergents (s:constant 1) bs)))
 
-(define (test-root-3)
-  (s:take 20
-	  (s:map * (s:constant 1.)
-		 (convergents (s:cons 1 (s:cycle '(1 2)))))))
+(define cf:sqrt
+  (lambda (S)
+    (let ((a0 (isqrt S)))
+      (if (= (square a0) S)
+	  `(,a0)
+	  (let loop ((a a0) (m 0) (d 1) (X '()))
+	    (if (= a (* 2 a0))
+		(s:cons a0 (s:cycle (cdr (reverse (cons a X)))))
+		(let* ((m* (- (* d a)
+			      m))
+		       (d* (/ (- S (square m*))
+			      d))
+		       (a* (quotient (+ a0 m*)
+				     d*)))
+		  (loop a* m* d* (cons a X)))))))))
 
-(define (test-root-2)
-  (s:take 20
-	  (s:map * (s:constant 1.)
-		 (convergents (s:cons 1 (s:cycle '(2)))))))
-
-(define (test-e n)
-  (s:take n
-	  (s:map log
-		 (convergents
-		  (s:cons 2 (s:map (lambda (n)
-				     (case (mod n 3)
-				       ((2) (* 2 (quotient (+ 2 n) 3)))
-				       (else 1)))
-				   (s:iter 1+ 1)))))))
-
-(test-e 10)
-(test-root-3)

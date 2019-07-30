@@ -39,6 +39,8 @@
    s:constant
    s:scale
    s:append
+   s:join
+   s:bind
    s:cycle
    s:chunks
    s:enumerate
@@ -60,6 +62,7 @@
    ;; continued fractions
    convergents
    g:convergents
+   cf:sqrt
 
    ;; polynomial related
    p:constant
@@ -88,6 +91,12 @@
    ;; pseudo random sequences
    blum-blum-shub
 
+   ;; digit procedures
+   digit-fold
+   digits
+   digit-sum
+   digits->integer
+
    ;; generally useful procedures
    square
    cube
@@ -110,6 +119,7 @@
 	  (chez patricia))
 
   (include "outils.scm")
+  (include "digits.scm")
   (include "eratosthenes.scm")
   (include "euclid.scm")
   (include "miller-rabin.scm")

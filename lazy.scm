@@ -102,6 +102,31 @@
 	  (else (s:cons (car S)
 			(apply s:append (s:cdr S) Ts))))))
 
+(define s:join
+  (lambda (streams)
+    (letrec ((aux (lambda (S Ts)
+		    (if (null? S)
+			(if (null? Ts)
+			    '()
+			    (aux (car Ts) (cdr Ts)))
+			(s:cons (car S)
+				(aux (s:cdr S) Ts))))))
+      (if (null? streams)
+	  '()
+	  (aux (car streams)
+	       (s:cdr streams))))))
+
+(define s:bind
+  (lambda (g S)
+    (letrec ((aux (lambda (S T)
+		    (if (null? S)
+			(aux (g (car T))
+			     (s:cdr T))
+			(s:cons (car S)
+				(aux (s:cdr S)
+				     T))))))
+      (aux (g (car S)) (s:cdr S)))))
+
 (define s:chunks
   (lambda (n S)
     (letrec ((aux (lambda (S)
