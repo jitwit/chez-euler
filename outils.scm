@@ -43,6 +43,16 @@
     (lambda y
       (apply f (append x y)))))
 
+(define flip
+  (lambda (f)
+    (lambda (x y)
+      (f y x))))
+
+(define const
+  (lambda (x)
+    (lambda y
+      x)))
+
 (define-syntax for/range
   (lambda (x)
     (syntax-case x ()

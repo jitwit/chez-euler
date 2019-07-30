@@ -51,13 +51,19 @@
    s:interleave
    s:convolve
    s:square
+   s:tails
+   s:euler-transform
+   s:accelerate
 
    ;; stream related
    s:factorial
    s:choose
+   binomials
+   factorials
    s:e^x
    s:sin
    s:cos
+   s:pi
    *primes*
 
    ;; continued fractions
@@ -103,6 +109,8 @@
    cube
    compose
    curry
+   flip
+   const
    *machine-epsilon*
    =~
    average

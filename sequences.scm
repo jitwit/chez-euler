@@ -3,20 +3,34 @@
   (s:cons 1 (s:integrate s:e^x)))
 
 (define s:cos
-  (s:cons 1 (s:scale -1 (s:integrate s:sin))))
+  (s:cons 1 (s:negate (s:integrate s:sin))))
 
 (define s:sin
   (s:cons 0 (s:integrate s:cos)))
 
+(define s:pi
+  (s:accumulate + 1
+		(s:map /
+		       (s:cycle '(-1 1))
+		       (s:iter (curry + 2) 3.))))
+
+(define binomials
+  (lambda ()
+    (s:iter (lambda (x)
+	      (s:map + (s:cons 0 x) x))
+	    (s:cons 1 (s:constant 0)))))
+
+(define factorials
+  (lambda ()
+    (s:accumulate * 1 (s:iter 1+ 1))))
+
 (define s:factorial
-  (let ((factorials (s:accumulate * 1 (s:iter 1+ 1))))
+  (let ((factorials (factorials)))
     (lambda (n)
       (s:ref factorials n))))
 
 (define s:choose
-  (let ((binomials (s:iter (lambda (x)
-			     (s:map + (s:cons 0 x) x))
-			   (s:cons 1 (s:constant 0)))))
+  (let ((binomials (binomials)))
     (lambda (n k)
       (let ((j (min k (- n k))))
 	(if (< j 0)

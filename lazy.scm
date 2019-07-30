@@ -23,10 +23,10 @@
       (aux i S))))
 
 (define s:iter
-  (lambda (f x0)
+  (lambda (f x)
     (letrec ((aux (lambda (x)
 		    (s:cons x (aux (f x))))))
-      (aux x0))))
+      (aux x))))
 
 (define s:map
   (lambda (f . xs)
@@ -135,6 +135,10 @@
 				     T))))))
       (aux (g (car S)) (s:cdr S)))))
 
+(define s:tails
+  (lambda (S)
+    (s:iter s:cdr S)))
+
 (define s:chunks
   (lambda (n S)
     (letrec ((aux (lambda (S)
@@ -206,4 +210,17 @@
   (lambda (S)
     (s:convolve S S)))
 
+;; nb. for alternating series, eg s:pi in sequences.scm
+(define s:euler-transform
+  (lambda (S)
+    (let ((transform (lambda (sn+1 sn sn-1)
+		       (let ((p (square (- sn+1 sn)))
+			     (q (+ sn+1 sn-1 (* -2 sn))))
+			 (if (zero? q)
+			     sn ;; todo find better way to converge on best
+			     (- sn+1 (/ p q)))))))
+      (s:map transform (s:drop 2 S) (s:drop 1 S) S))))
 
+(define s:accelerate
+  (lambda (S transform)
+    (s:map car (s:iter transform S))))
