@@ -87,3 +87,21 @@
        #'(let ((x (car xs)))
 	   (set! xs (cdr xs))
 	   x)))))
+
+(define vector-modify!
+  (lambda (V j g)
+    (vector-set! V j (g (vector-ref V j)))))
+
+(define vector-inc!
+  (lambda (V j)
+    (vector-modify! V j 1+)))
+
+(define vector-dec!
+  (lambda (V j)
+    (vector-modify! V j 1-)))
+
+(define vector-swap!
+  (lambda (V i j)
+    (let ((t (vector-ref V i)))
+      (vector-set! V i (vector-ref V j))
+      (vector-set! V j t))))

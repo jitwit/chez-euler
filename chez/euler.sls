@@ -102,11 +102,15 @@
    ;; pseudo random sequences
    blum-blum-shub
 
+   ;; combinatorial procedures
+   algorithm-P
+
    ;; digit procedures
    digit-fold
    digits
    digit-sum
    digits->integer
+   pandigital?
 
    ;; generally useful procedures
    square
@@ -126,7 +130,10 @@
    pop!
    inc!
    dec!
-   )
+   vector-inc!
+   vector-dec!
+   vector-modify!
+   vector-swap!)
   
   (import (chezscheme)
 	  (chez patricia))
@@ -143,5 +150,5 @@
   (include "geometry.scm")
   (include "pseudo.scm")
   (include "continued-fraction.scm")
-  
+  (include "combinatorics.scm")
   )

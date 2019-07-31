@@ -22,3 +22,9 @@
 		 (+ x (* y 10)))
 	       0
 	       digs)))
+
+(define pandigital?
+  (lambda (digits)
+    (andmap =
+	    (sort < digits)
+	    (iota (length digits)))))
