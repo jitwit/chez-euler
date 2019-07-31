@@ -14,6 +14,14 @@
 	  ((zero? y) (list 1 0 x))
 	  (else (algorithm-E x y)))))
 
+(define coprime?
+  (lambda (x y)
+    (= 1 (gcd x y))))
+
+(define divides?
+  (lambda (d x)
+    (= 0 (modulo x d))))
+
 (define inverse-modulo
   (lambda (x m)
     (let ((yx+bm=1 (ax+by=gcd x m)))

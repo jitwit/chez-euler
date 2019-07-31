@@ -120,8 +120,7 @@
 (define totient
   (lambda (N)
     (fold-right (lambda (x t)
-		  (/ (* (1- x) t)
-		     x))
+		  (/ (* (1- x) t) x))
 		N
 		(tree->keys (factors-tree N)))))
 
@@ -132,7 +131,7 @@
   (lambda (n)
     (define G (make-vector n #t))
     (define (sieve j p)
-      (unless (>= j n)
+      (when (< j n)
 	(vector-set! G j #f)
 	(sieve (+ j p) p)))
     (for-each (lambda (p)

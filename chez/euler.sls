@@ -21,6 +21,8 @@
    ;; misc.
    ax+by=gcd
    inverse-modulo
+   coprime?
+   divides?
    Z/nZ*
    chinese-remainder-theorem
    crt-system
