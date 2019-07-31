@@ -5,8 +5,7 @@
   (export
    ;; sieves
    primes
-   ;; removing for now because it's incorrect! boo!
-   ;;   primes-in-range 
+   primes-in-range 
    totient-sieve
    moebius-sieve
 
@@ -22,6 +21,7 @@
    ;; misc.
    ax+by=gcd
    inverse-modulo
+   Z/nZ*
    chinese-remainder-theorem
    crt-system
    Omega

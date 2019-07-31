@@ -1,4 +1,5 @@
-(import (prefix (chez patricia-set) s:))
+(import (prefix (chez patricia-set) s:)
+	(chez patricia))
 
 (define source-files
   '("outils.scm"

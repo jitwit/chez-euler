@@ -76,6 +76,10 @@
   (lambda (N)
     (tree->alist (factors-tree N))))
 
+(define prime-factors
+  (lambda (N)
+    (tree->keys (factors-tree N))))
+
 (define Omega
   (lambda (N)
     (tree-fold-right + 0 (factors-tree N))))
@@ -120,4 +124,22 @@
 		     x))
 		N
 		(tree->keys (factors-tree N)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Multiplicative group                                                       ;;
+
+(define Z/nZ*
+  (lambda (n)
+    (define G (make-vector n #t))
+    (define (sieve j p)
+      (unless (>= j n)
+	(vector-set! G j #f)
+	(sieve (+ j p) p)))
+    (for-each (lambda (p)
+		(sieve p p))
+	      (prime-factors n))
+    (let loop ((x (1- n)) (Z/nZ '()))
+      (cond ((zero? x) Z/nZ)
+	    ((vector-ref G x) (loop (1- x) (cons x Z/nZ)))
+	    (else (loop (1- x) Z/nZ))))))
 

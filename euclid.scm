@@ -23,7 +23,9 @@
 
 (define chinese-remainder-theorem
   (lambda (a1 n1 a2 n2)
-    (let-values (((m1 m2 one) (apply values (ax+by=gcd n1 n2))))
+    (let-values (((m1 m2 gcd) (apply values (ax+by=gcd n1 n2))))
+      (when (not (= gcd 1))
+	(error 'crt "modulii not pairwise coprime" n1 n2))
       (mod (+ (* a1 m2 n2)
 	      (* a2 m1 n1))
 	   (* n1 n2)))))
