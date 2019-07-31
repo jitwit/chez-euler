@@ -22,6 +22,8 @@
    ;; misc.
    ax+by=gcd
    inverse-modulo
+   chinese-remainder-theorem
+   crt-system
    Omega
    omega
 
