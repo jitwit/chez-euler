@@ -18,14 +18,14 @@
   (lambda (bs)
     (g:convergents (s:constant 1) bs)))
 
-(define cf:sqrt
+(define cf:sqrt-rep
   (lambda (S)
     (let ((a0 (isqrt S)))
       (if (= (square a0) S)
 	  `(,a0)
 	  (let loop ((a a0) (m 0) (d 1) (X '()))
 	    (if (= a (* 2 a0))
-		(s:cons a0 (s:cycle (cdr (reverse (cons a X)))))
+		(reverse (cons a X))
 		(let* ((m* (- (* d a)
 			      m))
 		       (d* (/ (- S (square m*))
@@ -33,4 +33,13 @@
 		       (a* (quotient (+ a0 m*)
 				     d*)))
 		  (loop a* m* d* (cons a X)))))))))
+
+(define cf:sqrt
+  (lambda (S)
+    (let* ((rep (cf:sqrt-rep S))
+	   (a0 (car rep))
+	   (as (cdr rep)))
+      (if (null? as)
+	  (s:constant a0)
+	  (convergents (s:cons a0 (s:cycle as)))))))
 

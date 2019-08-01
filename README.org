@@ -10,185 +10,25 @@
 #+end_src 
 
 #+RESULTS:
-: (omega Omega inverse-modulo ax+by=gcd prime? totient divisors
-:   factorize-with-multiplicity factorize moebius-sieve
-:   totient-sieve primes)
+#+begin_example
+(vector-swap! vector-modify! vector-dec! vector-inc! dec!
+ inc! pop! push! for/range iaverage average =~
+ ,*machine-epsilon* const flip curry compose cube square
+ pandigital? digits->integer digit-sum digits digit-fold
+ algorithm-P blum-blum-shub closed-segment-intersection
+ open-segment-intersection _end _start _y _x segment point
+ coefficients->polynomial p:singleton p:shift/scale p:shift
+ p:scale p:^ p:+ p:* horner p:degree p:coefficient p:constant
+ cf:sqrt g:convergents convergents *primes* s:pi s:cos s:sin
+ s:e^x factorials binomials s:choose s:factorial s:accelerate
+ s:euler-transform s:tails s:square s:convolve s:interleave
+ s:negate s:derive s:integrate s:enumerate s:chunks s:cycle
+ s:bind s:join s:append s:scale s:constant s:find
+ s:drop-while s:take-while s:drop s:take s:filter s:map
+ s:iter s:ref s:cdr s:cons omega Omega crt-system
+ chinese-remainder-theorem Z/nZ* divides? coprime?
+ inverse-modulo ax+by=gcd prime? totient divisors
+ factorize-with-multiplicity factorize moebius-sieve
+ totient-sieve primes-in-range primes)
+#+end_example
 
-** Sanity checks
-
-*** eratosthenes.scm
-
- Various sieves.
- 
-**** Prime Count
-
- #+begin_src scheme :exports code :results value :session euler
-(define (pi n)
-  (length (primes n)))
- #+end_src 
-
- #+RESULTS:
- : #<void>
-
- src_scheme[:exports code]{pi} should agree with the [[https://en.wikipedia.org/wiki/Prime-counting_function][chart]] at
- wikipedia.
-
- #+begin_src scheme :exports both :results value :session euler
-(for-each (lambda (n pi-n)
-	    (assert (= pi-n (pi (expt 10 n)))))
-	  (iota 8)
-	  '(0 4 25 168 1229 9592 78498 664579))
-
-'ok
- #+end_src 
-
- #+RESULTS:
- : ok
-
-**** Segmented vs Eratosthenes
-
- #+begin_src scheme :exports code :results value :session euler
-(define (filtered-eratosthenes A B)
-  (filter (lambda (prime) 
-	    (>= prime A))
-	  (primes B)))
-
- #+end_src 
-
- #+RESULTS:
- : #<void>
-
- If the primes outside of a range /A,B/ are filtered out,
- src_scheme[:exports code]{(filtered-eratosthenes A B)} and
- src_scheme[:exports code]{(primes-in-range A B)} should agree.
- 
- #+begin_src scheme :exports both :results value :session euler
-(for-each (lambda (A B)
-	    (assert (equal? (filtered-eratosthenes A B)
-			    (primes-in-range A B))))
-	  '(1 5 3 100 8000 10000 100000 12000 100)
-	  '(100 10 2 0 9000 20000 100100 12100 11000))
-'ok
- #+end_src 
-
- #+RESULTS:
-
- Fails for case 100 to 11000... fix me
-
-**** Totients
-
- #+begin_src scheme :exports code :results value :session euler
-(define (slowtient N)
-  (length (filter (lambda (n) 
-		    (= 1 (gcd n N)))
-		  (iota N))))
- #+end_src 
-
- #+RESULTS:
- : #<void>
-
- Check the results of the totient sieve:
-
- #+begin_src scheme :exports both :results value :session euler
-(let* ((limit 2000)
-       (V (totient-sieve limit)))
-  (for-each (lambda (k)
-	      (assert (= (slowtient k) (fxvector-ref V k))))
-	    (iota limit))
-  'ok)
- #+end_src 
-
- #+RESULTS:
- : ok
-
-**** Moebius
-
- Compare results against the [[https://oeis.org/A008683/list][table]] at oeis. 
-
- #+begin_src scheme :exports both :results value :session euler
-
-(define moebius-function-sequence
-  '(1 -1 -1 0 -1 1 -1 0 0 1 -1 0 -1 1 1 0 -1 0 -1 0 
-    1 1 -1 0 0 1 0 0 -1 -1 -1 0 1 1 1 0 -1 1 1 0 -1 
-    -1 -1 0 0 1 -1 0 0 0 1 0 -1 0 1 0 1 1 -1 0 -1 1 0 
-    0 1 -1 -1 0 1 -1 -1 0 -1 1 0 0 1 -1))
-
-(assert (equal?
-	 moebius-function-sequence
-	 (cdr (fxvector->list (moebius-sieve (length moebius-function-sequence))))))
-'ok
- #+end_src 
-
- #+RESULTS:
- : ok
-
-*** miller-rabin.scm
-
-**** Prime?
-
- Miller-Rabin primality test, using 40 trial rounds, which I think is reasonable?
-
- #+begin_src scheme :exports code :results value :session euler
-(define (slow-primes N)
-  (filter prime? (iota N)))
-
- #+end_src 
-
- #+RESULTS:
- : #<void>
-
- Checking this agrees with the sieve:
-
- #+begin_src scheme :exports both :results value :session euler
-(for-each (lambda (N)
-	    (assert (equal? (primes N) (slow-primes N))))
-	  '(0 1 3 10 100 1000 10000 100000))
-'ok
- #+end_src 
-
- #+RESULTS:
- : ok
-
-*** euclid.scm
-
- See if ~ax+by=gcd~ is working reasonably.
-
- #+begin_src scheme :exports both :results value :session euler
-(for-each (lambda (x y)
-	    (let-values (((s t d) (apply values (ax+by=gcd x y))))
-	      (assert (and (= d (gcd x y))
-			   (= d (+ (* s x) (* t y)))))))
-	  '(1769 240 17 4 3 0 12)
-	  '(551 46 12 2 8 1 0))
-
-(for-each (lambda (x m)
-	    (let ((y (inverse-modulo x m)))
-	      (if y
-		  (assert (= 1 (mod (* x y) m)))
-		  (not (= 1 (gcd x m))))))
-	  '(1 5 7 11 4)
-	  '(12 12 12 12 12))
-'ok
- #+end_src 
-
- #+RESULTS:
- : ok
-
-*** pollard.scm
-
- Factorize numbers large and small. Some randomly typed out numbers
-  are checked to see if the product of ~factorize~ spits back the
-  input. ~factorize~ uses Pollard's rho method after doing trial
-  division on some small primes.
-
- #+begin_src scheme :exports both :results value :session euler
-(for-each (lambda (n)
-	    (let ((ps (factorize n)))
-	      (assert (and (= n (apply * ps))
-			   (andmap prime? ps)))))
-	  '(3 12 1231 3462419283 918327  9549347 182371874 102391083864756 103810982947291028394868347624198))
-'ok
- #+end_src 
-
- #+RESULTS:
- : ok
