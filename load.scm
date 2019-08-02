@@ -14,6 +14,7 @@
     "geometry.scm"
     "pseudo.scm"
     "continued-fraction.scm"
-    "control.scm"))
+    "combinatorics.scm"
+    "permutations.scm"))
 
 (for-each load source-files)

@@ -3,7 +3,7 @@
     (define n (1- p))
     (define r (bitwise-first-bit-set n))
     (define d (ash n (- r)))
-    (define trials 40) ;; sensible?
+    (define trials 20) ;; sensible?
     (define (loop t k x)
       (define x^2 (expt-mod x 2 p))
       (cond ((<= k 0) 'composite)
@@ -20,6 +20,13 @@
 	  ((= p 2) 'prime)
 	  (else 'composite))))
 
+
 (define prime?
   (lambda (p)
-    (not (eq? 'composite (miller-rabin p)))))
+    (case p
+      ((2 3 5 7) #t)
+      (else (not (or (even? p)
+		     (divides? 3 p)
+		     (divides? 5 p)
+		     (divides? 7 p)
+		     (eq? 'composite (miller-rabin p))))))))

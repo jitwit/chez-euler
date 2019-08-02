@@ -93,17 +93,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divisors                                                                   ;;
-(define merge-sorted
-  (lambda (X Y)
-    (cond ((null? X) Y)
-	  ((null? Y) X)
-	  (else
-	   (let ((x (car X))
-		 (y (car Y)))
-	     (cond ((< x y) (cons x (merge-sorted (cdr X) Y)))
-		   ((< y x) (cons y (merge-sorted X (cdr Y))))
-		   (else (cons x (merge-sorted (cdr X) (cdr Y))))))))))
-
 (define combine-factors
   (lambda (x Y)
     (merge-sorted (map (lambda (y)

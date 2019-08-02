@@ -38,11 +38,13 @@
 (define s:filter
   (lambda (predicate S)
     (letrec ((aux (lambda (S)
-		    (let ((hd (car S))
-			  (tl (s:cdr S)))
-		      (if (predicate hd)
-			  (s:cons hd (aux tl))
-			  (aux tl))))))
+		    (if (null? S)
+			S
+			(let ((hd (car S))
+			      (tl (s:cdr S)))
+			  (if (predicate hd)
+			      (s:cons hd (aux tl))
+			      (aux tl)))))))
       (aux S))))
 
 (define s:take

@@ -1,3 +1,4 @@
+;; visit all permutations of vector A
 (define algorithm-P
   (lambda (A visit)
     (define n (vector-length A))

@@ -40,6 +40,7 @@
    s:drop
    s:take-while
    s:drop-while
+   s:accumulate
    s:find
    s:constant
    s:scale
@@ -123,6 +124,10 @@
    =~
    average
    iaverage
+   log-base
+   log-2
+   log-10
+   merge-sorted
    
    ;; sugar
    for/range
@@ -151,4 +156,5 @@
   (include "pseudo.scm")
   (include "continued-fraction.scm")
   (include "combinatorics.scm")
+  (include "permutations.scm")
   )

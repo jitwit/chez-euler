@@ -20,13 +20,22 @@
 
 (define average
   (lambda (a b)
-    (/ (+ a b)
-       2)))
+    (/ (+ a b) 2)))
 
 (define iaverage
   (lambda (a b)
-    (quotient (+ a b)
-	      2)))
+    (quotient (+ a b) 2)))
+
+(define log-base
+  (lambda (b x)
+    (/ (log x)
+       (log b))))
+
+(define log-2
+  (curry log-base 2))
+
+(define log-10
+  (curry log-base 10))
 
 (define-syntax compose
   (lambda (x)
@@ -105,3 +114,16 @@
     (let ((t (vector-ref V i)))
       (vector-set! V i (vector-ref V j))
       (vector-set! V j t))))
+
+(define merge-sorted
+  (lambda (X Y)
+    (cond ((null? X) Y)
+	  ((null? Y) X)
+	  (else
+	   (let ((x (car X))
+		 (y (car Y)))
+	     (cond ((< x y) (cons x (merge-sorted (cdr X) Y)))
+		   ((< y x) (cons y (merge-sorted X (cdr Y))))
+		   (else (cons x (merge-sorted (cdr X) (cdr Y))))))))))
+
+
