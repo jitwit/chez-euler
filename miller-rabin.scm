@@ -20,7 +20,6 @@
 	  ((= p 2) 'prime)
 	  (else 'composite))))
 
-
 (define prime?
   (lambda (p)
     (case p

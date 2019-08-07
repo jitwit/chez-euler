@@ -25,6 +25,4 @@
 
 (define pandigital?
   (lambda (digits)
-    (andmap =
-	    (sort < digits)
-	    (iota (length digits)))))
+    (andmap = (sort < digits) (iota (length digits)))))

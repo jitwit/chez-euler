@@ -77,7 +77,7 @@
 		    (if (or (null? S)
 			    (not (predicate (car S))))
 			'()
-			(s:cons (car S) (aux (s:cdr S)))))))
+			(cons (car S) (aux (s:cdr S)))))))
       (aux S))))
 
 (define s:drop-while

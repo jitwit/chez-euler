@@ -31,12 +31,6 @@
     (/ (log x)
        (log b))))
 
-(define log-2
-  (curry log-base 2))
-
-(define log-10
-  (curry log-base 10))
-
 (define-syntax compose
   (lambda (x)
     (syntax-case x ()
@@ -125,5 +119,13 @@
 	     (cond ((< x y) (cons x (merge-sorted (cdr X) Y)))
 		   ((< y x) (cons y (merge-sorted X (cdr Y))))
 		   (else (cons x (merge-sorted (cdr X) (cdr Y))))))))))
+
+(define log-2
+  (lambda (x)
+    (log-base 2 x)))
+
+(define log-10
+  (lambda (x)
+    (log-base 10 x)))
 
 
