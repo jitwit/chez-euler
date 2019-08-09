@@ -6,6 +6,10 @@
   (lambda (x1 y1 x2 y2)
     (vector (point x1 y1) (point x2 y2))))
 
+(define segment-between
+  (lambda (z1 z2)
+    (vector z1 z2)))
+
 (define _x
   (lambda (V)
     (vector-ref V 0)))

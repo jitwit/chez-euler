@@ -61,7 +61,7 @@
     (syntax-case x ()
       ((_ x a b e ...)
        #'(let loop ((x a))
-	   (unless (= x b)
+	   (when (< x b)
 	     e ...
 	     (loop (1+ x))))))))
 
@@ -127,5 +127,52 @@
 (define log-10
   (lambda (x)
     (log-base 10 x)))
+
+(define permutations
+  (lambda (lst)
+    (if (null? lst)
+	'(())
+	(apply append
+	       (map (lambda (item)
+		      (map (lambda (perm) (cons item perm))
+			   (permutations (delete-single item lst))))
+		    lst)))))
+
+(define delete-single
+  (lambda (item lst)
+    (cond ((null? lst) lst)
+	  ((eq? item (car lst))
+	   (cdr lst))
+	  (else
+	   (cons (car lst) (delete-single item (cdr lst)))))))
+
+(define sort-on
+  (lambda (X h)
+    (sort (lambda (x y)
+	    (< (h x)
+	       (h y)))
+	  X)))
+
+(define sort-on!
+  (lambda (X heur)
+    (sort! (lambda (x y)
+	     (< (heur x)
+		(heur y)))
+	   X)))
+
+(define shuffle!
+  (lambda (V)
+    (let loop ((i (1- (vector-length V))))
+      (unless (< i 1)
+	(let ((j (random (1+ i))))
+	  (vector-swap! V i j))
+	(loop (1- i))))
+    'shuffled))
+
+(define shuffle-list
+  (lambda (lst)
+    (let ((vec (list->vector lst)))
+      (shuffle! vec)
+      (vector->list vec))))
 
 

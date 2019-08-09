@@ -91,4 +91,3 @@
 			  (list 0 (p:degree P)) ;; total, prev p:degree, x
 			  P))))
       (* t (expt x d)))))
-

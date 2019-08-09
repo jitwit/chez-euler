@@ -29,6 +29,13 @@
    Omega
    omega
 
+   ;; lists
+   permutations
+   delete-single
+   sort-on
+   sort-on!
+   shuffle-list
+
    ;; streams
    s:cons
    s:cdr
@@ -93,6 +100,7 @@
    ;; geometry
    point
    segment
+   segment-between
    _x
    _y
    _start
@@ -105,6 +113,7 @@
 
    ;; combinatorial procedures
    algorithm-P
+   shuffle!
 
    ;; digit procedures
    digit-fold
