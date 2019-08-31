@@ -35,5 +35,5 @@
       (let ((j (min k (- n k))))
 	(if (< j 0)
 	    0
-	    (s:ref (s:ref binomials n)
-		   j))))))
+	    (s:ref (s:ref binomials n) j))))))
+

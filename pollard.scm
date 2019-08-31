@@ -6,12 +6,12 @@
     (let loop ((ps (primes (isqrt N)))
 	       (N N))
       (if (or (null? ps) (> (car ps) N))
-	  (if (= N 1) '() (list N))
-	  (let* ((p (car ps))
-		 (q (fx/ N p)))
-	    (if (= N (* q p))
-		(cons p (loop ps q))
-		(loop (cdr ps) N)))))))
+	(if (= N 1) '() (list N))
+	(let* ((p (car ps))
+	       (q (fx/ N p)))
+	  (if (= N (* q p))
+	    (cons p (loop ps q))
+	    (loop (cdr ps) N)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rho-Pollard                                                                ;;
@@ -42,12 +42,12 @@
   (lambda (N)
     (let ((n (rho-method 5 2 1 1 N)))
       (if (eq? n 'failed)
-	  '()
-	  (let ((q (quotient N n)))
-	    (cond ((< q 2) (list n))
-		  ((prime? q) (list n q))
-		  ((< q *cutoff*) (cons n (trial-division q)))
-		  (else (cons n (rho-pollard q)))))))))
+	'()
+	(let ((q (quotient N n)))
+	  (cond ((< q 2) (list n))
+		((prime? q) (list n q))
+		((< q *cutoff*) (cons n (trial-division q)))
+		(else (cons n (rho-pollard q)))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hybrid                                                                     ;;

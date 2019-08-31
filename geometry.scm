@@ -57,15 +57,15 @@
   (lambda (s1 s2)
     (define-values (x11 y11 x12 y12 A1 B1 C1) (segment-values s1))
     (define-values (x21 y21 x22 y22 A2 B2 C2) (segment-values s2))
-    (define det (- (* A1 B2) (* A2 B1)))
-    (if (= 0 det)
-	#f
-	(let ((X (/ (- (* B2 C1) (* B1 C2)) det))
-	      (Y (/ (- (* A1 C2) (* A2 C1)) det)))
-	  (if (and (open-in-bounds X Y x11 y11 x12 y12)
-		   (open-in-bounds X Y x21 y21 x22 y22))
-	      (point X Y)
-	      #f)))))
+    (let ((det (- (* A1 B2) (* A2 B1))))
+      (if (= 0 det)
+	  #f
+	  (let ((X (/ (- (* B2 C1) (* B1 C2)) det))
+		(Y (/ (- (* A1 C2) (* A2 C1)) det)))
+	    (if (and (open-in-bounds X Y x11 y11 x12 y12)
+		     (open-in-bounds X Y x21 y21 x22 y22))
+		(point X Y)
+		#f))))))
 
 (define closed-segment-intersection
   (lambda (s1 s2)
