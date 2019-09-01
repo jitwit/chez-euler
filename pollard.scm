@@ -80,17 +80,6 @@
   (lambda (N)
     (tree->keys (factors-tree N))))
 
-(define Omega
-  (lambda (N)
-    (tree-fold-right + 0 (factors-tree N))))
-
-(define omega
-  (lambda (N)
-    (tree-fold-left (lambda (n ignore)
-		      (1+ n))
-		    0
-		    (factors-tree N))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Divisors                                                                   ;;
 (define combine-factors

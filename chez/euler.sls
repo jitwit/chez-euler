@@ -24,8 +24,7 @@
 	  Z/nZ*
 	  chinese-remainder-theorem
 	  crt-system
-	  Omega
-	  omega
+	  sgn
 
 	  ;; lists
 	  permutations
@@ -36,7 +35,7 @@
 
 	  ;; streams
 	  s:cons
-	  s:car
+	  ;; 	  s:car use car!
 	  s:cdr
 	  s:ref
 	  s:iter

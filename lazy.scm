@@ -7,6 +7,10 @@
        #'(cons* x y ...
 		(delay z))))))
 
+(define s:car
+  (lambda (S)
+    (car S)))
+
 (define s:cdr
   (lambda (S)
     (let ((tl (cdr S)))
