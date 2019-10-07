@@ -3,7 +3,9 @@ version = "0.1"
 chez = scheme
 install = install -D
 prefix = ~/.chez.d
-schemedir = ${prefix}
+
+chezversion ::= $(shell echo '(call-with-values scheme-version-number (lambda (a b c) (format \#t "~d.~d" a b)))' | ${chez} -q)
+schemedir = ${libdir}/csv${chezversion}-site
 
 build:
 	echo "(compile-library \"euler.sls\"))" | ${chez} -q
