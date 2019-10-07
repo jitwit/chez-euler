@@ -3,6 +3,7 @@ version = "0.1"
 chez = scheme
 install = install -D
 prefix = ~/.chez.d
+libdir = $(prefix)/lib
 
 chezversion ::= $(shell echo '(call-with-values scheme-version-number (lambda (a b c) (format \#t "~d.~d" a b)))' | ${chez} -q)
 schemedir = ${libdir}/csv${chezversion}-site
