@@ -6,29 +6,31 @@
 
 #+begin_src scheme :exports both :session euler
 (import (chez euler))
-(library-exports '(chez euler))
+(map string->symbol (sort string<? (map symbol->string (library-exports '(chez euler)))))
 #+end_src 
 
 #+RESULTS:
 #+begin_example
-(vector-swap! vector-modify! vector-dec! vector-inc! dec!
- inc! pop! push! for/range iaverage average =~
- ,*machine-epsilon* const flip curry compose cube square
- pandigital? digits->integer digit-sum digits digit-fold
- algorithm-P blum-blum-shub closed-segment-intersection
- open-segment-intersection _end _start _y _x segment point
- coefficients->polynomial p:singleton p:shift/scale p:shift
- p:scale p:^ p:+ p:* horner p:degree p:coefficient p:constant
- cf:sqrt g:convergents convergents *primes* s:pi s:cos s:sin
- s:e^x factorials binomials s:choose s:factorial s:accelerate
- s:euler-transform s:tails s:square s:convolve s:interleave
- s:negate s:derive s:integrate s:enumerate s:chunks s:cycle
- s:bind s:join s:append s:scale s:constant s:find
- s:drop-while s:take-while s:drop s:take s:filter s:map
- s:iter s:ref s:cdr s:cons omega Omega crt-system
- chinese-remainder-theorem Z/nZ* divides? coprime?
- inverse-modulo ax+by=gcd prime? totient divisors
- factorize-with-multiplicity factorize moebius-sieve
- totient-sieve primes-in-range primes)
+(*machine-epsilon* *primes* =~ Z/nZ* _end _start _x _y
+ algorithm-P average ax+by=gcd binomials blum-blum-shub
+ cf:sqrt chinese-remainder-theorem
+ closed-segment-intersection coefficients->polynomial compose
+ const convergents coprime? crt-system cube curry dec!
+ delete-single digit-fold digit-sum digits digits->integer
+ divides? divisors factorials factorize
+ factorize-with-multiplicity flip for/range g:convergents
+ horner iaverage inc! inverse-modulo log-10 log-2 log-base
+ merge-sorted moebius-sieve open-segment-intersection p:* p:+
+ p:^ p:coefficient p:constant p:degree p:scale p:shift
+ p:shift/scale p:singleton pandigital? permutations point
+ pop! prime? primes primes-in-range push! s:accelerate
+ s:accumulate s:append s:bind s:cdr s:choose s:chunks s:cons
+ s:constant s:convolve s:cos s:cycle s:derive s:drop
+ s:drop-while s:e^x s:enumerate s:euler-transform s:factorial
+ s:filter s:find s:integrate s:interleave s:iter s:join s:map
+ s:negate s:pi s:ref s:scale s:sin s:square s:tails s:take
+ s:take-while segment segment-between sgn shuffle!
+ shuffle-list sort-on sort-on! square totient totient-sieve
+ vector-dec! vector-inc! vector-modify! vector-swap!)
 #+end_example
 
