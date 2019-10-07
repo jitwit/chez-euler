@@ -6,7 +6,7 @@ prefix = ~/.chez.d
 schemedir = ${prefix}
 
 build:
-	echo "(compile-library \"chez/euler.sls\"))" | ${chez} -q
+	echo "(compile-library \"euler.sls\"))" | ${chez} -q
 
 install:
 	find . -type f -regex ".*.so" -exec sh -c '${install} -t ${schemedir}/$$(dirname $$1) $$1' _ {} \;

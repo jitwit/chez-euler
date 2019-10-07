@@ -1,7 +1,7 @@
 (eval-when (compile)
   (optimize-level 3))
 
-(library (chez euler)
+(library (euler)
   (export primes     ;; sieves
 	  primes-in-range
 	  totient-sieve
