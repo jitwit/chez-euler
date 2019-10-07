@@ -163,6 +163,6 @@
   (include "pseudo.scm")
   (include "continued-fraction.scm")
   (include "combinatorics.scm")
-  (include "permutations.scm")
+  ;;  (include "permutations.scm")
   
   )
