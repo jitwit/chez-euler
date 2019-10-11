@@ -60,9 +60,9 @@
 (define primes
   (lambda (N)
     (cond ((> N 4) (run-eratosthenes N))
-	  (else (filter (lambda (p)
-			  (<= p N))
-			'(2 3))))))
+          (else (filter (lambda (p)
+                          (<= p N))
+                        '(2 3))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Segmented sieves                                                           ;;

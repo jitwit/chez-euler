@@ -109,6 +109,12 @@
       (vector-set! V i (vector-ref V j))
       (vector-set! V j t))))
 
+(define fxvector-swap!
+  (lambda (V i j)
+    (let ((t (fxvector-ref V i)))
+      (fxvector-set! V i (fxvector-ref V j))
+      (fxvector-set! V j t))))
+
 (define merge-sorted
   (lambda (X Y)
     (cond ((null? X) Y)
