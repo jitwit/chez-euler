@@ -33,10 +33,8 @@
 			P)))
 
 (define p:*
-  (lambda Ps
-    (if (null? Ps)
-	(p:singleton 1 1)
-	(fold-right p:multiply (car Ps) (cdr Ps)))))
+  (lambda polynomials
+    (fold-right p:multiply (p:singleton 1 0) polynomials)))
 
 (define p:^
   (lambda (P k)

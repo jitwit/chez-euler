@@ -212,6 +212,16 @@
 				     (s:cons 0 (aux st tt))))))))
       (aux S T))))
 
+(define s:merge-sorted
+  (lambda (S T)
+    (letrec ((aux (lambda (S T)
+                    (let ((s (car S))
+                          (t (car T)))
+                      (if (< s t)
+                          (s:cons s (aux (s:cdr S) T))
+                          (s:cons t (aux S (s:cdr T))))))))
+      (aux S T))))
+
 (define s:square
   (lambda (S)
     (s:convolve S S)))

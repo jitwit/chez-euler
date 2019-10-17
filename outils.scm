@@ -14,6 +14,10 @@
   (lambda (x)
     (* x x)))
 
+(define square?
+  (lambda (x)
+    (exact? (sqrt x))))
+
 (define cube
   (lambda (x)
     (* x x x)))
@@ -24,7 +28,7 @@
 
 (define iaverage
   (lambda (a b)
-    (quotient (+ a b) 2)))
+    (ash (+ a b) -1)))
 
 (define log-base
   (lambda (b x)
@@ -36,10 +40,9 @@
     (syntax-case x ()
       ((_) #'(lambda x x))
       ((_ g) #'g)
-      ((_ f h ...)
-       #'(let ((g (compose h ...)))
-	   (lambda x
-	     (call-with-values (lambda () (apply g x)) f)))))))
+      ((_ f g ...)
+       #'(lambda (x)
+           (f ((compose g ...) x)))))))
 
 (define display-ln
   (lambda (object)
@@ -175,4 +178,21 @@
       (shuffle! vec)
       (vector->list vec))))
 
+(define nub-eq
+  (lambda (X)
+    (let ((table (make-hash-table)))
+      (for-each (lambda (x)
+                  (hashtable-set! table x #t))
+                X)
+      (vector->list
+       (hashtable-keys table)))))
+
+(define nub-equal
+  (lambda (X)
+    (let ((table (make-hashtable equal-hash equal?)))
+      (for-each (lambda (x)
+                  (hashtable-set! table x #t))
+                X)
+      (vector->list
+       (hashtable-keys table)))))
 

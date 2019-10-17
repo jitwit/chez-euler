@@ -27,15 +27,16 @@
 	  sgn
 
 	  ;; lists
-	  permutations
 	  delete-single
 	  sort-on
 	  sort-on!
 	  shuffle-list
+          nub-eq
+          nub-equal
 
 	  ;; streams
 	  s:cons
-	  ;; 	  s:car use car!
+	  ;; s:car just use car 
 	  s:cdr
 	  s:ref
 	  s:iter
@@ -59,6 +60,7 @@
 	  s:derive
 	  s:negate
 	  s:interleave
+          s:merge-sorted
 	  s:convolve
 	  s:square
 	  s:tails
@@ -74,6 +76,7 @@
 	  s:sin
 	  s:cos
 	  s:pi
+          s:palindromes
 	  *primes*
 
 	  ;; continued fractions
@@ -125,6 +128,7 @@
 
 	  ;; generally useful procedures
 	  square
+          square?
 	  cube
 	  compose
 	  curry

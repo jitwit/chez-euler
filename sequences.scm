@@ -14,6 +14,20 @@
 		       (s:cycle '(-1 1))
 		       (s:iter (curry + 2) 3.))))
 
+(define s:palindromes
+  (lambda ()
+    (let ((nats (s:iter 1+ 1)))
+      (s:merge-sorted (s:map (lambda (k)
+                               (let ((ds (digits k)))
+                                 (digits->integer
+                                  (append ds (cdr (reverse ds))))))
+                             nats)
+                      (s:map (lambda (k)
+                               (let ((ds (digits k)))
+                                 (digits->integer
+                                  (append ds (reverse ds)))))
+                             nats)))))
+
 (define binomials
   (lambda ()
     (s:iter (lambda (x)

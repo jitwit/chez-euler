@@ -39,20 +39,17 @@
 ;;; Lexicographic Combinations. Knuth 7.2.1.3 pg 359.
 (define algorithm-T
   (lambda (n t visit)
-    (define j)
-    (define x)
+    (define j 0)
+    (define x t)
     ;; index vector
     (define C (make-fxvector (fx+ t 3)))
     ;; visit vector
     (define (T1)
       ;; initialize
-      (set! j 0)
       (do ((i 1 (fx1+ i)))
           ((fx> i t)
            ;; set c-t+1 <- n
            ;; set c-t+2 <- 0
-           (set! j t)
-           (set! x j)
            (fxvector-set! C (fx1+ t) n)
            (fxvector-set! C (fx+ t 2) 0)
            (T2))
@@ -92,18 +89,19 @@
       (T2))
     (T1)))
 
-(define (combinations X k)
-  (let ((V (if (vector? X) X (list->vector X)))
-        (xs '()))
-    (algorithm-T (vector-length V)
-                 k
-                 (lambda (C)
-                   (do ((j k (fx1- j))
-                        (lst '() (cons (vector-ref V (fxvector-ref C j))
-                                       lst)))
-                       ((fxzero? j) (push! lst xs)))))
-    ;; note xs in reverse lexicographic order
-    xs))
+(define combinations
+  (lambda (X k)
+    (let ((V (if (vector? X) X (list->vector X)))
+          (xs '()))
+      (algorithm-T (vector-length V)
+                   k
+                   (lambda (C)
+                     (do ((j k (fx1- j))
+                          (lst '() (cons (vector-ref V (fxvector-ref C j))
+                                         lst)))
+                         ((fxzero? j) (push! lst xs)))))
+      ;; note xs is in reverse lexicographic order
+      xs)))
 
 (define permutations
   (lambda (X)
