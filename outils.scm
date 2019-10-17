@@ -41,6 +41,10 @@
 	   (lambda x
 	     (call-with-values (lambda () (apply g x)) f)))))))
 
+(define display-ln
+  (lambda (object)
+    (display object) (newline)))
+
 (define curry
   (lambda (f . x)
     (lambda y
@@ -133,16 +137,6 @@
 (define log-10
   (lambda (x)
     (log-base 10 x)))
-
-(define permutations
-  (lambda (lst)
-    (if (null? lst)
-	'(())
-	(apply append
-	       (map (lambda (item)
-		      (map (lambda (perm) (cons item perm))
-			   (permutations (delete-single item lst))))
-		    lst)))))
 
 (define delete-single
   (lambda (item lst)

@@ -111,6 +111,9 @@
 
 	  ;; combinatorial procedures
 	  algorithm-P
+          algorithm-T
+          combinations
+          permutations
 	  shuffle!
 
 	  ;; digit procedures
@@ -135,6 +138,7 @@
 	  log-2
 	  log-10
 	  merge-sorted
+          display-ln
 	  
 	  ;; sugar
 	  for/range
