@@ -20,12 +20,12 @@
                              (let ((ds (digits k)))
                                (digits->integer
                                 (append ds (cdr (reverse ds))))))
-                           (nats (s:iter 1+ 1)))
+                           (s:iter 1+ 1))
                     (s:map (lambda (k)
                              (let ((ds (digits k)))
                                (digits->integer
                                 (append ds (reverse ds)))))
-                           (nats (s:iter 1+ 1))))))
+                           (s:iter 1+ 1)))))
 
 (define binomials
   (lambda ()
