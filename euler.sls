@@ -28,11 +28,15 @@
 
 	  ;; lists
 	  delete-single
+          count
+          filter-map
+          shuffle
 	  sort-on
 	  sort-on!
-	  shuffle-list
           nub-eq
           nub-equal
+          eq-histogram
+          equal-histogram
 
 	  ;; streams
 	  s:cons
@@ -157,21 +161,21 @@
 	  vector-swap!)
   
   (import (chezscheme)
-	  (chez patricia))
+	  (patricia))
 
-  (include "outils.scm")
-  (include "digits.scm")
-  (include "eratosthenes.scm")
-  (include "euclid.scm")
-  (include "miller-rabin.scm")
-  (include "pollard.scm")
-  (include "lazy.scm")
-  (include "sequences.scm")
-  (include "polynomial.scm")
-  (include "geometry.scm")
-  (include "pseudo.scm")
-  (include "continued-fraction.scm")
-  (include "combinatorics.scm")
-  ;;  (include "permutations.scm")
+  (include "code/outils.scm")
+  (include "code/digits.scm")
+  (include "code/eratosthenes.scm")
+  (include "code/euclid.scm")
+  (include "code/miller-rabin.scm")
+  (include "code/pollard.scm")
+  (include "code/lazy.scm")
+  (include "code/sequences.scm")
+  (include "code/polynomial.scm")
+  (include "code/geometry.scm")
+  (include "code/pseudo.scm")
+  (include "code/continued-fraction.scm")
+  (include "code/combinatorics.scm")
+  (include "code/lists.scm")
   
   )

@@ -2,18 +2,19 @@
 	(patricia))
 
 (define source-files
-  '("outils.scm"
-    "digits.scm"
-    "eratosthenes.scm"
-    "euclid.scm"
-    "miller-rabin.scm"
-    "pollard.scm"
-    "lazy.scm"
-    "sequences.scm"
-    "polynomial.scm"
-    "geometry.scm"
-    "pseudo.scm"
-    "continued-fraction.scm"
-    "combinatorics.scm"))
+  '("code/outils.scm"
+    "code/digits.scm"
+    "code/eratosthenes.scm"
+    "code/euclid.scm"
+    "code/miller-rabin.scm"
+    "code/pollard.scm"
+    "code/lazy.scm"
+    "code/sequences.scm"
+    "code/polynomial.scm"
+    "code/geometry.scm"
+    "code/pseudo.scm"
+    "code/continued-fraction.scm"
+    "code/combinatorics.scm"
+    "code/lists.scm"))
 
 (for-each load source-files)

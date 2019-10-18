@@ -141,28 +141,6 @@
   (lambda (x)
     (log-base 10 x)))
 
-(define delete-single
-  (lambda (item lst)
-    (cond ((null? lst) lst)
-	  ((eq? item (car lst))
-	   (cdr lst))
-	  (else
-	   (cons (car lst) (delete-single item (cdr lst)))))))
-
-(define sort-on
-  (lambda (X h)
-    (sort (lambda (x y)
-	    (< (h x)
-	       (h y)))
-	  X)))
-
-(define sort-on!
-  (lambda (X heur)
-    (sort! (lambda (x y)
-	     (< (heur x)
-		(heur y)))
-	   X)))
-
 (define shuffle!
   (lambda (V)
     (let loop ((i (1- (vector-length V))))
@@ -170,29 +148,6 @@
 	(let ((j (random (1+ i))))
 	  (vector-swap! V i j))
 	(loop (1- i))))
-    'shuffled))
+    'done))
 
-(define shuffle-list
-  (lambda (lst)
-    (let ((vec (list->vector lst)))
-      (shuffle! vec)
-      (vector->list vec))))
-
-(define nub-eq
-  (lambda (X)
-    (let ((table (make-hash-table)))
-      (for-each (lambda (x)
-                  (hashtable-set! table x #t))
-                X)
-      (vector->list
-       (hashtable-keys table)))))
-
-(define nub-equal
-  (lambda (X)
-    (let ((table (make-hashtable equal-hash equal?)))
-      (for-each (lambda (x)
-                  (hashtable-set! table x #t))
-                X)
-      (vector->list
-       (hashtable-keys table)))))
 
