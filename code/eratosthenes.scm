@@ -14,8 +14,8 @@
 
 (define u8:prime?
   (lambda (B j)
-    (let-values (((c r) (u8:index j)))
-      (fxlogbit? r (bytevector-u8-ref B c)))))
+    (fxlogbit? (u8:row j)
+               (bytevector-u8-ref B (u8:column j)))))
 
 (define u8:clear
   (lambda (B j)

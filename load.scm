@@ -15,6 +15,7 @@
     "code/pseudo.scm"
     "code/continued-fraction.scm"
     "code/combinatorics.scm"
-    "code/lists.scm"))
+    "code/lists.scm"
+    "code/statistics.scm"))
 
 (for-each load source-files)

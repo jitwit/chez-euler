@@ -44,6 +44,9 @@
           drop-while
           group-with
 
+          ;; statistics
+          mean.stdev
+
 	  ;; streams
 	  s:cons
 	  ;; s:car just use car 
@@ -183,5 +186,6 @@
   (include "code/continued-fraction.scm")
   (include "code/combinatorics.scm")
   (include "code/lists.scm")
+  (include "code/statistics.scm")
   
   )
