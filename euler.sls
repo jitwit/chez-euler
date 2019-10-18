@@ -125,6 +125,7 @@
 	  digit-sum
 	  digits->integer
 	  pandigital?
+          palindrome?
 
 	  ;; generally useful procedures
 	  square

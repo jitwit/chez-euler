@@ -26,3 +26,8 @@
 (define pandigital?
   (lambda (digits)
     (andmap = (sort < digits) (iota (length digits)))))
+
+(define palindrome?
+  (lambda (N)
+    (let ((digits (digits N)))
+      (equal? digits (reverse digits)))))
