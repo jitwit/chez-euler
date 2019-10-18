@@ -25,8 +25,8 @@
   (if (null? X)
       '(())
       (let ((P-X (subsets (cdr X))))
-        (append (map (lambda (P)
-                       (cons (car X) P))
+        (append (map (lambda (U)
+                       (cons (car X) U))
                      P-X)
                 P-X))))
 

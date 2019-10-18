@@ -30,6 +30,7 @@
 	  delete-single
           count
           filter-map
+          subsets
           shuffle
 	  sort-on
 	  sort-on!
