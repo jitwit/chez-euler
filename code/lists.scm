@@ -16,10 +16,10 @@
 
 (define rank-on
   (lambda (X h)
-    (sort-on car
-             (map (lambda (x)
+    (sort-on (map (lambda (x)
                     (cons (h x) x))
-                  X))))
+                  X)
+             car)))
 
 (define sort-on!
   (lambda (X heur)
