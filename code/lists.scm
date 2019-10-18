@@ -14,6 +14,13 @@
 	       (h y)))
 	  X)))
 
+(define rank-on
+  (lambda (X h)
+    (sort-on car
+             (map (lambda (x)
+                    (cons (h x) x))
+                  X))))
+
 (define sort-on!
   (lambda (X heur)
     (sort! (lambda (x y)
@@ -94,3 +101,42 @@
                 X)
       (vector->list
        (hashtable-cells table)))))
+
+(define (suffixes X)
+  (if (null? X)
+      '(())
+      (cons X (suffixes (cdr X)))))
+
+(define (take-while predicate X)
+  (letrec ((aux (lambda (X)
+                  (if (and (pair? X)
+                           (predicate (car X)))
+                      (cons (car X) (aux (cdr X)))
+                      '()))))
+    (aux X)))
+
+(define (drop-while predicate X)
+  (letrec ((aux (lambda (X)
+                  (if (and (pair? X)
+                           (predicate (car X)))
+                      (aux (cdr X))
+                      X))))
+    (aux X)))
+
+(define (group-with equivalence X)
+  (letrec ((aux (lambda (X G g)
+                  (if (pair? X)
+                      (let ((x (car X)))
+                        (if (equivalence g x)
+                            (aux (cdr X)
+                                 (cons x G)
+                                 x)
+                            (cons (reverse G) (grp X))))
+                      (list (reverse G)))))
+           (grp (lambda (X)
+                  (if (pair? X)
+                      (aux (cdr X)
+                           (list (car X))
+                           (car X))
+                      '()))))
+    (grp X)))

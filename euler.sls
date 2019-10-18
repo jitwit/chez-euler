@@ -33,11 +33,16 @@
           subsets
           shuffle
 	  sort-on
+          rank-on
 	  sort-on!
           nub-eq
           nub-equal
           eq-histogram
           equal-histogram
+          suffixes
+          take-while
+          drop-while
+          group-with
 
 	  ;; streams
 	  s:cons
