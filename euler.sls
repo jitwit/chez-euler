@@ -34,6 +34,7 @@
           shuffle
 	  sort-on
           rank-on
+          maximums-on
 	  sort-on!
           nub-eq
           nub-equal

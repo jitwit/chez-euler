@@ -149,5 +149,3 @@
 	  (vector-swap! V i j))
 	(loop (1- i))))
     'done))
-
-

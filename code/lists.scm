@@ -7,6 +7,23 @@
 	  (else
 	   (cons (car lst) (delete-single item (cdr lst)))))))
 
+(define maximums-on
+  (lambda (X h)
+    (if (null? X)
+        '()
+        (let* ((ms (list (car X)))
+               (best (h (car X))))
+          (let loop ((X (cdr X)))
+            (if (null? X)
+                ms
+                (let ((curr (h (car X))))
+                  (cond ((= curr best)
+                         (push! (car X) ms))
+                        ((> curr best)
+                         (set! best curr)
+                         (set! ms (list (car X)))))
+                  (loop (cdr X)))))))))
+
 (define sort-on
   (lambda (X h)
     (sort (lambda (x y)
