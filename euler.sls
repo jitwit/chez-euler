@@ -34,6 +34,7 @@
           shuffle
 	  sort-on
           rank-on
+          maximum-on
           maximums-on
 	  sort-on!
           nub-eq
@@ -168,7 +169,11 @@
 	  vector-inc!
 	  vector-dec!
 	  vector-modify!
-	  vector-swap!)
+	  vector-swap!
+	  fxvector-inc!
+	  fxvector-dec!
+	  fxvector-modify!
+	  fxvector-swap!)
   
   (import (chezscheme)
 	  (patricia))

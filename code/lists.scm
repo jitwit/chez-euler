@@ -7,6 +7,18 @@
 	  (else
 	   (cons (car lst) (delete-single item (cdr lst)))))))
 
+(define maximum-on
+  (lambda (X h)
+    (let ((best (car X))
+          (h-best (h (car X))))
+      (for-all (lambda (x)
+                 (let ((h-x (h x)))
+                   (when (< h-best h-x)
+                     (set! h-best h-x)
+                     (set! best x))))
+               (cdr X))
+      (cons h-best best))))
+
 (define maximums-on
   (lambda (X h)
     (if (null? X)

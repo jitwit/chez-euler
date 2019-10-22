@@ -102,9 +102,21 @@
   (lambda (V j g)
     (vector-set! V j (g (vector-ref V j)))))
 
+(define fxvector-modify!
+  (lambda (V j g)
+    (fxvector-set! V j (g (fxvector-ref V j)))))
+
 (define vector-inc!
   (lambda (V j)
     (vector-modify! V j 1+)))
+
+(define fxvector-inc!
+  (lambda (V j)
+    (fxvector-modify! V j fx1+)))
+
+(define fxvector-dec!
+  (lambda (V j)
+    (fxvector-modify! V j fx1-)))
 
 (define vector-dec!
   (lambda (V j)
