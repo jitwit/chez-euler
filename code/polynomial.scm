@@ -1,4 +1,4 @@
-(import (prefix (chez patricia) t:))
+(import (prefix (patricia) t:))
 
 (define p:degree
   (lambda (P)
