@@ -46,9 +46,6 @@
           drop-while
           group-with
 
-          ;; statistics
-          mean.stdev
-
 	  ;; streams
 	  s:cons
 	  ;; s:car just use car 
@@ -159,6 +156,9 @@
 	  log-10
 	  merge-sorted
           display-ln
+
+          ;; memoization
+          defmemo
 	  
 	  ;; sugar
 	  for/range
@@ -179,6 +179,7 @@
 	  (patricia))
 
   (include "code/outils.scm")
+  (include "code/memoize.scm")
   (include "code/digits.scm")
   (include "code/eratosthenes.scm")
   (include "code/euclid.scm")

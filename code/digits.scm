@@ -1,6 +1,6 @@
 
 (define digit-fold
-  (lambda (x g N)
+  (lambda (g x N)
     (letrec ((aux (lambda (N y)
 		    (if (zero? N)
 			y
@@ -10,11 +10,11 @@
 
 (define digits
   (lambda (N)
-    (digit-fold '() cons N)))
+    (digit-fold cons '() N)))
 
 (define digit-sum
   (lambda (N)
-    (digit-fold 0 + N)))
+    (digit-fold fx+ 0 N)))
 
 (define digits->integer
   (lambda (digs)
