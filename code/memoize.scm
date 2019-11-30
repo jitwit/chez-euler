@@ -2,7 +2,7 @@
 
 (define-syntax defmemo
   (syntax-rules (<< >>)
-    ((_ (f x) <@ table @> body ...)
+    ((_ (f x) << table >> body ...)
      (define f
        (let ((mem table)
              (g (lambda (x) body ...)))

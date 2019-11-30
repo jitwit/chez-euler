@@ -58,6 +58,9 @@
     (lambda (x y)
       (f y x))))
 
+(define (identity x)
+  x)
+
 (define const
   (lambda (x)
     (lambda y
@@ -161,3 +164,14 @@
 	  (vector-swap! V i j))
 	(loop (1- i))))
     'done))
+
+(define (ibinary-search f x a b)
+  (let loop ((a a) (b b))
+    (if (< b a)
+        #f
+        (let ((m (iaverage a b)))
+          (let ((y (f m)))
+            (cond ((< x y) (loop a (1- m)))
+                  ((> x y) (loop (1+ m) b))
+                  (else m)))))))
+

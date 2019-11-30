@@ -144,6 +144,7 @@
           square?
 	  cube
 	  compose
+          identity
 	  curry
 	  flip
 	  const
@@ -156,6 +157,7 @@
 	  log-10
 	  merge-sorted
           display-ln
+          ibinary-search
 
           ;; memoization
           defmemo
