@@ -69,7 +69,7 @@
   (lambda (N)
     (fold-right (lambda (x T)
 		  (insert-with + x 1 T))
-		empty-tree
+		empty
 		(factorize N))))
 
 (define factorize-with-multiplicity ;; depends on patricia trees

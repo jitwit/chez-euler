@@ -23,13 +23,13 @@
 
 (define p:+
   (lambda Ps
-    (fold-right p:add t:empty-tree Ps)))
+    (fold-right p:add t:empty Ps)))
 
 (define p:multiply
   (lambda (P Q)
     (t:tree-ifold-right (lambda (n k R)
 			  (p:add R (p:shift/scale Q n k)))
-			t:empty-tree
+			t:empty
 			P)))
 
 (define p:*
@@ -55,14 +55,14 @@
   (lambda (P d)
     (t:tree-ifold-right (lambda (n k Q)
 			  (t:insert (+ n d) k Q))
-			t:empty-tree
+			t:empty
 			P)))
 
 (define p:shift/scale
   (lambda (P d s)
     (t:tree-ifold-right (lambda (n k Q)
 			  (t:insert (+ n d) (* s k) Q))
-			t:empty-tree
+			t:empty
 			P)))
 
 (define not-horner
