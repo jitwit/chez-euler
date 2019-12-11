@@ -23,8 +23,8 @@
   (lambda (X h)
     (if (null? X)
         '()
-        (let* ((ms (list (car X)))
-               (best (h (car X))))
+        (let ((ms (list (car X)))
+              (best (h (car X))))
           (let loop ((X (cdr X)))
             (if (null? X)
                 ms
@@ -37,24 +37,23 @@
                   (loop (cdr X)))))))))
 
 (define sort-on
-  (lambda (X h)
+  (lambda (heuristic X)
     (sort (lambda (x y)
-	    (< (h x)
-	       (h y)))
+	    (< (heuristic x)
+	       (heuristic y)))
 	  X)))
 
 (define rank-on
-  (lambda (X h)
-    (sort-on (map (lambda (x)
-                    (cons (h x) x))
-                  X)
-             car)))
+  (lambda (heuristic X)
+    (sort-on car (map (lambda (x)
+                        (cons (heuristic x) x))
+                      X))))
 
 (define sort-on!
-  (lambda (X heur)
+  (lambda (heuristic X)
     (sort! (lambda (x y)
-	     (< (heur x)
-		(heur y)))
+	     (< (heuristic x)
+		(heuristic y)))
 	   X)))
 
 (define subsets
@@ -176,3 +175,14 @@
                              (car X))
                         '()))))
       (grp X))))
+
+(define (intersperse sep xs)
+  (if (or (null? xs)
+          (null? (cdr xs)))
+      xs
+      (cdr
+       (fold-right (lambda (x y)
+                     (cons* sep x y))
+                   '()
+                   xs))))
+

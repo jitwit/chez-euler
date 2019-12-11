@@ -1,40 +1,6 @@
+# -*- mode: org -*-
+
 #+title: Chez Euler
 
-  Varoius numerical procedures I've used for solving Project Euler
-  problems.
-
-#+begin_src scheme :exports both :session euler
-(import (euler))
-(map string->symbol
-     (sort string<?
-           (map symbol->string
-                 (library-exports '(euler)))))
-#+end_src 
-
-#+RESULTS:
-#+begin_example
-(*machine-epsilon* *primes* =~ Z/nZ* _end _start _x _y
- algorithm-P algorithm-T average ax+by=gcd binomials
- blum-blum-shub cf:sqrt chinese-remainder-theorem
- closed-segment-intersection coefficients->polynomial
- combinations compose const convergents coprime? crt-system
- cube curry dec! delete-single digit-fold digit-sum digits
- digits->integer display-ln divides? divisors factorials
- factorize factorize-with-multiplicity flip for/range
- g:convergents horner iaverage inc! inverse-modulo log-10
- log-2 log-base merge-sorted moebius-sieve nub-eq nub-equal
- open-segment-intersection p:* p:+ p:^ p:coefficient
- p:constant p:degree p:scale p:shift p:shift/scale
- p:singleton pandigital? permutations point pop! prime?
- primes primes-in-range push! s:accelerate s:accumulate
- s:append s:bind s:cdr s:choose s:chunks s:cons s:constant
- s:convolve s:cos s:cycle s:derive s:drop s:drop-while s:e^x
- s:enumerate s:euler-transform s:factorial s:filter s:find
- s:integrate s:interleave s:iter s:join s:map s:merge-sorted
- s:negate s:palindromes s:pi s:ref s:scale s:sin s:square
- s:tails s:take s:take-while segment segment-between sgn
- shuffle! shuffle-list sort-on sort-on! square square?
- totient totient-sieve vector-dec! vector-inc! vector-modify!
- vector-swap!)
-#+end_example
+  Varoius procedures for solving Project Euler type problems.
 

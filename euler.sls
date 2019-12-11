@@ -1,5 +1,7 @@
+#!chezscheme
+
 (eval-when (compile)
-  (optimize-level 3))
+           (optimize-level 3))
 
 (library (euler)
   (export primes     ;; sieves
@@ -45,6 +47,7 @@
           take-while
           drop-while
           group-with
+          intersperse
 
 	  ;; streams
 	  s:cons
@@ -138,6 +141,7 @@
 	  digits->integer
 	  pandigital?
           palindrome?
+          nth-digit
 
 	  ;; generally useful procedures
 	  square
@@ -151,19 +155,21 @@
 	  *machine-epsilon*
 	  =~
 	  average
-	  iaverage
+	  discrete-average
 	  log-base
 	  log-2
 	  log-10
 	  merge-sorted
           display-ln
-          ibinary-search
+          pi/4
+          pi/2
+          pi
+          2pi
 
           ;; memoization
           defmemo
 	  
 	  ;; sugar
-	  for/range
 	  push!
 	  pop!
 	  inc!

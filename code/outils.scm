@@ -26,7 +26,7 @@
   (lambda (a b)
     (/ (+ a b) 2)))
 
-(define iaverage
+(define discrete-average
   (lambda (a b)
     (ash (+ a b) -1)))
 
@@ -66,26 +66,19 @@
     (lambda y
       x)))
 
-(define-syntax for/range
-  (lambda (x)
-    (syntax-case x ()
-      ((_ x a b e ...)
-       #'(let loop ((x a))
-	   (when (< x b)
-	     e ...
-	     (loop (1+ x))))))))
-
 (define-syntax inc!
-  (lambda (x)
-    (syntax-case x ()
-      ((_ x)
-       #'(set! x (1+ x))))))
+  (syntax-rules ()
+    ((_ x)
+     (set! x (1+ x)))
+    ((_ x dx)
+     (set! x (+ x dx)))))
 
 (define-syntax dec!
-  (lambda (x)
-    (syntax-case x ()
-      ((_ x)
-       #'(set! x (1- x))))))
+  (syntax-rules ()
+    ((_ x)
+     (set! x (1- x)))
+    ((_ x dx)
+     (set! x (- x dx)))))
 
 (define-syntax push!
   (lambda (x)
@@ -165,13 +158,14 @@
 	(loop (1- i))))
     'done))
 
-(define (ibinary-search f x a b)
-  (let loop ((a a) (b b))
-    (if (< b a)
-        #f
-        (let ((m (iaverage a b)))
-          (let ((y (f m)))
-            (cond ((< x y) (loop a (1- m)))
-                  ((> x y) (loop (1+ m) b))
-                  (else m)))))))
+(define pi/4
+  (/ pi/2 2))
 
+(define pi/2
+  (acos 0))
+
+(define pi
+  (* 2 pi/2))
+
+(define 2pi
+  (* 4 pi/2))

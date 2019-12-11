@@ -31,3 +31,6 @@
   (lambda (N)
     (let ((digits (digits N)))
       (equal? digits (reverse digits)))))
+
+(define (nth-digit n x)
+  (fxmod (quotient x (expt 10 (fx1+ n))) 10))

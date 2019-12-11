@@ -1,5 +1,4 @@
 
-
 (define-syntax defmemo
   (syntax-rules (<< >>)
     ((_ (f x) << table >> body ...)
