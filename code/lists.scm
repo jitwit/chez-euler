@@ -66,6 +66,19 @@
                        P-X)
                   P-X)))))
 
+(define cartesian-product
+  (lambda (X)
+    (if (null? X)
+        '(())
+        (let ((xs (cartesian-product (cdr X))))
+          (fold-right append
+                      '()
+                      (map (lambda (x)
+                             (map (lambda (xs)
+                                    (cons x xs))
+                                  xs))
+                           (car X)))))))
+
 (define count
   (lambda (predicate X)
     (fold-left (lambda (cnt x)
@@ -176,13 +189,14 @@
                         '()))))
       (grp X))))
 
-(define (intersperse sep xs)
-  (if (or (null? xs)
-          (null? (cdr xs)))
-      xs
-      (cdr
-       (fold-right (lambda (x y)
-                     (cons* sep x y))
-                   '()
-                   xs))))
+(define intersperse
+  (lambda (sep xs)
+    (if (or (null? xs)
+            (null? (cdr xs)))
+        xs
+        (cdr
+         (fold-right (lambda (x y)
+                       (cons* sep x y))
+                     '()
+                     xs)))))
 

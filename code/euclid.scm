@@ -20,7 +20,7 @@
 
 (define divides?
   (lambda (d x)
-    (= 0 (modulo x d))))
+    (zero? (modulo x d))))
 
 (define inverse-modulo
   (lambda (x m)
@@ -34,17 +34,16 @@
     (let-values (((m1 m2 gcd) (apply values (ax+by=gcd n1 n2))))
       (when (not (= gcd 1))
 	(error 'crt "modulii not pairwise coprime" n1 n2))
-      (mod (+ (* a1 m2 n2)
-	      (* a2 m1 n1))
-	   (* n1 n2)))))
+      (mod (+ (* a1 m2 n2) (* a2 m1 n1))
+           (* n1 n2)))))
 
 (define crt-system
   (lambda (eqns)
     (fold-right (lambda (an1 an2)
-		  (let* ((a1 (car an1))
-			 (a2 (car an2))
-			 (n1 (cdr an1))
-			 (n2 (cdr an2)))
+		  (let ((a1 (car an1))
+                        (a2 (car an2))
+                        (n1 (cdr an1))
+                        (n2 (cdr an2)))
 		    (cons (chinese-remainder-theorem a1 n1 a2 n2)
 			  (* n1 n2))))
 		(car eqns)

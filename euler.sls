@@ -33,6 +33,7 @@
           count
           filter-map
           subsets
+          cartesian-product
           shuffle
 	  sort-on
           rank-on
