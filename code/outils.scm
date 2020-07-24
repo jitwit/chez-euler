@@ -158,14 +158,20 @@
 	(loop (1- i))))
     'done))
 
-(define pi/4
-  (/ pi/2 2))
-
 (define pi/2
   (acos 0))
+
+(define pi/4
+  (/ pi/2 2))
 
 (define pi
   (* 2 pi/2))
 
 (define 2pi
   (* 4 pi/2))
+
+(define sgn
+  (lambda (n)
+    (cond ((> n 0) 1)
+	  ((< n 0) -1)
+	  (else 0))))

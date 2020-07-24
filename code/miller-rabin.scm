@@ -14,7 +14,6 @@
 	(cond ((= k trials) 'probable-prime)
 	      ((or (= x n) (= x 1)) (witness (1+ k)))
 	      (else (loop k (1- r) x)))))
-    ;;      (random-seed 1)
     (cond ((> p 3) (witness 0))
 	  ((= p 3) 'prime)
 	  ((= p 2) 'prime)
@@ -22,10 +21,8 @@
 
 (define prime?
   (lambda (p)
-    (case p
-      ((2 3 5 7) #t)
-      (else (not (or (even? p)
-		     (divides? 3 p)
-		     (divides? 5 p)
-		     (divides? 7 p)
-		     (eq? 'composite (miller-rabin p))))))))
+    (not (or (divides? 2 p)
+             (divides? 3 p)
+             (divides? 5 p)
+             (divides? 7 p)
+             (eq? 'composite (miller-rabin p))))))

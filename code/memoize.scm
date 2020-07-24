@@ -11,6 +11,16 @@
                  (let ((f-y (g y)))
                    (hashtable-set! mem y f-y)
                    f-y)))))))
+    ((_ (f x y ...) << table >> body ...)
+     (define f
+       (let ((mem table)
+             (g (lambda (x y ...) body ...)))
+         (lambda xy
+           (let ((f-xy (hashtable-ref mem xy #f)))
+             (or f-xy
+                 (let ((f-xy (apply g xy)))
+                   (hashtable-set! mem xy f-xy)
+                   f-xy)))))))
     ((_ (f x) body ...)
      (define f
        (let ((mem (make-hash-table))

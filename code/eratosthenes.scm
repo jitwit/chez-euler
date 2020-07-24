@@ -60,8 +60,7 @@
 (define primes
   (lambda (N)
     (cond ((> N 4) (run-eratosthenes N))
-          (else (filter (lambda (p)
-                          (<= p N))
+          (else (filter (lambda (p) (<= p N))
                         '(2 3))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -146,12 +145,6 @@
 ;; moebius(n) = { 0, n divisible by a square                                  ;;
 ;;              { (-1)^k, n has k distinct prime divisors                     ;;
 
-(define sgn
-  (lambda (n)
-    (cond ((> n 0) 1)
-	  ((< n 0) -1)
-	  (else 0))))
-
 ;; Lioen and Van de Lune sieve:
 ;; for n = 1 to N: mu = 1
 ;; for p <= root N: for multiples of p, mu = -p * mu
@@ -171,17 +164,17 @@
 	(M2 (fx+ j p^2) p^2)))
     (define (M3 j)
       (unless (fx> j n)
-	(let* ((m-j (fxvector-ref M j))
-	       (s-j (sgn m-j)))
-	  (if (fx= (fxabs m-j) j)
-	      (fxvector-set! M j s-j)
-	      (fxvector-set! M j (fx- s-j))))
+	(let ((m-j (fxvector-ref M j)))
+          (let ((s-j (sgn m-j)))
+            (if (fx= (fxabs m-j) j)
+                (fxvector-set! M j s-j)
+                (fxvector-set! M j (fx- s-j)))))
 	(M3 (fx1+ j))))
-    (for-all (lambda (p)
-               (M1 p p)
-               (let ((p^2 (fx* p p)))
-                 (M2 p^2 p^2)))
-             (primes (isqrt n)))
+    (for-each (lambda (p)
+                (M1 p p)
+                (let ((p^2 (fx* p p)))
+                  (M2 p^2 p^2)))
+              (primes (isqrt n)))
     (fxvector-set! M 0 0)
     (M3 1)
     M))
