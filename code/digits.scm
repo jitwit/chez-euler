@@ -1,12 +1,10 @@
-
 (define digit-fold
   (lambda (g x N)
-    (letrec ((aux (lambda (N y)
-		    (if (zero? N)
-			y
-			(aux (quotient N 10)
-			     (g (modulo N 10) y))))))
-      (aux N x))))
+    (let aux ((N N) (y x))
+      (if (zero? N)
+          y
+          (aux (quotient N 10)
+               (g (modulo N 10) y))))))
 
 (define digits
   (lambda (N)
@@ -25,7 +23,7 @@
 
 (define pandigital?
   (lambda (digits)
-    (andmap = (sort < digits) (iota (length digits)))))
+    (andmap fx= (sort fx< digits) (iota (length digits)))))
 
 (define palindrome?
   (lambda (N)

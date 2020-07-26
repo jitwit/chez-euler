@@ -8,6 +8,7 @@
     "code/euclid.scm"
     "code/miller-rabin.scm"
     "code/pollard.scm"
+    "code/jacobi.scm"
     "code/lazy.scm"
     "code/sequences.scm"
     "code/polynomial.scm"
