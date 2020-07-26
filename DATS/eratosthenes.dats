@@ -1,11 +1,7 @@
 #include "share/atspre_staload.hats"
 staload "./../SATS/eratosthenes.sats"
-staload "prelude/basics_pre.sats"
-staload "prelude/SATS/arith_prf.sats"
-staload "prelude/SATS/integer.sats"
 staload "libats/SATS/bitvec.sats"
 staload "libats/DATS/bitvec.dats"
-staload UN = "prelude/SATS/unsafe.sats"
 
 primplmnt sqrt_lte{j} () = sif j > 0
 then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
