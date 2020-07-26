@@ -15,9 +15,8 @@ primplmnt sqr_gez {j} () =
 sif j < 0 then mul_lte_lte_gte{j,j} ()
 else mul_gte_gte_gte{j,j} ((* duh *))
 
-fun{} eratosthenes{N:nat | 9 < N } (N:int(N)) : void = 
+fun{} eratosthenes{N:nat | 9 < N } (N:int(N)) : [pi:nat] list_vt(int,pi) =
 let var B = bitvecptr_make_full(N)
-    var res:list_vt(int,0) = nil()
     var j:int
     var b_i:int
     fun inner{j,N,dj:nat | 0 < dj && j < N}.<N-j>.
@@ -30,13 +29,19 @@ let var B = bitvecptr_make_full(N)
             prval duh = sqr_gez{j}()
             val _ = inner(j*j,j+j,N,B)
         in if (j+2)*(j+2) < N then outer(j+2,N,B) end
-    fun final{j,N:nat | j < N} .<N-j>.
-        (j:int(j), N:int(N), B : !bitvecptr(N) >> _) : void =
-        let val _ = $extfcall(void,"printf","in %d %d\n",j,j%2 * B[j])
-        in if 1+j < N then final(1+j,N,B) end
-//    val _ = outer (3,N,B)
-in outer(3,N,B); final(0,N,B); bitvecptr_free(B)
-end
+    fun final{j,N,k:nat | j < N} .<j>.
+        (j:int(j), N:int(N), B : !bitvecptr(N) >> _, primes : list_vt(int,k))
+        : listGte_vt(int,k) =
+        case j-1 >= 2 of
+        | true =>
+          if 1 = B[j] 
+          then final(j-2,N,B,list_vt_cons(j,primes))
+          else final(j-2,N,B,primes)
+        | false => primes
+    val _ = outer (3,N,B)
+    val primes = final(N-1,N,B,list_vt_nil())
+    val _ = bitvecptr_free(B)
+in primes end
 //   for (i := 3, b_i := B[i];i*i < N;i := i + 2) begin
 //   if 1 = [i] then $extfcall(void,"printf","%3d : %d\n",i,b_i)
    // print(i); ((" ":string)); print(j)
@@ -44,6 +49,8 @@ end
 //   end; B
 
 implement main0 () = {
-  var _ = eratosthenes (90)
+  val primes = eratosthenes (90)
+  val _ = print_list_vt(primes)
+  val _ = list_vt_free(primes) 
 }
 
