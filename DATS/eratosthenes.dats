@@ -11,19 +11,31 @@ primplmnt sqrt_lte{j} () = sif j > 0
 then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
 else let prval EQINT () = eqint_make{j,0} () in (* 0<=0*0 *) end
 primplmnt sqrt_bound {j,N} () = sqrt_lte{j} ()
+primplmnt sqr_gtz {j} () = mul_gte_gte_gte{j,j} ((* duh *))
 
-fun{} eratosthenes{N:nat | 9 < N} (N:int(N)): bitvecptr(N) = 
+fun{} eratosthenes{N:nat | 9 < N } (N:int(N)) : void = 
 let var B = bitvecptr_make_full(N)
     var j:int
     var b_i:int
-    fun inner{j,N:nat | j < N}
-        (j:int(j), N:int(N), B: &bitvecptr(N) >> bitvecptr(N)) : void = ()
-    fun outer{j,N:nat | j*j < N; 9 < N}
-        (j:int(j), N:int(N), B: &bitvecptr(N) >> bitvecptr(N)) : void =
+    fun inner{j,N,dj:nat | 0 < dj && j < N}.<N-j>.
+        (j:int(j),dj:int(dj), N:int(N), B: !bitvecptr(N) >> _) : void =
+        let val _ = B[j] := 0
+        in if j+dj < N then inner(j+dj,dj,N,B) end
+    fun outer{j,N:nat | 0 < j-2; j*j < N; 9 < N }.<N-j*j>.
+        (j:int(j), N:int(N), B: !bitvecptr(N) >> _) : void =
         let prval prf = sqrt_bound{j,N} ()
-            val _ = if 1 = B[j] then inner(j*j,N,B)
+            prval duh = sqr_gtz{j}()
+            val _ = inner(j*j,j+j,N,B)
         in if (j+2)*(j+2) < N then outer(j+2,N,B) end
-in B[0] := 0; B[1] := 0; outer(3,N,B); B end
+    fun final{j,N:nat | j < N} .<N-j>.
+        (j:int(j), N:int(N), B : !bitvecptr(N) >> _) : void =
+        let val _ = $extfcall(void,"printf","in %d %d\n",j,j%2 * B[j])
+        in if 1+j < N then final(1+j,N,B) end
+//    val _ = outer (3,N,B)
+in outer(3,N,B); final(0,N,B);
+
+   bitvecptr_free(B)
+end
 //   for (i := 3, b_i := B[i];i*i < N;i := i + 2) begin
 //   if 1 = [i] then $extfcall(void,"printf","%3d : %d\n",i,b_i)
    // print(i); ((" ":string)); print(j)
@@ -31,12 +43,6 @@ in B[0] := 0; B[1] := 0; outer(3,N,B); B end
 //   end; B
 
 implement main0 () = {
-  var B = eratosthenes (30)
-  var j:int
-  var b_j:int
-  val _ = for (j := 0, b_j := B[j]; j < 30; j := j + 1)
-           begin $extfcall(void,"printf","%3d : %d\n",j,b_j) end
-  val _ = bitvecptr_free(B)
-
+  var _ = eratosthenes (90)
 }
 
