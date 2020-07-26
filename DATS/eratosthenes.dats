@@ -14,11 +14,12 @@ else mul_gte_gte_gte{j,j} ((* duh *))
 
 fun{} eratosthenes{N:nat|2 <= N} (N:int(N)) : [pi_N:nat] list_vt(int,pi_N) =
 let val B = bitvecptr_make_full(N)
-    fun inner{j,N,dj:nat | 0 < dj; j < N; 3 <= j}.<N-j>.
+    fun inner{j,N,dj:nat | 0 < dj; j < N}.<N-j>.
         (j:int(j),dj:int(dj), N:int(N), B: !bitvecptr(N) >> _) : void =
         let val _ = B[j] := 0
         in if j+dj < N then inner(j+dj,dj,N,B) end
-    fun outer{j,N:nat | 3 <= j; j*j < N; 9 < N }.<N-j*j>.
+        (* need j positive for termination *)
+    fun outer{j,N:nat | 0 < j; j*j < N }.<N-j*j>.
         (j:int(j), N:int(N), B: !bitvecptr(N) >> _) : void =
         let prval _ = sqrt_lte{j} ((* help solve j*j < N => j < N *))
             val _ = if int2bool0(B[j]) then inner(j*j,j+j,N,B)
