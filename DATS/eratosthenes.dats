@@ -6,6 +6,7 @@ staload "libats/DATS/bitvec.dats"
 primplmnt sqrt_lte{j} () = sif j > 0
 then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
 else let prval EQINT () = eqint_make{j,0} () in (* 0<=0*0 *) end
+
 primplmnt sqrt_bound {j,N} () = sqrt_lte{j} ()
 primplmnt sqr_gez {j} () = 
 sif j < 0 then mul_lte_lte_gte{j,j} ()
@@ -19,17 +20,14 @@ let val B = bitvecptr_make_full(1+(N-3/2))
         in if j+dj < N then inner(j+dj,dj,N,B) end
     fun outer{j,N:nat | 3 <= j; j*j < N; 9 < N }.<N-j*j>.
         (j:int(j), N:int(N), B: !bitvecptr(N) >> _) : void =
-        (* seems to be fine now, but before complained about constraint j < N *)
-        let prval prf = sqrt_bound{j,N} () 
-            prval duh = sqr_gez{j}()
-            prval huh = sqrt_lte{j} ()
-            val _ = inner(j*j,j+j,N,B)
+        let prval _ = sqrt_lte{j} ()
+            val _ = if int2bool0(B[(j-3)/2]) then inner(j*j,j+j,N,B)
         in if (j+2)*(j+2) < N then outer(j+2,N,B) end
     fun final{j,N,k:nat | j < N} .<j>.
         (j:int(j), B : !bitvecptr(N) >> _, primes : list_vt(int,k))
         : listGte_vt(int,k) =
         if j-1 >= 2
-        then if 1 = B[(j-3)/2]
+        then if int2bool0(B[(j-3)/2])
              then final(j-2,B,list_vt_cons(j,primes))
              else final(j-2,B,primes)
         else list_vt_cons(2,primes)
@@ -39,7 +37,7 @@ let val B = bitvecptr_make_full(1+(N-3/2))
 in primes end
 
 implement main0 () = {
-  var primes = eratosthenes (10000000)
+  var primes = eratosthenes (2000000)
   val _ = println!(length(primes))
   val _ = list_vt_free(primes)
 //  val _ = primes := list_vt_reverse(primes)
