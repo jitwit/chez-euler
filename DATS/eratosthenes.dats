@@ -24,20 +24,22 @@ let val B = bitvecptr_make_full(N)
             val _ = inner(j*j,j+j,N,B)
         in if (j+2)*(j+2) < N then outer(j+2,N,B) end
     fun final{j,N,k:nat | j < N} .<j>.
-        (j:int(j), N:int(N), B : !bitvecptr(N) >> _, primes : list_vt(int,k))
+        (j:int(j), B : !bitvecptr(N) >> _, primes : list_vt(int,k))
         : listGte_vt(int,k) =
         if j-1 >= 2
         then if 1 = B[j]
-             then final(j-2,N,B,list_vt_cons(j,primes))
-             else final(j-2,N,B,primes)
+             then final(j-2,B,list_vt_cons(j,primes))
+             else final(j-2,B,primes)
         else list_vt_cons(2,primes)
     val _ = outer (3,N,B)
-    val primes = final(N-1,N,B,list_vt_nil())
+    val primes = final(N-1,B,list_vt_nil())
     val _ = bitvecptr_free(B)
 in primes end
 
 implement main0 () = {
   var primes = eratosthenes (100000)
-  val _ = println!(list_vt_length(primes))
-  val _ = list_vt_free(primes) 
+  val _ = primes := list_vt_reverse(primes)
+  val _ = case primes of
+  | ~list_vt_cons(p,ps) => (println!(p); list_vt_free(ps))
+  | ~list_vt_nil() => println!("oops")
 }
