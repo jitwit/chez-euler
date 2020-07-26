@@ -6,6 +6,12 @@ staload UN = "prelude/SATS/unsafe.sats"
 (* {n,m:pos} (n:int(n),m:int(m)): [r:nat | m>r] int(r) =  *)
 implement rem_gez (n,m) = $UN.cast(n%m)
 
+primplmnt div_tra{x,y,z,a,b} (pfxy, pfyz) =
+let prval p1 = div_elim pfxy
+    prval p2 = div_elim pfyz
+in p2 end
+
+
 (* {m,n:pos} (m:int(m),n:int(n)) : [r:pos] int(r) *)
 implement euclid (m,n) =
 let fun lp {m,n:nat | m > 0}.<n>. (m:int(m),n:int(n)) : [r:pos] int(r) = 
