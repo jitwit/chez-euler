@@ -12,34 +12,23 @@ then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
 else let prval EQINT () = eqint_make{j,0} () in (* 0<=0*0 *) end
 primplmnt sqrt_bound {j,N} () = sqrt_lte{j} ()
 
-fun{} clear_from{i,N:nat | N > 3} (i: !int >> _,N:int(N), B : &bitvecptr(N) >> _): void = 
-()
-
 fun{} eratosthenes{N:nat | 9 < N} (N:int(N)): bitvecptr(N) = 
-let
-    var B = bitvecptr_make_full(N)
-    var i:int
+let var B = bitvecptr_make_full(N)
     var j:int
     var b_i:int
+    fun inner{j,N:nat | j < N}
+        (j:int(j), N:int(N), B: &bitvecptr(N) >> bitvecptr(N)) : void = ()
     fun outer{j,N:nat | j*j < N; 9 < N}
-        (j:int(j), N:int(N), B: &bitvecptr(N) >> _) : void =
-        let val k = g1ofg0(j*j)
-            val _j = j+2
-            prval prf = sqrt_bound{j,N} ()
-            val _ = if 1 = B[j] then if k < N then () // inner(k,j+j,N,B)
-        in if _j * _j < N then if _j < N then outer(_j,N,B) end
-in B[0] := 0; B[1] := 0;
-   outer(3,N,B);
+        (j:int(j), N:int(N), B: &bitvecptr(N) >> bitvecptr(N)) : void =
+        let prval prf = sqrt_bound{j,N} ()
+            val _ = if 1 = B[j] then inner(j*j,N,B)
+        in if (j+2)*(j+2) < N then outer(j+2,N,B) end
+in B[0] := 0; B[1] := 0; outer(3,N,B); B end
 //   for (i := 3, b_i := B[i];i*i < N;i := i + 2) begin
 //   if 1 = [i] then $extfcall(void,"printf","%3d : %d\n",i,b_i)
    // print(i); ((" ":string)); print(j)
 //     j := bitvecptr_get_at(bits,i);
 //   end; B
-   B
-end
-
-// val _ = bitvecptr_free(B)
-// val _ = println!(B[0],B[1],B[2])
 
 implement main0 () = {
   var B = eratosthenes (30)
