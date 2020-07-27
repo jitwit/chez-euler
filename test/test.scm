@@ -4,7 +4,7 @@
   (syntax-rules ()
     ((_ name test ...)
      (begin
-       (newline) (display "checking ") (display name) (display "... ") (newline)
+       (newline) (display "checking ") (display name) (display "...") (newline)
        (begin (display (quote test)) (assert test) (newline))
        ...
        (display "...seems fine") (newline)))))
