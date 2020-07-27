@@ -10,8 +10,8 @@
 
 (define ax+by=gcd
   (lambda (x y)
-    (cond ((zero? x) (list 1 0 y))
-	  ((zero? y) (list 0 1 x))
+    (cond ((zero? x) (list 0 1 y))
+	  ((zero? y) (list 1 0 x))
 	  (else (algorithm-E x y)))))
 
 (define coprime?
