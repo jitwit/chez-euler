@@ -2,10 +2,10 @@ package = chez-euler
 version = "0.1"
 chez = scheme
 
-build:
+build :
 	echo "(compile-library \"euler.sls\"))" | ${chez} -q
 
-test: build
+check : build
 	echo "(for-each load '(\"euler.so\" \"test/test.scm\"))" | ${chez} -q
 
 clean:
