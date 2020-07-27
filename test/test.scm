@@ -42,6 +42,9 @@
 			    (primes 1000)))
 	    (assert (equal? '(2 2 5 5) (factorize 100))))
 
+(test-group 'prime?
+	    (assert (equal? (primes 1000) (filter prime? (iota 1000)))))
+
 (test-group 'permutations
 	    (assert (= 1 (length (permutations (iota 0)))))
 	    (assert (= 1 (length (permutations (iota 1)))))

@@ -21,8 +21,10 @@
 
 (define prime?
   (lambda (p)
-    (not (or (divides? 2 p)
-             (divides? 3 p)
-             (divides? 5 p)
-             (divides? 7 p)
-             (eq? 'composite (miller-rabin p))))))
+    (case p
+      ((2 3 5 7) #t)
+      (else (not (or (divides? 2 p)
+		     (divides? 3 p)
+		     (divides? 5 p)
+		     (divides? 7 p)
+		     (eq? 'composite (miller-rabin p))))))))
