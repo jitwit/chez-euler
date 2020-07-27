@@ -3,14 +3,10 @@ staload "./../SATS/eratosthenes.sats"
 staload "libats/SATS/bitvec.sats"
 staload "libats/DATS/bitvec.dats"
 
-primplmnt sqrt_lte{j} () = sif j > 0
+primplmnt sqrt_lte{j} () = 
+sif j > 0
 then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
-else let prval EQINT () = eqint_make{j,0} () in (* 0<=0*0 *) end
-
-primplmnt sqrt_bound {j,N} () = sqrt_lte{j} ()
-primplmnt sqr_gez {j} () = 
-sif j < 0 then mul_lte_lte_gte{j,j} ()
-else mul_gte_gte_gte{j,j} ((* duh *))
+else let prval EQINT () = eqint_make{j,0} () in ((* 0<=0*0 *)) end
 
 fun{} eratosthenes{N:nat|2 <= N} (N:int(N)) : [pi_N:nat] list_vt(int,pi_N) =
 let val B = bitvecptr_make_full(N)
@@ -38,11 +34,12 @@ let val B = bitvecptr_make_full(N)
 in primes end
 
 implement main0 () = {
-  val primes = eratosthenes (2000000)
+  val primes = eratosthenes (200000000)
   val _ = println!(length(primes))
   val _ = list_vt_free(primes)
-//  val _ = primes := list_vt_reverse(primes)
-//  val _ = case primes of
-//  | ~list_vt_cons(p,ps) => (println!(p); list_vt_free(ps))
-//  | ~list_vt_nil() => println!("oops")
 }
+
+primplmnt sqrt_bound {j,N} () = sqrt_lte{j} ()
+primplmnt sqr_gez {j} () = 
+sif j < 0 then mul_lte_lte_gte{j,j} ()
+else mul_gte_gte_gte{j,j} ((* duh *))

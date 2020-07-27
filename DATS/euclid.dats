@@ -6,11 +6,6 @@ staload UN = "prelude/SATS/unsafe.sats"
 (* {n,m:pos} (n:int(n),m:int(m)): [r:nat | m>r] int(r) =  *)
 implement rem_gez (n,m) = $UN.cast(n%m)
 
-primplmnt div_tra{x,y,z,a,b} (pfxy, pfyz) =
-let prval p1 = div_elim pfxy
-    prval p2 = div_elim pfyz
-in p2 end
-
 
 (* {m,n:pos} (m:int(m),n:int(n)) : [r:pos] int(r) *)
 implement euclid (m,n) =
@@ -25,3 +20,16 @@ let fun lp (m,n,a,_a,b,_b:int) : (int,int,int) =
      ,_b,b\g0int_sub(q\g0int_mul _b)) end
  in lp (m,n,0,1,1,0) end
 
+primplmnt algorithm_E (m,n) = 
+let prfun lp{a,b,_a,_b:int}{m,n,c,d:pos | a*m+b*n == d; _a*m+_b*n == c}.<d>.
+    (m:int(m),n:int(n),c:int(c),d:int(d),a:int(a),b:int(b),_a:int(_a),_b:int(_b)) : 
+    [a,b,r:int | a*m + b*n == r; r > 0] (int(a),int(b),int(r))
+    = let
+          val q = c/d
+          val r   =  c-q*d
+          prval _ = eqint_make{m*(_a-q*a)+n*(_b-q*b),c-q*d} ()
+       in if r > 0
+          then lp(m,n,d,r,_a-q*a,_b-q*b,a,b)
+          else (a,b,d)
+       end
+in lp(m,n,m,n,0,1,1,0) end
