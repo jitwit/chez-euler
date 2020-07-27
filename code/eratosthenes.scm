@@ -20,8 +20,7 @@
 (define u8:clear
   (lambda (B j)
     (let-values (((c r) (u8:index j)))
-      (let ((x (bytevector-u8-ref B c)))
-	(bytevector-u8-set! B c (fxlogbit0 r x))))))
+      (bytevector-u8-set! B c (fxlogbit0 r (bytevector-u8-ref B c))))))
 
 (define u8:mark
   (lambda (B j)

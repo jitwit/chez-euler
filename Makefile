@@ -3,7 +3,7 @@ version = "0.1"
 chez = scheme
 
 build :
-	echo "(compile-library \"euler.sls\"))" | ${chez} -q
+	echo "(compile-library \"euler.sls\"))" | ${chez} -q --optimize-level 3
 
 check : build
 	echo "(for-each load '(\"euler.so\" \"test/test.scm\"))" | ${chez} -q
