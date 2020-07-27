@@ -22,8 +22,8 @@
 	    (else (P5))))
     (define (P5)
       (vector-swap! A
-                    (fx+ j s (- (fxvector-ref C j)) -1)
-                    (fx+ j s (- q) -1))
+                    (fx+ j s (fx- (fxvector-ref C j)) -1)
+                    (fx+ j s (fx- q) -1))
       (fxvector-set! C j q)
       (P2))
     (define (P6)
@@ -93,13 +93,14 @@
   (lambda (X k)
     (let ((V (if (vector? X) X (list->vector X)))
           (xs '()))
-      (algorithm-T (vector-length V)
-                   k
-                   (lambda (C)
-                     (do ((j k (fx1- j))
-                          (lst '() (cons (vector-ref V (fxvector-ref C j))
-                                         lst)))
-                         ((fxzero? j) (push! lst xs)))))
+      (unless (or (< k 0) (< (vector-length V) k))
+	(algorithm-T (vector-length V)
+		     k
+		     (lambda (C)
+		       (do ((j k (fx1- j))
+			    (lst '() (cons (vector-ref V (fxvector-ref C j))
+					   lst)))
+			   ((fxzero? j) (push! lst xs))))))
       ;; note xs is in reverse lexicographic order
       xs)))
 
