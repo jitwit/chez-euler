@@ -9,11 +9,12 @@
        (display "...seems fine") (newline)))))
 
 (test-group 'primes
-	    (assert (= 25 (length (primes 100))))
-	    (assert (= 168 (length (primes 1000))))
-	    (assert (= 1229 (length (primes 10000))))
-	    (assert (= 9592 (length (primes 100000))))
-	    (assert (= 78498 (length (primes 1000000)))))
+	    (assert (= 0 (length (primes (expt 2 0)))))
+	    (assert (= 1 (length (primes (expt 2 1)))))
+	    (assert (= 2 (length (primes (expt 2 2)))))
+	    (assert (= 6 (length (primes (expt 2 4)))))
+	    (assert (= 6542 (length (primes (expt 2 16)))))
+	    (assert (= 1077871 (length (primes (expt 2 24))))))
 
 (test-group 'totient-sieve
 	    (assert (equal? '#vfx(0 1 1 2 2 4 2 6 4 6 4) (totient-sieve 10))))
@@ -68,7 +69,15 @@
 (test-group 'digits
 	    (assert (equal? '(1 2 3 1 2 3) (digits 123123)))
 	    (assert (equal? '(-1 2 3 1 2 3) (digits -123123)))
-	    (assert (equal? '(0) (digits 0))))
+	    (assert (equal? '(0) (digits 0)))
+
+	    (assert (pandigital? '()))
+	    (assert (pandigital? (iota 10)))
+	    (assert (pandigital? (shuffle (iota 10))))
+	    (assert (not (pandigital? (remv 4 (iota 10)))))
+
+	    (assert (digit-palindrome? 123321))
+	    (assert (digit-palindrome? 909)))
 
 (test-group 'permutations
 	    (assert (= 1 (length (permutations (iota 0)))))

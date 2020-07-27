@@ -28,7 +28,7 @@
   (lambda (digits)
     (andmap fx= (sort fx< digits) (iota (length digits)))))
 
-(define palindrome?
+(define digit-palindrome?
   (lambda (N)
     (let ((digits (digits N)))
       (equal? digits (reverse digits)))))

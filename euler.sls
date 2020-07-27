@@ -141,7 +141,7 @@
 	  digit-sum
 	  digits->integer
 	  pandigital?
-          palindrome?
+          digit-palindrome?
           nth-digit
 
 	  ;; generally useful procedures
