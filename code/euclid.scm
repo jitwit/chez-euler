@@ -23,10 +23,10 @@
     (zero? (modulo x d))))
 
 (define inverse-modulo
-  (lambda (x m)
-    (let ((yx+bm=1 (ax+by=gcd x m)))
-      (if (= 1 (list-ref yx+bm=1 2))
-	  (mod (car yx+bm=1) m)
+  (lambda (x M)
+    (let ((yx+bM=1 (ax+by=gcd x M)))
+      (if (= 1 (list-ref yx+bM=1 2))
+	  (mod (car yx+bM=1) M)
 	  #f))))
 
 (define chinese-remainder-theorem

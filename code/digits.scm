@@ -8,7 +8,10 @@
 
 (define digits
   (lambda (N)
-    (digit-fold cons '() N)))
+    (cond ((< 0 N) (digit-fold cons '() N))
+	  ((zero? N) '(0))
+	  (else
+	   (let ((xs (digits (- N)))) `(,(- (car xs)) ,@(cdr xs)))))))
 
 (define digit-sum
   (lambda (N)

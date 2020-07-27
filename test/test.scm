@@ -42,12 +42,33 @@
 			    (primes 1000)))
 	    (assert (equal? '(2 2 5 5) (factorize 100))))
 
-(test-group 'prime? ;; also a sort of benchmark i guess
+(test-group 'prime?
 	    (assert (equal? (primes 100000) (filter prime? (iota 100000)))))
 
 (test-group 'extended-euclid
 	    (assert (equal? '(0 1 3) (ax+by=gcd 3 0)))
 	    (assert (equal? '(-3 2 1) (ax+by=gcd 5 8))))
+
+(test-group 'inverse-modulo
+	    (assert (= 6 (inverse-modulo -1 7)))
+	    (assert (= 7 (inverse-modulo 7 12)))
+	    (assert (not (inverse-modulo 6 12))))
+
+(test-group 'chinese-remainder
+	    (assert (equal? '(39 . 60)
+			    (crt-system (map cons
+					     '(0 3 4)
+					     '(3 4 5))))))
+
+(test-group 'multiplicative-group
+	    (assert (equal? (Z/nZ* 12) '(1 5 7 11)))
+	    (assert (equal? (Z/nZ* 1993) (map 1+ (iota 1992))))
+	    (assert (equal? (length (Z/nZ* 123123)) (totient 123123))))
+
+(test-group 'digits
+	    (assert (equal? '(1 2 3 1 2 3) (digits 123123)))
+	    (assert (equal? '(-1 2 3 1 2 3) (digits -123123)))
+	    (assert (equal? '(0) (digits 0))))
 
 (test-group 'permutations
 	    (assert (= 1 (length (permutations (iota 0)))))
