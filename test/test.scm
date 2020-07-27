@@ -5,7 +5,8 @@
     ((_ name test ...)
      (begin
        (newline) (display "checking ") (display name) (display "... ") (newline)
-       (assert test) ...
+       (begin (display (quote test)) (assert test) (newline))
+       ...
        (display "...seems fine") (newline)))))
 
 (test-group 'primes
