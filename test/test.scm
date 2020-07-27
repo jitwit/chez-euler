@@ -42,8 +42,12 @@
 			    (primes 1000)))
 	    (assert (equal? '(2 2 5 5) (factorize 100))))
 
-(test-group 'prime?
-	    (assert (equal? (primes 1000) (filter prime? (iota 1000)))))
+(test-group 'prime? ;; also a sort of benchmark i guess
+	    (assert (equal? (primes 100000) (filter prime? (iota 100000)))))
+
+(test-group 'extended-euclid
+	    (assert (equal? '(0 1 3) (ax+by=gcd 3 0)))
+	    (assert (equal? '(-3 2 1) (ax+by=gcd 5 8))))
 
 (test-group 'permutations
 	    (assert (= 1 (length (permutations (iota 0)))))
