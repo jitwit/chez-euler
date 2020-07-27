@@ -105,8 +105,10 @@
 
 (define permutations
   (lambda (X)
-    (let ((ps '()))
-      (algorithm-P (list->vector X)
-                   (lambda (v)
-                     (push! (vector->list v) ps)))
-      ps)))
+    (if (null? X)
+	'(()) ;; 0! = 1
+	(let ((ps '()))
+	  (algorithm-P (list->vector X)
+		       (lambda (v)
+			 (push! (vector->list v) ps)))
+	  ps))))

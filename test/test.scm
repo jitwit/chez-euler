@@ -1,0 +1,28 @@
+(print-gensym #f) (import (euler))
+
+(define (display-ln thing)
+  (display thing) (newline))
+
+(display-ln "checking primes")
+(assert (= 25 (length (primes 100))))
+(assert (= 168 (length (primes 1000))))
+(assert (= 1229 (length (primes 10000))))
+(assert (= 9592 (length (primes 100000))))
+(assert (= 78498 (length (primes 1000000))))
+(display-ln "primes ok")
+
+(display-ln "checking permutations")
+(assert (= 1 (length (permutations (iota 0)))))
+(assert (= 1 (length (permutations (iota 1)))))
+(assert (= 2 (length (permutations (iota 2)))))
+(assert (= 120 (length (permutations (iota 5)))))
+(assert (= 40320 (length (permutations (iota 8)))))
+(display-ln "permutations ok")
+
+(display-ln "checking combinations")
+(assert (= 1 (length (permutations (iota 0)))))
+(assert (= 1 (length (permutations (iota 1)))))
+(assert (= 2 (length (permutations (iota 2)))))
+(assert (= 120 (length (permutations (iota 5)))))
+(assert (= 40320 (length (permutations (iota 8)))))
+(display-ln "permutations ok")
