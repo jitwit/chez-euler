@@ -8,7 +8,7 @@ sif j > 0
 then mul_gte_gte_gte{j,j-1} ((* 1*j <= j*j *))
 else let prval EQINT () = eqint_make{j,0} () in ((* 0<=0*0 *)) end
 
-fun{} eratosthenes{N:nat|2 <= N} (N:int(N)) : [pi_N:nat] list_vt(int,pi_N) =
+fn{} eratosthenes{N:nat|2 <= N} (N:int(N)) : [pi_N:nat] list_vt(int,pi_N) =
 let val B = bitvecptr_make_full(N)
     fun inner{j,N,dj:nat | 0 < dj; j < N}.<N-j>.
         (j:int(j),dj:int(dj), N:int(N), B: !bitvecptr(N) >> _) : void =
@@ -34,7 +34,7 @@ let val B = bitvecptr_make_full(N)
 in primes end
 
 implement main0 () = {
-  val primes = eratosthenes (200000000)
+  val primes = eratosthenes (10000000)
   val _ = println!(length(primes))
   val _ = list_vt_free(primes)
 }
