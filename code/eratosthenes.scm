@@ -2,11 +2,11 @@
 ;; Bitvector goods                                                            ;;
 (define u8:column
   (lambda (n)
-    (fxsrl n 3)))
+    (fxsrl n 4)))
 
 (define u8:row
   (lambda (n)
-    (fxlogand n 7)))
+    (fxlogand (fxsrl n 1) 7)))
 
 (define u8:index
   (lambda (n)
@@ -14,8 +14,7 @@
 
 (define u8:prime?
   (lambda (B j)
-    (fxlogbit? (u8:row j)
-               (bytevector-u8-ref B (u8:column j)))))
+    (fxlogbit? (u8:row j) (bytevector-u8-ref B (u8:column j)))))
 
 (define u8:clear
   (lambda (B j)
