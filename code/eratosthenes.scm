@@ -49,11 +49,11 @@
 (define run-eratosthenes
   (lambda (N)
     (define bits (eratosthenes-sieve N))
-    (define (walk k dk) ;; alternate dk = 2 or 4
-      (cond ((fx> k N) '())
-	    ((u8:prime? bits k) (cons k (walk (fx+ k dk) (fx- 6 dk))))
-	    (else (walk (fx+ k dk) (fx- 6 dk)))))
-    (cons* 2 3 (walk 5 2))))
+    (define (walk k ps) ;; alternate dk = 2 or 4
+      (cond ((fx< k 6) (cons* 2 3 5 ps))
+	    ((u8:prime? bits k) (walk (fx- k 2) (cons k ps)))
+	    (else (walk (fx- k 2) ps))))
+    (walk (if (fxeven? N) (fx1- N) N) '())))
 
 (define primes
   (lambda (N)
