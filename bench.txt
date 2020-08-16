@@ -2,186 +2,186 @@ scheme --optimize-level 3 --script bench.ss
 1 = 2^0
 (time (pi (expt 2 ...)))
     no collections
-    0.000000145s elapsed cpu time
+    0.000000065s elapsed cpu time
     0.000000000s elapsed real time
     16 bytes allocated
 2 = 2^1
 (time (pi (expt 2 ...)))
     no collections
-    0.000000107s elapsed cpu time
-    0.000000039s elapsed real time
+    0.000000214s elapsed cpu time
+    0.000000183s elapsed real time
     32 bytes allocated
 4 = 2^2
 (time (pi (expt 2 ...)))
     no collections
-    0.000000095s elapsed cpu time
-    0.000000055s elapsed real time
-    16 bytes allocated
+    0.000000463s elapsed cpu time
+    0.000000420s elapsed real time
+    48 bytes allocated
 8 = 2^3
 (time (pi (expt 2 ...)))
     no collections
-    0.000000370s elapsed cpu time
-    0.000000237s elapsed real time
-    96 bytes allocated
+    0.000000757s elapsed cpu time
+    0.000000724s elapsed real time
+    128 bytes allocated
 16 = 2^4
 (time (pi (expt 2 ...)))
     no collections
-    0.000000000s elapsed cpu time
-    0.000000877s elapsed real time
-    128 bytes allocated
+    0.000000177s elapsed cpu time
+    0.000000167s elapsed real time
+    160 bytes allocated
 32 = 2^5
 (time (pi (expt 2 ...)))
     no collections
-    0.000000211s elapsed cpu time
-    0.000000174s elapsed real time
-    208 bytes allocated
+    0.000000427s elapsed cpu time
+    0.000000391s elapsed real time
+    240 bytes allocated
 64 = 2^6
 (time (pi (expt 2 ...)))
     no collections
-    0.000001292s elapsed cpu time
-    0.000001287s elapsed real time
-    320 bytes allocated
+    0.000000335s elapsed cpu time
+    0.000000292s elapsed real time
+    352 bytes allocated
 128 = 2^7
 (time (pi (expt 2 ...)))
     no collections
-    0.000000608s elapsed cpu time
-    0.000000526s elapsed real time
-    544 bytes allocated
+    0.000000606s elapsed cpu time
+    0.000000578s elapsed real time
+    576 bytes allocated
 256 = 2^8
 (time (pi (expt 2 ...)))
     no collections
-    0.000001024s elapsed cpu time
-    0.000000952s elapsed real time
-    912 bytes allocated
+    0.000000813s elapsed cpu time
+    0.000000761s elapsed real time
+    944 bytes allocated
 512 = 2^9
 (time (pi (expt 2 ...)))
     no collections
-    0.000002550s elapsed cpu time
-    0.000002515s elapsed real time
-    1616 bytes allocated
+    0.000001589s elapsed cpu time
+    0.000001574s elapsed real time
+    1648 bytes allocated
 1024 = 2^10
 (time (pi (expt 2 ...)))
     no collections
-    0.000004604s elapsed cpu time
-    0.000004466s elapsed real time
-    2848 bytes allocated
+    0.000003057s elapsed cpu time
+    0.000003080s elapsed real time
+    2880 bytes allocated
 2048 = 2^11
 (time (pi (expt 2 ...)))
     no collections
-    0.000009754s elapsed cpu time
-    0.000009640s elapsed real time
-    5104 bytes allocated
+    0.000006102s elapsed cpu time
+    0.000006089s elapsed real time
+    5136 bytes allocated
 4096 = 2^12
 (time (pi (expt 2 ...)))
     no collections
-    0.000015698s elapsed cpu time
-    0.000015688s elapsed real time
-    9312 bytes allocated
+    0.000011766s elapsed cpu time
+    0.000011747s elapsed real time
+    9344 bytes allocated
 8192 = 2^13
 (time (pi (expt 2 ...)))
     no collections
-    0.000031281s elapsed cpu time
-    0.000031219s elapsed real time
-    16992 bytes allocated
+    0.000024410s elapsed cpu time
+    0.000024370s elapsed real time
+    17024 bytes allocated
 16384 = 2^14
 (time (pi (expt 2 ...)))
     no collections
-    0.000089195s elapsed cpu time
-    0.000089087s elapsed real time
-    31456 bytes allocated
+    0.000075470s elapsed cpu time
+    0.000075333s elapsed real time
+    31488 bytes allocated
 32768 = 2^15
 (time (pi (expt 2 ...)))
     no collections
-    0.000143455s elapsed cpu time
-    0.000143323s elapsed real time
-    58272 bytes allocated
+    0.000124675s elapsed cpu time
+    0.000124623s elapsed real time
+    58304 bytes allocated
 65536 = 2^16
 (time (pi (expt 2 ...)))
     no collections
-    0.000289710s elapsed cpu time
-    0.000289594s elapsed real time
-    108800 bytes allocated
+    0.000242287s elapsed cpu time
+    0.000242214s elapsed real time
+    108832 bytes allocated
 131072 = 2^17
 (time (pi (expt 2 ...)))
     no collections
-    0.000503094s elapsed cpu time
-    0.000502953s elapsed real time
-    204240 bytes allocated
+    0.000422683s elapsed cpu time
+    0.000422600s elapsed real time
+    204272 bytes allocated
 262144 = 2^18
 (time (pi (expt 2 ...)))
     no collections
-    0.000957053s elapsed cpu time
-    0.000956834s elapsed real time
-    384416 bytes allocated
+    0.000801085s elapsed cpu time
+    0.000800927s elapsed real time
+    384448 bytes allocated
 524288 = 2^19
 (time (pi (expt 2 ...)))
     no collections
-    0.001992919s elapsed cpu time
-    0.001992701s elapsed real time
-    727040 bytes allocated
+    0.001606041s elapsed cpu time
+    0.001606080s elapsed real time
+    727072 bytes allocated
 1048576 = 2^20
 (time (pi (expt 2 ...)))
     no collections
-    0.003804730s elapsed cpu time
-    0.003804380s elapsed real time
-    1377968 bytes allocated
+    0.003119304s elapsed cpu time
+    0.003119109s elapsed real time
+    1378000 bytes allocated
 2097152 = 2^21
 (time (pi (expt 2 ...)))
     no collections
-    0.007394577s elapsed cpu time
-    0.007394352s elapsed real time
-    2620880 bytes allocated
+    0.005999511s elapsed cpu time
+    0.005999286s elapsed real time
+    2620912 bytes allocated
 4194304 = 2^22
 (time (pi (expt 2 ...)))
-    1 collection
-    0.015067866s elapsed cpu time, including 0.000904921s collecting
-    0.015067559s elapsed real time, including 0.000906444s collecting
-    4998096 bytes allocated, including 7204224 bytes reclaimed
+    no collections
+    0.012265236s elapsed cpu time
+    0.012264849s elapsed real time
+    4997360 bytes allocated
 8388608 = 2^23
 (time (pi (expt 2 ...)))
     1 collection
-    0.029659588s elapsed cpu time, including 0.001766338s collecting
-    0.029659277s elapsed real time, including 0.001768881s collecting
-    9551568 bytes allocated, including 4718832 bytes reclaimed
+    0.028884028s elapsed cpu time, including 0.004496563s collecting
+    0.028883920s elapsed real time, including 0.004500573s collecting
+    9551600 bytes allocated, including 1600 bytes reclaimed
 16777216 = 2^24
 (time (pi (expt 2 ...)))
     2 collections
-    0.060966266s elapsed cpu time, including 0.005222427s collecting
-    0.060966069s elapsed real time, including 0.005225961s collecting
-    18295824 bytes allocated, including 9882400 bytes reclaimed
+    0.053393491s elapsed cpu time, including 0.007288818s collecting
+    0.053393395s elapsed real time, including 0.007294021s collecting
+    18295856 bytes allocated, including 8426064 bytes reclaimed
 33554432 = 2^25
 (time (pi (expt 2 ...)))
     4 collections
-    0.130610501s elapsed cpu time, including 0.017785391s collecting
-    0.130610956s elapsed real time, including 0.017795096s collecting
-    35118768 bytes allocated, including 15754832 bytes reclaimed
+    0.112026096s elapsed cpu time, including 0.017927249s collecting
+    0.112027169s elapsed real time, including 0.017937436s collecting
+    35118800 bytes allocated, including 16848448 bytes reclaimed
 67108864 = 2^26
 (time (pi (expt 2 ...)))
     8 collections
-    0.287771489s elapsed cpu time, including 0.061033789s collecting
-    0.287774673s elapsed real time, including 0.061057022s collecting
-    67524400 bytes allocated, including 37695600 bytes reclaimed
+    0.229948250s elapsed cpu time, including 0.041545715s collecting
+    0.229949927s elapsed real time, including 0.041569178s collecting
+    67524432 bytes allocated, including 16851856 bytes reclaimed
 134217728 = 2^27
 (time (pi (expt 2 ...)))
     15 collections
-    0.704459436s elapsed cpu time, including 0.140596217s collecting
-    0.704473003s elapsed real time, including 0.140634204s collecting
-    130055088 bytes allocated, including 12818624 bytes reclaimed
+    0.581844398s elapsed cpu time, including 0.083421390s collecting
+    0.581872690s elapsed real time, including 0.083466028s collecting
+    130055120 bytes allocated, including 42121824 bytes reclaimed
 268435456 = 2^28
 (time (pi (expt 2 ...)))
     28 collections
-    1.645936927s elapsed cpu time, including 0.215938856s collecting
-    1.645982370s elapsed real time, including 0.216022497s collecting
-    250888656 bytes allocated, including 3782304 bytes reclaimed
+    1.516015059s elapsed cpu time, including 0.226431143s collecting
+    1.516072180s elapsed real time, including 0.226539884s collecting
+    250888688 bytes allocated, including 117930080 bytes reclaimed
 536870912 = 2^29
 (time (pi (expt 2 ...)))
     54 collections
-    3.610648756s elapsed cpu time, including 0.440061195s collecting
-    3.610757175s elapsed real time, including 0.440216211s collecting
-    484673024 bytes allocated, including 431943680 bytes reclaimed
+    3.531354539s elapsed cpu time, including 0.577686071s collecting
+    3.531480216s elapsed real time, including 0.577842452s collecting
+    484673056 bytes allocated, including 202171360 bytes reclaimed
 1073741824 = 2^30
 (time (pi (expt 2 ...)))
     104 collections
-    7.931906565s elapsed cpu time, including 1.114036120s collecting
-    7.932119686s elapsed real time, including 1.114359152s collecting
-    937575904 bytes allocated, including 425900080 bytes reclaimed
+    7.428635111s elapsed cpu time, including 1.095720114s collecting
+    7.428833146s elapsed real time, including 1.096040361s collecting
+    937575936 bytes allocated, including 65856 bytes reclaimed

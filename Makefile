@@ -6,10 +6,10 @@ chez = scheme
 out =
 
 build : euler.sls
-	echo "(compile-library \"$<\"))" | ${chez} -q --optimize-level 3
+	echo "(compile-library \"$<\"))" | $(chez) -q --optimize-level 3
 
 check : euler.so
-	echo "(for-each load '(\"euler.so\" \"test/test.scm\"))" | ${chez} -q
+	$(chez) --script "test/test.scm"
 
 bench : bench.ss euler.so 
 	scheme --optimize-level 3 --script $<

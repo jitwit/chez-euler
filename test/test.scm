@@ -1,4 +1,4 @@
-(print-gensym #f) (import (euler))
+(print-gensym #f) (load "euler.so") (import (euler))
 
 (define-syntax test-group
   (syntax-rules ()

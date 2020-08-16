@@ -37,29 +37,40 @@
       (unless (fx> j N)
 	(u8:clear bits j)
 	(clear 2*p (fx+ 2*p j))))
-    (define (sieve p)
+    (define (sieve p dp)
       (unless (fx> (fx* p p) N)
 	(when (u8:prime? bits p)
 	  (clear (fxsll p 1) (fx* p p)))
-	(sieve (fx+ p 2))))
-    (sieve 3)
+	(sieve (fx+ p dp) (fx- 6 dp))))
+    (sieve 5 2)
     bits))
+
+(define select-1/5
+  (lambda (N)
+    (case (fxmod N 6)
+      ((0) (values (fx1- N) 4))
+      ((1) (values N 2))
+      ((2) (values (fx- N 1) 2))
+      ((3) (values (fx- N 2) 2))
+      ((4) (values (fx- N 3) 2))
+      ((5) (values N 4)))))
 
 ;; gather primes in a list
 (define run-eratosthenes
   (lambda (N)
     (define bits (eratosthenes-sieve N))
-    (define (walk k ps) ;; alternate dk = 2 or 4
+    (define (walk k dk ps) ;; alternate dk = 2 or 4
       (cond ((fx< k 6) (cons* 2 3 5 ps))
-	    ((u8:prime? bits k) (walk (fx- k 2) (cons k ps)))
-	    (else (walk (fx- k 2) ps))))
-    (walk (if (fxeven? N) (fx1- N) N) '())))
+	    ((u8:prime? bits k) (walk (fx- k dk) (fx- 6 dk) (cons k ps)))
+	    (else (walk (fx- k dk) (fx- 6 dk) ps))))
+    (define-values (k dk) (select-1/5 N))
+    (walk k dk '())))
 
 (define primes
   (lambda (N)
-    (cond ((> N 4) (run-eratosthenes N))
+    (cond ((> N 6) (run-eratosthenes N))
           (else (filter (lambda (p) (<= p N))
-                        '(2 3))))))
+                        '(2 3 5))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Segmented sieves                                                           ;;

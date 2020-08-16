@@ -5,6 +5,7 @@
   (length (primes N)))
 
 (for-each (lambda (N)
+	    (collect)
 	    (format #t "~a = 2^~a~%" (expt 2 N) N)
 	    (time (pi (expt 2 N))))
 	  (iota 31))
