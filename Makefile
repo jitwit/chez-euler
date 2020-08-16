@@ -12,7 +12,7 @@ check : euler.so
 	echo "(for-each load '(\"euler.so\" \"test/test.scm\"))" | ${chez} -q
 
 bench : bench.ss euler.so 
-	scheme --optimize-level 3 --script $< > bench.txt
+	scheme --optimize-level 3 --script $<
 
 install :
 	mkdir -p $(out)
