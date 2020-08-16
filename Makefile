@@ -1,3 +1,5 @@
+.PHONY : bench clean
+
 package = chez-euler
 version = 0.1
 chez = scheme
@@ -9,8 +11,8 @@ build : euler.sls
 check : euler.so
 	echo "(for-each load '(\"euler.so\" \"test/test.scm\"))" | ${chez} -q
 
-bench : euler.so
-	echo "(load \"$<\") (import (euler)) (time (length (primes 1000000000))) (exit)" | scheme --optimize-level 3  -q
+bench : bench.ss euler.so 
+	scheme --optimize-level 3 --script $< > bench.txt
 
 install :
 	mkdir -p $(out)

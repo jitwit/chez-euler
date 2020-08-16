@@ -1,0 +1,50 @@
+(time (pi (expt 10 ...)))
+    no collections
+    0.000000407s elapsed cpu time
+    0.000000000s elapsed real time
+    16 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.000000453s elapsed cpu time
+    0.000000280s elapsed real time
+    96 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.000000678s elapsed cpu time
+    0.000000636s elapsed real time
+    432 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.000003888s elapsed cpu time
+    0.000003871s elapsed real time
+    2784 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.000034645s elapsed cpu time
+    0.000034562s elapsed real time
+    20320 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.000428912s elapsed cpu time
+    0.000428710s elapsed real time
+    159760 bytes allocated
+(time (pi (expt 10 ...)))
+    no collections
+    0.004070553s elapsed cpu time
+    0.004070137s elapsed real time
+    1318496 bytes allocated
+(time (pi (expt 10 ...)))
+    1 collection
+    0.041275973s elapsed cpu time, including 0.004052967s collecting
+    0.041275751s elapsed real time, including 0.004055447s collecting
+    11259072 bytes allocated, including 2637104 bytes reclaimed
+(time (pi (expt 10 ...)))
+    11 collections
+    0.461114391s elapsed cpu time, including 0.071849784s collecting
+    0.461138740s elapsed real time, including 0.071879478s collecting
+    98440352 bytes allocated, including 11298448 bytes reclaimed
+(time (pi (expt 10 ...)))
+    97 collections
+    7.649604130s elapsed cpu time, including 1.038404626s collecting
+    7.653653650s elapsed real time, including 1.039312625s collecting
+    876122656 bytes allocated, including 98511056 bytes reclaimed
