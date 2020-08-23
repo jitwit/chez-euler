@@ -48,8 +48,10 @@
 	    (equal? (primes 100000) (filter prime? (iota 100000))))
 
 (test-group 'extended-euclid
-	    (equal? '(1 0 3) (ax+by=gcd 3 0))
-	    (equal? '(-3 2 1) (ax+by=gcd 5 8)))
+	    (equal? '(1 0 3)
+		    (call-with-values (lambda () (ax+by=gcd 3 0)) list))
+	    (equal? '(-3 2 1)
+		    (call-with-values (lambda () (ax+by=gcd 5 8)) list)))
 
 (test-group 'inverse-modulo
 	    (= 6 (inverse-modulo -1 7))

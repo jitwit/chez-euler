@@ -1,17 +1,16 @@
-
 ;; extended euclid algorithm
 (define algorithm-E
   (lambda (m n)
     (let recycle ((c m) (d n) (a0 0) (a1 1) (b0 1) (b1 0))
-      (let* ((q (quotient c d)) (r (modulo c d)))
+      (let-values (((q r) (div-and-mod c d)))
 	(if (zero? r)
-	    (list a0 b0 d)
+	    (values a0 b0 d)
 	    (recycle d r (- a1 (* q a0)) a0 (- b1 (* q b0)) b0))))))
 
 (define ax+by=gcd
   (lambda (x y)
-    (cond ((zero? x) (list 0 1 y))
-	  ((zero? y) (list 1 0 x))
+    (cond ((zero? x) (values 0 1 y))
+	  ((zero? y) (values 1 0 x))
 	  (else (algorithm-E x y)))))
 
 (define coprime?
@@ -24,18 +23,16 @@
 
 (define inverse-modulo
   (lambda (x M)
-    (let ((yx+bM=1 (ax+by=gcd x M)))
-      (if (= 1 (list-ref yx+bM=1 2))
-	  (mod (car yx+bM=1) M)
-	  #f))))
+    (define-values (y b 1?) (ax+by=gcd x M))
+    (and (= 1 1?) (mod y M))))
 
 (define chinese-remainder-theorem
   (lambda (a1 n1 a2 n2)
-    (let-values (((m1 m2 gcd) (apply values (ax+by=gcd n1 n2))))
-      (when (not (= gcd 1))
-	(error 'crt "modulii not pairwise coprime" n1 n2))
-      (mod (+ (* a1 m2 n2) (* a2 m1 n1))
-           (* n1 n2)))))
+    (define-values (m1 m2 gcd) (ax+by=gcd n1 n2))
+    (when (not (= gcd 1))
+      (error 'crt "modulii not pairwise coprime" n1 n2))
+    (mod (+ (* a1 m2 n2) (* a2 m1 n1))
+	 (* n1 n2))))
 
 (define crt-system
   (lambda (eqns)

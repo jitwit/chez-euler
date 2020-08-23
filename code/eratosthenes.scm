@@ -1,5 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Bitvector goods                                                            ;;
+;;; bit vector
 (define u8:column
   (lambda (n)
     (fxsrl n 4)))
@@ -27,8 +26,7 @@
       (let ((x (bytevector-u8-ref B c)))
 	(bytevector-u8-set! B c (fxlogbit1 r x))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Eratosthenes sieve                                                         ;;
+;;; Eratosthenes sieve
 (define eratosthenes-sieve
   (lambda (N)
     (define cutoff (fx1+ (u8:column N)))
