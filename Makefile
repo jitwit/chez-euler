@@ -5,7 +5,9 @@ version = 0.1
 chez = scheme
 out =
 
-build : euler.sls
+build : euler.so
+
+euler.so : euler.sls code/*.scm
 	echo "(compile-library \"$<\"))" | $(chez) -q --optimize-level 3
 
 check : euler.so
