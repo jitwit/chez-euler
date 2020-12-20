@@ -185,3 +185,5 @@
     (fxvector-set! M 0 0)
     (M3 1)
     M))
+; improve with page 3? https://arxiv.org/pdf/1610.08551.pdf
+;  which comes from https://arxiv.org/pdf/1108.0135.pdf
