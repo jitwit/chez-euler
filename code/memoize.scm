@@ -16,7 +16,7 @@
              (g (lambda (x y ...) body ...)))
          (lambda xy
 	   (if (hashtable-contains? mem xy)
-	       (hashtable-ref mem xs 'ohno)
+	       (hashtable-ref mem xy 'ohno)
                (let ((f-xy (apply g xy)))
                  (hashtable-set! mem xy f-xy)
                  f-xy))))))))
